@@ -115,8 +115,6 @@ namespace Cold_Ship
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-
             //outdated codes that's now in the Update method
             /*bodyTempTimer += gameTime.ElapsedGameTime.Milliseconds;
             exhaustionTimer += gameTime.ElapsedGameTime.Milliseconds;
@@ -160,7 +158,6 @@ namespace Cold_Ship
                 frames = 0;
             }
 
-            // TODO: Add your drawing code here
             spriteBatch.Begin();
             //draw the desired nodes onto screen through the camera
             camera.DrawNode(backgroundNode);
