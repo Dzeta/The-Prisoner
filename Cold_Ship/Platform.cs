@@ -25,35 +25,45 @@ namespace Cold_Ship
             this.texture = texture;
             this.size = size;
             this.position = position;
-            collisionUp = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y / 6);
-            collisionDown = new Rectangle((int)position.X, (int)(position.Y + (5 * (size.Y / 6))), (int)size.X, (int)size.Y / 6);
-            collisionLeft = new Rectangle((int)position.X, (int)(position.Y + (1 * (size.Y / 6))), (int)size.X / 8, (int)(4 * (size.Y / 6)));
-            collisionRight = new Rectangle((int)(position.X + (7 * (size.X / 8))), (int)(position.Y + (1 * (size.Y / 6))), (int)size.X / 8, (int)(4 * (size.Y / 6)));
+            collisionUp = new Rectangle((int)(position.X /*+ (1 * (size.X / 10))*/), (int)(position.Y), (int)size.X/*(8 * (size.X / 10))*/, (int)size.Y / 6);
+            collisionDown = new Rectangle((int)(position.X + (1 * (size.X / 10))), (int)(position.Y + (5 * (size.Y / 6))), (int)(8 * (size.X / 10)), (int)size.Y / 6);
+            collisionLeft = new Rectangle((int)position.X, (int)(position.Y + (1 * (size.Y / 15))), (int)size.X / 1000, (int)(size.Y));
+            //collisionLeft = new Rectangle((int)position.X, (int)(position.Y /*+ (1 * (size.Y / 6))*/), (int)size.X / 10, (int)(size.Y));
+            collisionRight = new Rectangle((int)(position.X + (7 * (size.X / 8))), (int)(position.Y + (1 * (size.Y / 15))), (int)size.X / 10, (int)(size.Y));
         }
 
         //update method that handles the collisions
         public bool Update(Scene2DNode player, Vector2 prevPosition, float jumpTimer, float ground, bool isJumping)
         {
+            bool canJump = true;
+            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionUp))
+            {
+
+                player.position = prevPosition;
+
+                canJump = false;
+            }
             if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionLeft))
             {
-                player.position = prevPosition;
-                player.ApplyGravity(jumpTimer, ground);
+
+                player.position.X = prevPosition.X;
+                //player.ApplyGravity(jumpTimer, ground);
             }
-            else if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionRight))
+            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionRight))
             {
                 player.position = prevPosition;
-                player.ApplyGravity(jumpTimer, ground);
+                //player.ApplyGravity(jumpTimer, ground);
             }
-            else if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionUp))
-            {
-                player.position.Y = prevPosition.Y;
-                return false;
-            }
+            // if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionUp))
+            //{
+            //    player.position.Y = prevPosition.Y;
+            //    return false;
+            //}
             else if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionDown))
             {
-                //player.position = prevPosition;
+                player.position = prevPosition;
             }
-            return true;
+            return canJump;
             //if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
             //{
             //    player.position = prevPosition;
