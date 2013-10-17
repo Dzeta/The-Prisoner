@@ -103,7 +103,9 @@ namespace Cold_Ship
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
             Platform platform = new Platform(platformTexture, new Vector2(64, 32), new Vector2(100, worldSize.Y - 80));
+            Platform platform2 = new Platform(platformTexture, new Vector2(64, 150), new Vector2(200, worldSize.Y - 150));
             platforms.Add(platform);
+            platforms.Add(platform2);
         }
 
         /// <summary>
@@ -174,7 +176,12 @@ namespace Cold_Ship
             camera.DrawNode(playerNode);
             //camera.DrawNode(shadowFilter);
             //draw the platforms
+            foreach (Platform platform in platforms)
+            {
+                camera.DrawPlatform(platform);
+            }
             camera.DrawPlatform(platforms[0]);
+            camera.DrawNode(shadowFilter);
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
             //draw the status display and the body temperature

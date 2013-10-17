@@ -90,7 +90,10 @@ namespace Cold_Ship
             Move();
             foreach (Platform platform in platforms)
             {
-                platform.Update(this, prevPosition, jumpTimer, ground, isjumping);
+                if (!platform.Update(this, prevPosition, jumpTimer, ground, isjumping))
+                {
+                    isjumping = false;
+                }
             }
         }
 
@@ -157,7 +160,7 @@ namespace Cold_Ship
                         }
                         break;
                     case Keys.Space:
-                        if (!isjumping)
+                        if (!isjumping && oldKeyboardState.IsKeyUp(Keys.Space))
                         {
                             position += new Vector2(0, -40);
                             velocity = new Vector2(0, -5);
