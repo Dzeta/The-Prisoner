@@ -23,7 +23,7 @@ namespace Cold_Ship
         float exertForceDecreaseRate = -0.05f;
         bool isExertingForce = false;
         bool stoppedExertingForce = false;
-        bool isjumping = false;
+        public bool isjumping = false;
 
         //declare constructor
         public Scene2DNode(Texture2D texture, Vector2 position)
@@ -60,19 +60,43 @@ namespace Cold_Ship
             //register keyboard inputs
             KeyboardState newKeyboardState = Keyboard.GetState();
             UpdateKeyboard(oldKeyboardState, newKeyboardState, ref jumpTimer);
-            Move();
+            //Move();
             oldKeyboardState = newKeyboardState;
 
             //detect platform collision
+            bool jumpable = false;
             foreach (Platform platform in platforms)
             {
-                platform.Update(this, prevPosition);
+                if (!platform.Update(this, prevPosition, jumpTimer, ground, isjumping))
+                {
+                    isjumping = false;
+                }
             }
 
             //update body temperature
             updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);
 
             //apply gravity
+            prevPosition = position;
+            if (position.Y < ground - texture.Height && jumpTimer > 250)
+            {
+                velocity = new Vector2(0, 5);
+            }
+            else if (position.Y > ground - texture.Height)
+            {
+                isjumping = false;
+                position.Y = ground - texture.Height;
+            }
+            Move();
+            foreach (Platform platform in platforms)
+            {
+                platform.Update(this, prevPosition, jumpTimer, ground, isjumping);
+            }
+        }
+
+        //a method that applies gravity to the player sprite
+        public void ApplyGravity(float jumpTimer, float ground)
+        {
             if (position.Y < ground - texture.Height && jumpTimer > 250)
             {
                 velocity = new Vector2(0, 5);
@@ -83,8 +107,6 @@ namespace Cold_Ship
                 position.Y = ground - texture.Height;
             }
         }
-
-
 
         //update the sprite position based on the keyboard inputs
         public void UpdateKeyboard(KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer)

@@ -85,6 +85,7 @@ namespace Cold_Ship
             Texture2D backgroundTexture = Content.Load<Texture2D>("background2");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
+
             //initialize the world size and the ground coordinate according to the world size
             worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);
             ground = worldSize.Y;
@@ -100,7 +101,8 @@ namespace Cold_Ship
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
             //initialize the needed platforms
-            Platform platform = new Platform(playerTexture, new Vector2(64, 32), new Vector2(100, worldSize.Y - 80));
+            Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
+            Platform platform = new Platform(platformTexture, new Vector2(64, 32), new Vector2(100, worldSize.Y - 80));
             platforms.Add(platform);
         }
 

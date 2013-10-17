@@ -73,6 +73,9 @@
     <None Include="Content\background2.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\platformTexture.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\player.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

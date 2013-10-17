@@ -32,28 +32,32 @@ namespace Cold_Ship
         }
 
         //update method that handles the collisions
-        public void Update(Scene2DNode player, Vector2 prevPosition)
+        public bool Update(Scene2DNode player, Vector2 prevPosition, float jumpTimer, float ground, bool isJumping)
         {
-            //if (player.texture.Bounds.Intersects(collisionLeft))
-            //{
-            //    player.position = prevPosition;
-            //}
-            //else if (player.texture.Bounds.Intersects(collisionRight))
-            //{
-            //    player.position = prevPosition;
-            //}
-            //else if (player.texture.Bounds.Intersects(collisionUp))
-            //{
-            //    player.position = prevPosition;
-            //}
-            //else if (player.texture.Bounds.Intersects(collisionDown))
-            //{
-            //    player.position = prevPosition;
-            //}
-            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
+            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionLeft))
             {
                 player.position = prevPosition;
+                player.ApplyGravity(jumpTimer, ground);
             }
+            else if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionRight))
+            {
+                player.position = prevPosition;
+                player.ApplyGravity(jumpTimer, ground);
+            }
+            else if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionUp))
+            {
+                player.position.Y = prevPosition.Y;
+                return false;
+            }
+            else if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionDown))
+            {
+                //player.position = prevPosition;
+            }
+            return true;
+            //if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
+            //{
+            //    player.position = prevPosition;
+            //}
         }
 
         //draw method that draws the platform onto the screen
