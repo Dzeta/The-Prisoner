@@ -42,15 +42,23 @@ namespace Cold_Ship
         public void TranslateWithSprite(Scene2DNode node, Vector2 screenSize)
         {
             //horizontal transformations
-            if (ApplyTransformations(node.position).X > screenSize.X / 2)
+            if (ApplyTransformations(node.position).X > screenSize.X / 3 * 1.5f)
             {
-                cameraPosition.X = node.position.X - (screenSize.X / 2);
+                cameraPosition.X = node.position.X - (screenSize.X / 3 * 1.5f);
             }
-            ////vertical transformations
-            //if (ApplyTransformations(node.position).Y > screenSize.Y / 2)
-            //{
-            //    cameraPosition.X = node.position.Y - (screenSize.Y / 2);
-            //}
+            else if (ApplyTransformations(node.position).X < screenSize.X / 3 * 1.2f)
+            {
+                cameraPosition.X = node.position.X - (screenSize.X / 3 * 1.2f);
+            }
+            //vertical transformations
+            if (ApplyTransformations(node.position).Y < screenSize.Y / 3 * 1.2f)
+            {
+                cameraPosition.Y = node.position.Y - (screenSize.Y / 3 * 1.2f);
+            }
+            else if (ApplyTransformations(node.position).Y > screenSize.Y / 3 * 1.5f)
+            {
+                cameraPosition.Y = node.position.Y - (screenSize.Y / 3 * 1.5f);
+            }
         }
 
         //cap the camera position

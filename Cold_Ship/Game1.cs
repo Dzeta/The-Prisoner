@@ -105,7 +105,7 @@ namespace Cold_Ship
             Platform platform = new Platform(platformTexture, new Vector2(64, 32), new Vector2(100, worldSize.Y - 80));
             Platform platform2 = new Platform(platformTexture, new Vector2(64, 150), new Vector2(200, worldSize.Y - 150));
             Platform platform3 = new Platform(platformTexture, new Vector2(64, 250), new Vector2(300, worldSize.Y - 250));
-            Platform platform4 = new Platform(platformTexture, new Vector2(64, 32), new Vector2(350, worldSize.Y - 175));
+            Platform platform4 = new Platform(platformTexture, new Vector2(64, 32), new Vector2(425, worldSize.Y - 175));
             platforms.Add(platform);
             platforms.Add(platform2);
             platforms.Add(platform3);
