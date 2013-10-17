@@ -30,6 +30,7 @@ namespace Cold_Ship
         KeyboardState oldKeyboardState;
         float ground;
         Scene2DNode shadowFilter;
+        List<Platform> platforms;
 
         public Game1()
             : base()
@@ -62,6 +63,9 @@ namespace Cold_Ship
             //initiate old keyboard state
             oldKeyboardState = Keyboard.GetState();
 
+            //initialize the needed lists
+            platforms = new List<Platform>();
+
             base.Initialize();
         }
 
@@ -88,12 +92,16 @@ namespace Cold_Ship
             //load font
             font = Content.Load<SpriteFont>("Score");
             
-            //initiate the needed nodes and camera
+            //initialize the needed nodes and camera
             playerNode = new Scene2DNode(playerTexture, new Vector2(0, worldSize.Y - 64));
             backgroundNode = new Scene2DNode(backgroundTexture, new Vector2(0, 0));
             shadowFilter = new Scene2DNode(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
+
+            //initialize the needed platforms
+            Platform platform = new Platform(playerTexture, new Vector2(64, 32), new Vector2(100, worldSize.Y - 80));
+            platforms.Add(platform);
         }
 
         /// <summary>
@@ -122,7 +130,7 @@ namespace Cold_Ship
             playerNode.UpdateKeyboard(oldKeyboardState, newKeyboardState);
             oldKeyboardState = newKeyboardState;
             playerNode.updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);*/
-            playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground);
+            playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms);
             shadowFilter.position = new Vector2((playerNode.position.X /*+ (playerNode.texture.Width / 2))*/) - (shadowFilter.texture.Width / 2),
                 (playerNode.position.Y + (playerNode.texture.Height / 2) - (shadowFilter.texture.Height / 2)));
 
@@ -162,7 +170,9 @@ namespace Cold_Ship
             //draw the desired nodes onto screen through the camera
             camera.DrawNode(backgroundNode);
             camera.DrawNode(playerNode);
-            camera.DrawNode(shadowFilter);
+            //camera.DrawNode(shadowFilter);
+            //draw the platforms
+            camera.DrawPlatform(platforms[0]);
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
             //draw the status display and the body temperature

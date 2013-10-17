@@ -47,8 +47,10 @@ namespace Cold_Ship
         }
 
         //update everything about the Scene2DNode object
-        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground)
+        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms)
         {
+            //register the position before updating (prevPosition)
+            Vector2 prevPosition = position;
             //update timers
             float elapsedTime = gameTime.ElapsedGameTime.Milliseconds;
             bodyTempTimer += elapsedTime;
@@ -60,6 +62,12 @@ namespace Cold_Ship
             UpdateKeyboard(oldKeyboardState, newKeyboardState, ref jumpTimer);
             Move();
             oldKeyboardState = newKeyboardState;
+
+            //detect platform collision
+            foreach (Platform platform in platforms)
+            {
+                platform.Update(this, prevPosition);
+            }
 
             //update body temperature
             updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);

@@ -70,5 +70,12 @@ namespace Cold_Ship
             Vector2 drawPosition = ApplyTransformations(node.position);
             node.Draw(spriteBatch, drawPosition);
         }
+
+        //draw the platform on screen with respect to the camera
+        public void DrawPlatform(Platform platform)
+        {
+            Vector2 drawPosition = ApplyTransformations(platform.position);
+            platform.Draw(spriteBatch, drawPosition);
+        }
     }
 }
