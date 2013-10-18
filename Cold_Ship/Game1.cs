@@ -104,12 +104,24 @@ namespace Cold_Ship
             Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
             Platform platform = new Platform(platformTexture, new Vector2(64, 32), new Vector2(100, worldSize.Y - 80));
             Platform platform2 = new Platform(platformTexture, new Vector2(64, 150), new Vector2(200, worldSize.Y - 150));
-            Platform platform3 = new Platform(platformTexture, new Vector2(64, 250), new Vector2(300, worldSize.Y - 250));
-            Platform platform4 = new Platform(platformTexture, new Vector2(64, 32), new Vector2(425, worldSize.Y - 175));
+            Platform platform3 = new Platform(platformTexture, new Vector2(100, 800), new Vector2(300, worldSize.Y - 800));
+            Platform platform4 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(120, worldSize.Y - 250));
+            Platform platform5 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(50, worldSize.Y - 350));
+            Platform platform6 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(140, worldSize.Y - 450));
+            Platform platform7 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(200, worldSize.Y - 550));
+            Platform platform8 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(100, worldSize.Y - 650));
             platforms.Add(platform);
             platforms.Add(platform2);
             platforms.Add(platform3);
             platforms.Add(platform4);
+            platforms.Add(platform5);
+            platforms.Add(platform6);
+            platforms.Add(platform7);
+            platforms.Add(platform8);
+            platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(20, worldSize.Y - 750)));
+            platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(100, worldSize.Y - 850)));
+            platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(200, worldSize.Y - 950)));
+            platforms.Add(new Platform(platformTexture, new Vector2(500, 15), new Vector2(400, worldSize.Y - 960)));
         }
 
         /// <summary>
