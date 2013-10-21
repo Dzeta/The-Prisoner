@@ -11,9 +11,9 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-    public class Prototype_Level
+    public class Prototype_Level_2
     {
-        //declare member variables
+         //declare member variables
         public SpriteBatch spriteBatch;
         Vector2 worldSize, screenSize;
         List<Platform> platforms;
@@ -26,7 +26,7 @@ namespace Cold_Ship
         List<Portal> portals;
 
         //declare constructor
-        public Prototype_Level(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Prototype_Level_2(SpriteBatch spriteBatch, Vector2 screenSize)
         {
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
@@ -36,7 +36,7 @@ namespace Cold_Ship
         }
 
         //load content
-        public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel)
+        public void LoadContent(ContentManager Content)
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("player");
@@ -52,7 +52,7 @@ namespace Cold_Ship
             font = Content.Load<SpriteFont>("Score");
 
             //initialize the needed nodes and camera
-            //playerNode = new Scene2DNode(playerTexture, new Vector2(35, worldSize.Y - 64));
+            playerNode = new Scene2DNode(playerTexture, new Vector2(50, worldSize.Y - 64));
             backgroundNode = new Scene2DNode(backgroundTexture, new Vector2(0, 0));
             shadowFilter = new Scene2DNode(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
@@ -60,7 +60,7 @@ namespace Cold_Ship
 
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
-            Platform platform = new Platform(platformTexture, new Vector2(64, 32), new Vector2(120, worldSize.Y - 80));
+            Platform platform = new Platform(platformTexture, new Vector2(64, 32), new Vector2(100, worldSize.Y - 80));
             Platform platform2 = new Platform(platformTexture, new Vector2(64, 150), new Vector2(200, worldSize.Y - 150));
             Platform platform3 = new Platform(platformTexture, new Vector2(100, 800), new Vector2(300, worldSize.Y - 800));
             Platform platform4 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(120, worldSize.Y - 250));
@@ -68,9 +68,9 @@ namespace Cold_Ship
             Platform platform6 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(140, worldSize.Y - 450));
             Platform platform7 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(200, worldSize.Y - 550));
             Platform platform8 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(100, worldSize.Y - 650));
-            platforms.Add(platform);
-            platforms.Add(platform2);
-            platforms.Add(platform3);
+            //platforms.Add(platform);
+            //platforms.Add(platform2);
+            //platforms.Add(platform3);
             platforms.Add(platform4);
             platforms.Add(platform5);
             platforms.Add(platform6);
@@ -86,16 +86,6 @@ namespace Cold_Ship
             fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 32, worldSize.Y - 64), new Vector2(32, 64), Portal.PortalType.FOWARD);
             portals.Add(backwardDoor);
             portals.Add(fowardDoor);
-
-            //initialize the playerNode
-            if (prevGameLevel <= gameLevel)
-            {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64));
-            }
-            else if (prevGameLevel >= gameLevel)
-            {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - playerNode.texture.Width - 5, worldSize.Y - 64));
-            }
         }
 
         //update function

@@ -85,5 +85,12 @@ namespace Cold_Ship
             Vector2 drawPosition = ApplyTransformations(platform.position);
             platform.Draw(spriteBatch, drawPosition);
         }
+
+        //draw the portal on screen with respect to the camera
+        public void DrawPortal(Portal portal)
+        {
+            Vector2 drawPosition = ApplyTransformations(portal.position);
+            portal.Draw(spriteBatch, drawPosition);
+        }
     }
 }

@@ -11,6 +11,9 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
+    //declare the enum for game levels
+    public enum Game_Level { PROTOTYPE = 0, LEVEL1 = 1, LEVEL2 = 2 };
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -32,6 +35,9 @@ namespace Cold_Ship
         //Scene2DNode shadowFilter;
         //List<Platform> platforms;
         Prototype_Level prototypeLevel;
+        Prototype_Level_2 prototypeLevel2;
+        Game_Level gameLevel = 0;
+        Game_Level prevGameLevel = 0;
 
         public Game1()
             : base()
@@ -71,6 +77,7 @@ namespace Cold_Ship
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             prototypeLevel = new Prototype_Level(spriteBatch, screenSize);
+            prototypeLevel2 = new Prototype_Level_2(spriteBatch, screenSize);
 
             base.Initialize();
         }
@@ -128,7 +135,17 @@ namespace Cold_Ship
             //platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(100, worldSize.Y - 850)));
             //platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(200, worldSize.Y - 950)));
             //platforms.Add(new Platform(platformTexture, new Vector2(500, 15), new Vector2(400, worldSize.Y - 960)));
-            prototypeLevel.LoadContent(Content);
+            switch(gameLevel)
+            {
+                case Game_Level.PROTOTYPE:
+                    prototypeLevel.LoadContent(Content, gameLevel, prevGameLevel);
+                    break;
+                case Game_Level.LEVEL1:
+                    prototypeLevel2.LoadContent(Content);
+                    break;
+            }
+            //prototypeLevel.LoadContent(Content);
+            //prototypeLevel2.LoadContent(Content);
         }
 
         /// <summary>
@@ -167,10 +184,23 @@ namespace Cold_Ship
             //update the camera based on the player and world size
             //camera.TranslateWithSprite(playerNode, screenSize);
             //camera.CapCameraPosition(worldSize, screenSize);
-
-            prototypeLevel.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer);
-
-
+            
+            switch(gameLevel)
+            {
+                case Game_Level.PROTOTYPE:
+                    //LoadContent();
+                    prototypeLevel.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel);
+                    break;
+                case Game_Level.LEVEL1:
+                    //LoadContent();
+                    prototypeLevel2.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel);
+                    break;
+            }
+            if (prevGameLevel != gameLevel)
+            {
+                LoadContent();
+                prevGameLevel = gameLevel;
+            }
 
             base.Update(gameTime);
         }
@@ -216,7 +246,16 @@ namespace Cold_Ship
             //spriteBatch.DrawString(font, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
             //spriteBatch.End();
 
-            prototypeLevel.Draw(framesPerSecond);
+            switch (gameLevel)
+            {
+                case Game_Level.PROTOTYPE:
+                    prototypeLevel.Draw(framesPerSecond);
+                    break;
+                case Game_Level.LEVEL1:
+                    prototypeLevel2.Draw(framesPerSecond);
+                    break;
+            }
+            
 
             base.Draw(gameTime);
         }
