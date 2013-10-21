@@ -28,7 +28,7 @@ namespace Cold_Ship
         //SpriteFont font;
         //Texture2D statusDisplayTexture;
         float bodyTempTimer;
-        float exhaustionTimer;
+        float exhaustionTimer, staminaExhaustionTimer;
         float jumpTimer;
         KeyboardState oldKeyboardState;
         //float ground;
@@ -67,6 +67,7 @@ namespace Cold_Ship
             bodyTempTimer = 0;
             exhaustionTimer = 0;
             jumpTimer = 0;
+            staminaExhaustionTimer = 0;
 
             //initiate old keyboard state
             oldKeyboardState = Keyboard.GetState();
@@ -192,11 +193,11 @@ namespace Cold_Ship
             {
                 case Game_Level.PROTOTYPE:
                     //LoadContent();
-                    bodyTemperature = prototypeLevel.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel);
+                    bodyTemperature = prototypeLevel.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer);
                     break;
                 case Game_Level.LEVEL1:
                     //LoadContent();
-                    bodyTemperature = prototypeLevel2.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel);
+                    bodyTemperature = prototypeLevel2.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer);
                     break;
             }
 

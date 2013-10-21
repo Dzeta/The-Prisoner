@@ -58,7 +58,7 @@ namespace Cold_Ship
         }
 
         //update everything about the Scene2DNode object
-        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, Vector2 worldSize)
+        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, Vector2 worldSize, ref float staminaExhaustionTimer)
         {
             //register the position before updating (prevPosition)
             Vector2 prevPosition = position;
@@ -67,6 +67,7 @@ namespace Cold_Ship
             bodyTempTimer += elapsedTime;
             exhaustionTimer += elapsedTime;
             jumpTimer += elapsedTime;
+            staminaExhaustionTimer += elapsedTime;
 
             //register keyboard inputs
             KeyboardState newKeyboardState = Keyboard.GetState();
@@ -94,10 +95,14 @@ namespace Cold_Ship
             updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);
 
             //recover stamina
-            stamina += 0.02;
+            if (staminaExhaustionTimer > 1500)
+            {
+                stamina += 0.04;
+            }
             if (stamina < 0)
             {
                 stamina = 0;
+                staminaExhaustionTimer = 0;
             }
             else if (stamina > 100)
             {

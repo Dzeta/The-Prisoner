@@ -99,7 +99,7 @@ namespace Cold_Ship
         }
 
         //update function
-        public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel)
+        public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer)
         {
             //outdated codes that's now in the Update method
             /*bodyTempTimer += gameTime.ElapsedGameTime.Milliseconds;
@@ -110,7 +110,7 @@ namespace Cold_Ship
             playerNode.updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);*/
 
             //update the player position with respect to keyboard input and platform collision
-            playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, worldSize);
+            playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, worldSize, ref staminaExhaustionTimer);
 
             foreach (Portal portal in portals)
             {
