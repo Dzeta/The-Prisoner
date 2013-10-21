@@ -36,7 +36,7 @@ namespace Cold_Ship
         }
 
         //load content
-        public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel)
+        public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature)
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("player");
@@ -90,16 +90,23 @@ namespace Cold_Ship
             //initialize the playerNode
             if (prevGameLevel <= gameLevel)
             {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64));
+                playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64), bodyTemperature);
             }
             else if (prevGameLevel >= gameLevel)
             {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - playerNode.texture.Width - 5, worldSize.Y - 64));
+                playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - playerNode.texture.Width - 5, worldSize.Y - 64), bodyTemperature);
             }
         }
 
+        //unload contents
+        public void Unload()
+        {
+            platforms = new List<Platform>();
+            portals = new List<Portal>();
+        }
+
         //update function
-        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel)
+        public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel)
         {
             //outdated codes that's now in the Update method
             /*bodyTempTimer += gameTime.ElapsedGameTime.Milliseconds;
@@ -125,6 +132,9 @@ namespace Cold_Ship
             //update the camera based on the player and world size
             camera.TranslateWithSprite(playerNode, screenSize);
             camera.CapCameraPosition(worldSize, screenSize);
+
+            //return the body temperature
+            return playerNode.bodyTemperature;
         }
 
         //draw funtion

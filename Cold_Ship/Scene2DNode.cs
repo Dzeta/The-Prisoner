@@ -18,7 +18,7 @@ namespace Cold_Ship
         public double bodyTemperature;
 
         //internal member variables
-        float normalTempDecreaseRate = -0.005f;
+        float normalTempDecreaseRate = -0.01f;
         float exertForceIncreaseRate = 0.002f;
         float exertForceDecreaseRate = -0.05f;
         bool isExertingForce = false;
@@ -31,7 +31,16 @@ namespace Cold_Ship
             this.texture = texture;
             this.position = position;
             velocity = new Vector2(0, 0);
-            bodyTemperature = 36.5;
+            this.bodyTemperature = 36;
+        }
+
+        //declare constructor with body temperature
+        public Scene2DNode(Texture2D texture, Vector2 position, double bodyTemperature)
+        {
+            this.texture = texture;
+            this.position = position;
+            velocity = new Vector2(0, 0);
+            this.bodyTemperature = bodyTemperature;
         }
 
         //declare draw method

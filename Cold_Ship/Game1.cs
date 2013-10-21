@@ -38,6 +38,7 @@ namespace Cold_Ship
         Prototype_Level_2 prototypeLevel2;
         Game_Level gameLevel = 0;
         Game_Level prevGameLevel = 0;
+        double bodyTemperature = 36;
 
         public Game1()
             : base()
@@ -138,10 +139,10 @@ namespace Cold_Ship
             switch(gameLevel)
             {
                 case Game_Level.PROTOTYPE:
-                    prototypeLevel.LoadContent(Content, gameLevel, prevGameLevel);
+                    prototypeLevel.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature);
                     break;
                 case Game_Level.LEVEL1:
-                    prototypeLevel2.LoadContent(Content);
+                    prototypeLevel2.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature);
                     break;
             }
             //prototypeLevel.LoadContent(Content);
@@ -155,6 +156,8 @@ namespace Cold_Ship
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            prototypeLevel.Unload();
+            prototypeLevel2.Unload();
         }
 
         /// <summary>
@@ -189,15 +192,17 @@ namespace Cold_Ship
             {
                 case Game_Level.PROTOTYPE:
                     //LoadContent();
-                    prototypeLevel.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel);
+                    bodyTemperature = prototypeLevel.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel);
                     break;
                 case Game_Level.LEVEL1:
                     //LoadContent();
-                    prototypeLevel2.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel);
+                    bodyTemperature = prototypeLevel2.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel);
                     break;
             }
+
             if (prevGameLevel != gameLevel)
             {
+                UnloadContent();
                 LoadContent();
                 prevGameLevel = gameLevel;
             }
