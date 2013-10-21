@@ -164,6 +164,7 @@ namespace Cold_Ship
             //draw the status display and the body temperature
             spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
             spriteBatch.DrawString(font, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
             spriteBatch.End();
         }
     }

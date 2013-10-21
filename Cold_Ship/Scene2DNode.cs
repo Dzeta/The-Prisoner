@@ -16,6 +16,7 @@ namespace Cold_Ship
         public Vector2 position;
         public Vector2 velocity;
         public double bodyTemperature;
+        public double stamina;
 
         //internal member variables
         float normalTempDecreaseRate = -0.01f;
@@ -41,6 +42,7 @@ namespace Cold_Ship
             this.position = position;
             velocity = new Vector2(0, 0);
             this.bodyTemperature = bodyTemperature;
+            this.stamina = 100;
         }
 
         //declare draw method
@@ -91,6 +93,17 @@ namespace Cold_Ship
             //update body temperature
             updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);
 
+            //recover stamina
+            stamina += 0.02;
+            if (stamina < 0)
+            {
+                stamina = 0;
+            }
+            else if (stamina > 100)
+            {
+                stamina = 100;
+            }
+
             //apply gravity
             prevPosition = position;
             if (position.Y < ground - texture.Height && jumpTimer > 250)
@@ -135,53 +148,60 @@ namespace Cold_Ship
                 switch (key)
                 {
                     case Keys.A:
-                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(Keys.LeftShift))
+                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(Keys.LeftShift) && stamina != 0)
                         {
                             isExertingForce = true;
                             stoppedExertingForce = false;
                             position += new Vector2(-5, 0);
+                            stamina -= 1;
                         }
                         else if (oldKeyboardState.IsKeyDown(Keys.LeftShift) && newKeyboardState.IsKeyUp(Keys.LeftShift))
                         {
                             isExertingForce = false;
                             stoppedExertingForce = true;
                             position += new Vector2(-3, 0);
+                            stamina -= 0.03;
                         }
                         else
                         {
                             isExertingForce = false;
                             //stoppedExertingForce = false;
                             position += new Vector2(-3, 0);
+                            stamina -= 0.03;
                         }
                         break;
                     case Keys.D:
-                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(Keys.LeftShift))
+                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(Keys.LeftShift) && stamina != 0)
                         {
                             isExertingForce = true;
                             stoppedExertingForce = false;
                             position += new Vector2(5, 0);
+                            stamina -= 1;
                         }
                         else if (oldKeyboardState.IsKeyDown(Keys.LeftShift) && newKeyboardState.IsKeyUp(Keys.LeftShift))
                         {
                             isExertingForce = false;
                             stoppedExertingForce = true;
                             position += new Vector2(3, 0);
+                            stamina -= 0.03;
                         }
                         else
                         {
                             isExertingForce = false;
                             //stoppedExertingForce = false;
                             position += new Vector2(3, 0);
+                            stamina -= 0.03;
                         }
                         break;
                     case Keys.Space:
-                        if (!isjumping && oldKeyboardState.IsKeyUp(Keys.Space))
+                        if (!isjumping && oldKeyboardState.IsKeyUp(Keys.Space) && stamina != 0)
                         {
                             position += new Vector2(0, -40);
                             velocity = new Vector2(0, -5);
                             isjumping = true;
                             jumpTimer = 0;
-                            bodyTemperature -= 0.005;
+                            bodyTemperature -= 0.01;
+                            stamina -= 0.5;
                         }
                         break;
                     default:
