@@ -47,7 +47,7 @@ namespace Cold_Ship
         }
 
         //update everything about the Scene2DNode object
-        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms)
+        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, Vector2 worldSize)
         {
             //register the position before updating (prevPosition)
             Vector2 prevPosition = position;
@@ -71,6 +71,12 @@ namespace Cold_Ship
                 {
                     isjumping = false;
                 }
+            }
+
+            //detect world boundary collision
+            if (position.X < 0 || position.X + texture.Width > worldSize.X)
+            {
+                position = prevPosition;
             }
 
             //update body temperature
