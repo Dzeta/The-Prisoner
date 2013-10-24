@@ -36,23 +36,23 @@ namespace Cold_Ship
         public bool Update(Scene2DNode player, Vector2 prevPosition, float jumpTimer, float ground, bool isJumping)
         {
             bool canJump = true;
-            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionUp))
+            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionUp))
             {
 
                 player.position = prevPosition;
 
-                if (player.position.X + player.texture.Width > collisionUp.X + collisionUp.Width / 5 && player.position.X < collisionUp.X + collisionUp.Width / 5 * 4)
+                if (player.position.X + player.playerSpriteSize.X > collisionUp.X + collisionUp.Width / 5 && player.position.X < collisionUp.X + collisionUp.Width / 5 * 4)
                 {
                     canJump = false;
                 }
                 }
-            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionLeft))
+            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionLeft))
             {
 
                 player.position.X = prevPosition.X;
                 //player.ApplyGravity(jumpTimer, ground);
             }
-            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionRight))
+            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionRight))
             {
                 player.position = prevPosition;
                 //player.ApplyGravity(jumpTimer, ground);
@@ -62,7 +62,7 @@ namespace Cold_Ship
             //    player.position.Y = prevPosition.Y;
             //    return false;
             //}
-            else if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.texture.Width, (int)player.texture.Height).Intersects(collisionDown))
+            else if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionDown))
             {
                 player.position = prevPosition;
             }

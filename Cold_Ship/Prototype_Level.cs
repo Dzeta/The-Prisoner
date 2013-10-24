@@ -25,6 +25,8 @@ namespace Cold_Ship
         Portal fowardDoor, backwardDoor;
         List<Portal> portals;
 
+        PickUpItem staminaBooster;
+
         //declare constructor
         public Prototype_Level(SpriteBatch spriteBatch, Vector2 screenSize)
         {
@@ -96,6 +98,8 @@ namespace Cold_Ship
             {
                 playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - playerNode.texture.Width - 5, worldSize.Y - 64), bodyTemperature);
             }
+
+            staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100);
         }
 
         //unload contents
@@ -123,10 +127,12 @@ namespace Cold_Ship
             {
                 portal.Update(playerNode, ref gameLevel);
             }
-            
+
+            staminaBooster.Update(ref playerNode);
+
             //update the shadowFilter's position with respect to the playerNode
             shadowFilter.position = new Vector2((playerNode.position.X /*+ (playerNode.texture.Width / 2))*/) - (shadowFilter.texture.Width / 2),
-                (playerNode.position.Y + (playerNode.texture.Height / 2) - (shadowFilter.texture.Height / 2)));
+                (playerNode.position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.texture.Height / 2)));
 
 
             //update the camera based on the player and world size
@@ -156,6 +162,7 @@ namespace Cold_Ship
             {
                 camera.DrawPortal(portal);
             }
+            camera.DrawPickUpItem(staminaBooster);
 
             //camera.DrawPlatform(platforms[0]);
             camera.DrawNode(shadowFilter);

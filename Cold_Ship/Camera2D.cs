@@ -92,5 +92,12 @@ namespace Cold_Ship
             Vector2 drawPosition = ApplyTransformations(portal.position);
             portal.Draw(spriteBatch, drawPosition);
         }
+
+        //draw the pickUpItem on screen with respect to the camera
+        public void DrawPickUpItem(PickUpItem item)
+        {
+            Vector2 drawPosition = ApplyTransformations(item.position);
+            item.Draw(spriteBatch, drawPosition);
+        }
     }
 }

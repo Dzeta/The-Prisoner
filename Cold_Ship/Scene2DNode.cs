@@ -15,8 +15,10 @@ namespace Cold_Ship
         public Texture2D texture;
         public Vector2 position;
         public Vector2 velocity;
+        public Vector2 playerSpriteSize = new Vector2(32, 64); //for collision once the animation is set up
         public double bodyTemperature;
         public double stamina;
+        public double staminaLimit;
 
         //internal member variables
         float normalTempDecreaseRate = -0.01f;
@@ -43,6 +45,7 @@ namespace Cold_Ship
             velocity = new Vector2(0, 0);
             this.bodyTemperature = bodyTemperature;
             this.stamina = 100;
+            this.staminaLimit = 100;
         }
 
         //declare draw method
@@ -104,9 +107,9 @@ namespace Cold_Ship
                 stamina = 0;
                 staminaExhaustionTimer = 0;
             }
-            else if (stamina > 100)
+            else if (stamina > staminaLimit)
             {
-                stamina = 100;
+                stamina = staminaLimit;
             }
 
             //apply gravity
