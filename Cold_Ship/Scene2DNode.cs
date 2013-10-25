@@ -14,6 +14,7 @@ namespace Cold_Ship
         //declare member variables
         public Texture2D texture;
         public Vector2 position;
+        public Vector2 prevPosition;
         public Vector2 velocity;
         public Vector2 playerSpriteSize = new Vector2(32, 64); //for collision once the animation is set up
         public double bodyTemperature;
@@ -38,14 +39,14 @@ namespace Cold_Ship
         }
 
         //declare constructor with body temperature
-        public Scene2DNode(Texture2D texture, Vector2 position, double bodyTemperature)
+        public Scene2DNode(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit)
         {
             this.texture = texture;
             this.position = position;
             velocity = new Vector2(0, 0);
             this.bodyTemperature = bodyTemperature;
-            this.stamina = 100;
-            this.staminaLimit = 100;
+            this.stamina = stamina;
+            this.staminaLimit = staminaLimit;
         }
 
         //declare draw method
@@ -64,7 +65,7 @@ namespace Cold_Ship
         public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, Vector2 worldSize, ref float staminaExhaustionTimer)
         {
             //register the position before updating (prevPosition)
-            Vector2 prevPosition = position;
+            prevPosition = position;
             //update timers
             float elapsedTime = gameTime.ElapsedGameTime.Milliseconds;
             bodyTempTimer += elapsedTime;

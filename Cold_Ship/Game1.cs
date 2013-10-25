@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.GamerServices;
 namespace Cold_Ship
 {
     //declare the enum for game levels
-    public enum Game_Level { PROTOTYPE = 0, LEVEL1 = 1, LEVEL2 = 2 };
+    public enum Game_Level { LEVEL_HOLDING_CELL, PROTOTYPE, LEVEL1 };
 
     /// <summary>
     /// This is the main type for your game
@@ -36,9 +36,13 @@ namespace Cold_Ship
         //List<Platform> platforms;
         Prototype_Level prototypeLevel;
         Prototype_Level_2 prototypeLevel2;
-        Game_Level gameLevel = 0;
-        Game_Level prevGameLevel = 0;
+        Level_Holding_Cell levelHoldingCell;
+        Game_Level gameLevel = Game_Level.LEVEL_HOLDING_CELL;
+        Game_Level prevGameLevel = Game_Level.LEVEL_HOLDING_CELL;
+
         double bodyTemperature = 36;
+        double stamina = 100;
+        double staminaLimit = 100;
 
         public Game1()
             : base()
@@ -80,6 +84,7 @@ namespace Cold_Ship
 
             prototypeLevel = new Prototype_Level(spriteBatch, screenSize);
             prototypeLevel2 = new Prototype_Level_2(spriteBatch, screenSize);
+            levelHoldingCell = new Level_Holding_Cell(spriteBatch, screenSize);
 
             base.Initialize();
         }
@@ -140,11 +145,15 @@ namespace Cold_Ship
             switch(gameLevel)
             {
                 case Game_Level.PROTOTYPE:
-                    prototypeLevel.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature);
+                    prototypeLevel.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
                     break;
                 case Game_Level.LEVEL1:
-                    prototypeLevel2.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature);
+                    prototypeLevel2.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
                     break;
+                case Game_Level.LEVEL_HOLDING_CELL:
+                    levelHoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+                    break;
+                    
             }
             //prototypeLevel.LoadContent(Content);
             //prototypeLevel2.LoadContent(Content);
@@ -159,6 +168,7 @@ namespace Cold_Ship
             // TODO: Unload any non ContentManager content here
             prototypeLevel.Unload();
             prototypeLevel2.Unload();
+            levelHoldingCell.Unload();
         }
 
         /// <summary>
@@ -193,11 +203,14 @@ namespace Cold_Ship
             {
                 case Game_Level.PROTOTYPE:
                     //LoadContent();
-                    bodyTemperature = prototypeLevel.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer);
+                    bodyTemperature = prototypeLevel.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
                     break;
                 case Game_Level.LEVEL1:
                     //LoadContent();
-                    bodyTemperature = prototypeLevel2.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer);
+                    bodyTemperature = prototypeLevel2.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+                    break;
+                case Game_Level.LEVEL_HOLDING_CELL:
+                    bodyTemperature = levelHoldingCell.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit); 
                     break;
             }
 
@@ -259,6 +272,9 @@ namespace Cold_Ship
                     break;
                 case Game_Level.LEVEL1:
                     prototypeLevel2.Draw(framesPerSecond);
+                    break;
+                case Game_Level.LEVEL_HOLDING_CELL:
+                    levelHoldingCell.Draw(framesPerSecond);
                     break;
             }
             

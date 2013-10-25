@@ -70,6 +70,8 @@ namespace Cold_Ship
                 cameraPosition.X = worldSize.X - screenSize.X;
             if (cameraPosition.Y + screenSize.Y > worldSize.Y)
                 cameraPosition.Y = worldSize.Y - screenSize.Y;
+            if (cameraPosition.Y < 0)
+                cameraPosition.Y = 0;
         }
 
         //draw the node on screen with respect to the camera

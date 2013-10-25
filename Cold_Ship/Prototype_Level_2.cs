@@ -36,7 +36,7 @@ namespace Cold_Ship
         }
 
         //load content
-        public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature)
+        public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature, double stamina, double staminaLimit)
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("player");
@@ -90,16 +90,16 @@ namespace Cold_Ship
             //initialize the playerNode
             if (prevGameLevel <= gameLevel)
             {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64), bodyTemperature);
+                playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit);
             }
             else if (prevGameLevel >= gameLevel)
             {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - playerNode.texture.Width - 5, worldSize.Y - 64), bodyTemperature);
+                playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 5, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit);
             }
         }
 
         //update function
-        public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer)
+        public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
             //outdated codes that's now in the Update method
             /*bodyTempTimer += gameTime.ElapsedGameTime.Milliseconds;

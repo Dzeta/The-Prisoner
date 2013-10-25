@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-    public class Prototype_Level
+    public class Level_Holding_Cell
     {
         //declare member variables
         public SpriteBatch spriteBatch;
@@ -28,13 +28,13 @@ namespace Cold_Ship
         PickUpItem staminaBooster;
 
         //declare constructor
-        public Prototype_Level(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Holding_Cell(SpriteBatch spriteBatch, Vector2 screenSize)
         {
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
             this.screenSize = screenSize;
             portals = new List<Portal>();
-            
+
         }
 
         //load content
@@ -42,13 +42,13 @@ namespace Cold_Ship
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("player");
-            Texture2D backgroundTexture = Content.Load<Texture2D>("background2");
+            Texture2D backgroundTexture = Content.Load<Texture2D>("holdingcell");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
 
             //initialize the world size and the ground coordinate according to the world size
             worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);
-            ground = worldSize.Y;
+            ground = worldSize.Y - 200;
 
             //load font
             font = Content.Load<SpriteFont>("Score");
@@ -70,34 +70,34 @@ namespace Cold_Ship
             Platform platform6 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(140, worldSize.Y - 450));
             Platform platform7 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(200, worldSize.Y - 550));
             Platform platform8 = new Platform(platformTexture, new Vector2(80, 15), new Vector2(100, worldSize.Y - 650));
-            platforms.Add(platform);
-            platforms.Add(platform2);
-            platforms.Add(platform3);
-            platforms.Add(platform4);
-            platforms.Add(platform5);
-            platforms.Add(platform6);
-            platforms.Add(platform7);
-            platforms.Add(platform8);
-            platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(20, worldSize.Y - 750)));
-            platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(100, worldSize.Y - 850)));
-            platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(200, worldSize.Y - 950)));
-            platforms.Add(new Platform(platformTexture, new Vector2(500, 15), new Vector2(400, worldSize.Y - 960)));
+            //platforms.Add(platform);
+            //platforms.Add(platform2);
+            //platforms.Add(platform3);
+            //platforms.Add(platform4);
+            //platforms.Add(platform5);
+            //platforms.Add(platform6);
+            //platforms.Add(platform7);
+            //platforms.Add(platform8);
+            //platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(20, worldSize.Y - 750)));
+            //platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(100, worldSize.Y - 850)));
+            //platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(200, worldSize.Y - 950)));
+            //platforms.Add(new Platform(platformTexture, new Vector2(500, 15), new Vector2(400, worldSize.Y - 960)));
 
             //initialize the needed portals
-            backwardDoor = new Portal(platformTexture, new Vector2(0, worldSize.Y - 64), new Vector2(32, 64), Portal.PortalType.BACKWARD);
-            fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 32, worldSize.Y - 64), new Vector2(32, 64), Portal.PortalType.FOWARD);
-            portals.Add(backwardDoor);
+            //backwardDoor = new Portal(platformTexture, new Vector2(0, worldSize.Y - 64), new Vector2(32, 64), Portal.PortalType.BACKWARD);
+            fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 251, worldSize.Y - 280), new Vector2(15, 80), Portal.PortalType.FOWARD);
+            //portals.Add(backwardDoor);
             portals.Add(fowardDoor);
 
             //initialize the playerNode
-            if (prevGameLevel <= gameLevel)
-            {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit);
-            }
-            else if (prevGameLevel >= gameLevel)
-            {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 5, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit);
-            }
+            //if (prevGameLevel <= gameLevel)
+            //{
+            //    playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64), bodyTemperature);
+            //}
+            //else if (prevGameLevel > gameLevel)
+            //{
+            playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit);
+            //}
 
             staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100);
         }
@@ -122,6 +122,15 @@ namespace Cold_Ship
 
             //update the player position with respect to keyboard input and platform collision
             playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, worldSize, ref staminaExhaustionTimer);
+
+            if (playerNode.position.X < 250)
+            {
+                playerNode.position.X = 250;
+            }
+            else if (playerNode.position.X > worldSize.X - 250 - 31)
+            {
+                playerNode.position.X = worldSize.X - 250 - 31;
+            }
 
             foreach (Portal portal in portals)
             {
@@ -165,7 +174,7 @@ namespace Cold_Ship
             camera.DrawPickUpItem(staminaBooster);
 
             //camera.DrawPlatform(platforms[0]);
-            camera.DrawNode(shadowFilter);
+            //camera.DrawNode(shadowFilter);
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
             //draw the status display and the body temperature

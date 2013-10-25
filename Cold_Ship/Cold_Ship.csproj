@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Camera2D.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Level_Holding_Cell.cs" />
     <Compile Include="PickUpItem.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="Portal.cs" />
@@ -75,6 +76,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\background2.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\holdingcell.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\platformTexture.xnb">
