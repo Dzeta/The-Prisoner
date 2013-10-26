@@ -12,19 +12,22 @@ namespace Cold_Ship
     {
         //item type enum
         public enum ItemType {LIGHT, STAMINA, TEMPERATURE};
+        public enum ItemEffectDuration { TEMPORARY, PERMANENT };
 
         //declare member data
         public ItemType itemType;
+        public ItemEffectDuration itemEffectDuration;
         public float effect;
         public Vector2 size;
 
         //constructor
-        public PickUpItem(Texture2D texture, Vector2 position, Vector2 size, ItemType itemType, float effect) :
+        public PickUpItem(Texture2D texture, Vector2 position, Vector2 size, ItemType itemType, float effect, ItemEffectDuration itemEffectDuration) :
             base(texture, position)
         {
             this.itemType = itemType;
             this.effect = effect;
             this.size = size;
+            this.itemEffectDuration = itemEffectDuration;
         }
 
         //update method
@@ -34,10 +37,18 @@ namespace Cold_Ship
             {
                 if (itemType == ItemType.STAMINA)
                 {
-                    playerNode.staminaLimit += effect;
-                    playerNode.stamina = playerNode.staminaLimit;
-                    staminaLimit = stamina = playerNode.staminaLimit;
-                }
+                    if (itemEffectDuration == ItemEffectDuration.PERMANENT)
+                    {
+                        playerNode.staminaLimit += effect;
+                        playerNode.stamina = playerNode.staminaLimit;
+                        staminaLimit = stamina = playerNode.staminaLimit;
+                    }
+                    else if (itemEffectDuration == ItemEffectDuration.TEMPORARY)
+                    {
+                        playerNode.staminaLimit += effect;
+                        playerNode.stamina = playerNode.staminaLimit;
+                    }
+                    }
 
                 else if (itemType == ItemType.TEMPERATURE)
                 {

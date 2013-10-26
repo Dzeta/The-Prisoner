@@ -99,7 +99,7 @@ namespace Cold_Ship
                 playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 5, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit);
             }
 
-            staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100);
+            staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
         }
 
         //unload contents

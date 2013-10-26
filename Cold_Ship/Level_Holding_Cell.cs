@@ -99,7 +99,7 @@ namespace Cold_Ship
             playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit);
             //}
 
-            staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100);
+            //staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100);
         }
 
         //unload contents
@@ -137,7 +137,7 @@ namespace Cold_Ship
                 portal.Update(playerNode, ref gameLevel);
             }
 
-            staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
+            //staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 
             //update the shadowFilter's position with respect to the playerNode
             shadowFilter.position = new Vector2((playerNode.position.X /*+ (playerNode.texture.Width / 2))*/) - (shadowFilter.texture.Width / 2),
@@ -171,10 +171,10 @@ namespace Cold_Ship
             {
                 camera.DrawPortal(portal);
             }
-            camera.DrawPickUpItem(staminaBooster);
+            //camera.DrawPickUpItem(staminaBooster);
 
             //camera.DrawPlatform(platforms[0]);
-            //camera.DrawNode(shadowFilter);
+            camera.DrawFilter(shadowFilter, 0.5f);
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
             //draw the status display and the body temperature

@@ -81,6 +81,14 @@ namespace Cold_Ship
             node.Draw(spriteBatch, drawPosition);
         }
 
+        //draw the shadow filter onto screen wtih respect to the camera
+        public void DrawFilter(Scene2DNode node, float scale)
+        {
+            Vector2 drawPosition = ApplyTransformations(node.position);
+            node.DrawFilter(spriteBatch, drawPosition, scale);
+        }
+
+
         //draw the platform on screen with respect to the camera
         public void DrawPlatform(Platform platform)
         {

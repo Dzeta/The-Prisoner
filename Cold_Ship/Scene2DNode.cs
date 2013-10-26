@@ -55,6 +55,17 @@ namespace Cold_Ship
             spriteBatch.Draw(texture, drawPosition, Color.White);
         }
 
+
+        //draws the shadow filter onto the screen, the size of the filter
+        //is changed according to the parameter
+        public void DrawFilter(SpriteBatch spriteBatch, Vector2 drawPosition, float scale)
+        {
+            //update the shadowFilter's position with respect to the playerNode
+            drawPosition = new Vector2((drawPosition.X /*+ (playerNode.texture.Width / 2))*/) + ((texture.Width - texture.Width * scale) / 2),
+                (drawPosition.Y /*+ (playerNode.playerSpriteSize.Y / 2)*/ + ((texture.Height - texture.Height * scale) / 2)));
+            spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, texture.Width, texture.Height), Color.White, 0f, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+        }
+
         //move the sprite
         public void Move()
         {
