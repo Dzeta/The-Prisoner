@@ -165,7 +165,8 @@ namespace Cold_Ship
             camera.DrawPickUpItem(staminaBooster);
 
             //camera.DrawPlatform(platforms[0]);
-            camera.DrawNode(shadowFilter);
+            //camera.DrawNode(shadowFilter);
+            camera.DrawFilter(shadowFilter, 0.5f);
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
             //draw the status display and the body temperature

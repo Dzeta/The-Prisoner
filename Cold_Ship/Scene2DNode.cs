@@ -61,6 +61,7 @@ namespace Cold_Ship
         public void DrawFilter(SpriteBatch spriteBatch, Vector2 drawPosition, float scale)
         {
             //update the shadowFilter's position with respect to the playerNode
+            spriteBatch.Draw(texture, drawPosition, Color.White);
             drawPosition = new Vector2((drawPosition.X /*+ (playerNode.texture.Width / 2))*/) + ((texture.Width - texture.Width * scale) / 2),
                 (drawPosition.Y /*+ (playerNode.playerSpriteSize.Y / 2)*/ + ((texture.Height - texture.Height * scale) / 2)));
             spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, texture.Width, texture.Height), Color.White, 0f, new Vector2(0, 0), scale, SpriteEffects.None, 0);
