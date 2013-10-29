@@ -16,10 +16,16 @@ namespace Cold_Ship
         public Vector2 position;
         public Vector2 prevPosition;
         public Vector2 velocity;
-        public Vector2 playerSpriteSize = new Vector2(32, 64); //for collision once the animation is set up
         public double bodyTemperature;
         public double stamina;
         public double staminaLimit;
+
+        //animation related variables
+        public enum Action_Status { FOWARD = 1, BACKWARD = 0 };
+        public Action_Status actionStatus;
+        public int maxFramesX, maxFramesY, currentFrame;
+        public float animationTimer = 150;
+        public Vector2 playerSpriteSize; //for collision once the animation is set up
 
         //internal member variables
         float normalTempDecreaseRate = -0.01f;
@@ -31,7 +37,7 @@ namespace Cold_Ship
         bool isClimbing = false;
         bool canClimb = false;
 
-        //declare constructor
+        //declare constructor for inheritance
         public Scene2DNode(Texture2D texture, Vector2 position)
         {
             this.texture = texture;
@@ -40,8 +46,8 @@ namespace Cold_Ship
             this.bodyTemperature = 36;
         }
 
-        //declare constructor with body temperature
-        public Scene2DNode(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit)
+        //declare constructor for player sprite
+        public Scene2DNode(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit, int maxFramesX, int maxFramesY)
         {
             this.texture = texture;
             this.position = position;
@@ -49,6 +55,13 @@ namespace Cold_Ship
             this.bodyTemperature = bodyTemperature;
             this.stamina = stamina;
             this.staminaLimit = staminaLimit;
+
+            this.maxFramesX = maxFramesX;
+            this.maxFramesY = maxFramesY;
+            currentFrame = 0;
+            actionStatus = Action_Status.FOWARD;
+            animationTimer = 0;
+            playerSpriteSize = new Vector2((float)texture.Width / maxFramesX, (float)texture.Height / maxFramesY);
         }
 
         //declare draw method
@@ -57,6 +70,14 @@ namespace Cold_Ship
             spriteBatch.Draw(texture, drawPosition, Color.White);
         }
 
+
+        //draws the player sprite onto screen
+        public void DrawPlayer(SpriteBatch spriteBatch, Vector2 drawPosition)
+        {
+            int line = (int)actionStatus;
+            Rectangle rect = new Rectangle(currentFrame * (int)playerSpriteSize.X, line * (int)playerSpriteSize.Y, (int)playerSpriteSize.X, (int)playerSpriteSize.Y);
+            spriteBatch.Draw(texture, drawPosition, rect, Color.White);
+        }
 
         //draws the shadow filter onto the screen, the size of the filter
         //is changed according to the parameter
@@ -89,6 +110,7 @@ namespace Cold_Ship
             exhaustionTimer += elapsedTime;
             jumpTimer += elapsedTime;
             staminaExhaustionTimer += elapsedTime;
+            animationTimer += elapsedTime;
 
             //register keyboard inputs
             KeyboardState newKeyboardState = Keyboard.GetState();
@@ -105,7 +127,7 @@ namespace Cold_Ship
             if (!canClimb)
                 isClimbing = false;
 
-            UpdateKeyboard(oldKeyboardState, newKeyboardState, ref jumpTimer);
+            UpdateKeyboard(oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
             //Move();
             oldKeyboardState = newKeyboardState;
 
@@ -120,7 +142,7 @@ namespace Cold_Ship
             }
 
             //detect world boundary collision
-            if (position.X < 0 || position.X + texture.Width > worldSize.X)
+            if (position.X < 0 || position.X + playerSpriteSize.X > worldSize.X)
             {
                 position = prevPosition;
             }
@@ -147,23 +169,23 @@ namespace Cold_Ship
             prevPosition = position;
             if (!isClimbing)
             {
-                if (position.Y < ground - texture.Height && jumpTimer > 250)
+                if (position.Y < ground - playerSpriteSize.Y && jumpTimer > 250)
                 {
                     velocity = new Vector2(0, 5);
                 }
-                else if (position.Y > ground - texture.Height)
+                else if (position.Y > ground - playerSpriteSize.Y)
                 {
                     isjumping = false;
-                    position.Y = ground - texture.Height;
+                    position.Y = ground - playerSpriteSize.Y;
                 }
                 Move();
             }
             else
             {
-                if (position.Y > ground - texture.Height)
+                if (position.Y > ground - playerSpriteSize.Y)
                 {
                     isClimbing = false;
-                    position.Y = ground - texture.Height;
+                    position.Y = ground - playerSpriteSize.Y;
                 }
             }
             foreach (Platform platform in platforms)
@@ -190,7 +212,7 @@ namespace Cold_Ship
         //}
 
         //update the sprite position based on the keyboard inputs
-        public void UpdateKeyboard(KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer)
+        public void UpdateKeyboard(KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer, ref float animationTimer)
         {
             Keys[] keys = newKeyboardState.GetPressedKeys();
             foreach (Keys key in keys)
@@ -218,6 +240,8 @@ namespace Cold_Ship
                             //stoppedExertingForce = false;
                             position += new Vector2(-3, 0);
                             stamina -= 0.03;
+
+                    
                         }
                         break;
                     case Keys.D:

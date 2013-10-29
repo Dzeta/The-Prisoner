@@ -27,7 +27,7 @@ namespace Cold_Ship
         //check is the player has interacted with the portal
         public void Update(Scene2DNode playerNode, ref Game_Level gameLevel)
         {
-            if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.texture.Width, (int)playerNode.texture.Height) .Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
+            if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y) .Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
             {
                 if (portalType == PortalType.FOWARD)
                 {

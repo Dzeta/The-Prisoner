@@ -41,7 +41,7 @@ namespace Cold_Ship
         public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature, double stamina, double staminaLimit)
         {
             //load the needed textures
-            Texture2D playerTexture = Content.Load<Texture2D>("player");
+            Texture2D playerTexture = Content.Load<Texture2D>("mario");
             Texture2D backgroundTexture = Content.Load<Texture2D>("background2");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
@@ -92,11 +92,11 @@ namespace Cold_Ship
             //initialize the playerNode
             if (prevGameLevel <= gameLevel)
             {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit);
+                playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 8, 2);
             }
             else if (prevGameLevel >= gameLevel)
             {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 5, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit);
+                playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 5, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 8, 2);
             }
 
             staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
@@ -149,7 +149,7 @@ namespace Cold_Ship
             spriteBatch.Begin();
             //draw the desired nodes onto screen through the camera
             camera.DrawNode(backgroundNode);
-            camera.DrawNode(playerNode);
+            camera.DrawPlayerNode(playerNode);
             //camera.DrawNode(shadowFilter);
             //draw the platforms
             foreach (Platform platform in platforms)
