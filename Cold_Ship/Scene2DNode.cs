@@ -241,6 +241,20 @@ namespace Cold_Ship
                             position += new Vector2(-3, 0);
                             stamina -= 0.03;
 
+                            if (actionStatus != Action_Status.BACKWARD)
+                            {
+                                actionStatus = Action_Status.BACKWARD;
+                                currentFrame = 0;
+                            }
+                            else if (animationTimer > 150 && !isjumping)
+                            {
+                                currentFrame++;
+                                if (currentFrame >= maxFramesX)
+                                {
+                                    currentFrame = 0;
+                                }
+                                animationTimer = 0;
+                            }
                     
                         }
                         break;
@@ -265,6 +279,21 @@ namespace Cold_Ship
                             //stoppedExertingForce = false;
                             position += new Vector2(3, 0);
                             stamina -= 0.03;
+
+                            if (actionStatus != Action_Status.FOWARD)
+                            {
+                                actionStatus = Action_Status.FOWARD;
+                                currentFrame = 0;
+                            }
+                            else if (animationTimer > 150 && !isjumping)
+                            {
+                                currentFrame++;
+                                if (currentFrame >= maxFramesX)
+                                {
+                                    currentFrame = 0;
+                                }
+                                animationTimer = 0;
+                            }
                         }
                         break;
                     case Keys.W:
@@ -339,6 +368,10 @@ namespace Cold_Ship
                         //velocity = new Vector2(0, 0);
                         break;
                 }
+            }
+            if (keys.Length == 0)
+            {
+                currentFrame = 0;
             }
         }
 
