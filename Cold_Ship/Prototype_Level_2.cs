@@ -24,6 +24,7 @@ namespace Cold_Ship
         Camera2D camera;
         Portal fowardDoor, backwardDoor;
         List<Portal> portals;
+        List<Ladder> ladders;
 
         //declare constructor
         public Prototype_Level_2(SpriteBatch spriteBatch, Vector2 screenSize)
@@ -32,6 +33,7 @@ namespace Cold_Ship
             platforms = new List<Platform>();
             this.screenSize = screenSize;
             portals = new List<Portal>();
+            ladders = new List<Ladder>();
             
         }
 
@@ -81,6 +83,9 @@ namespace Cold_Ship
             platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(200, worldSize.Y - 950)));
             platforms.Add(new Platform(platformTexture, new Vector2(500, 15), new Vector2(400, worldSize.Y - 960)));
 
+            ladders.Add(new Ladder(platformTexture, new Vector2(60, 150), new Vector2(750, worldSize.Y - 180)));
+            ladders.Add(new Ladder(platformTexture, new Vector2(40, 120), new Vector2(80, worldSize.Y - 750)));
+
             //initialize the needed portals
             backwardDoor = new Portal(platformTexture, new Vector2(0, worldSize.Y - 64), new Vector2(32, 64), Portal.PortalType.BACKWARD);
             fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 32, worldSize.Y - 64), new Vector2(32, 64), Portal.PortalType.FOWARD);
@@ -110,7 +115,7 @@ namespace Cold_Ship
             playerNode.updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);*/
 
             //update the player position with respect to keyboard input and platform collision
-            playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, worldSize, ref staminaExhaustionTimer);
+            playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
             foreach (Portal portal in portals)
             {
@@ -135,6 +140,7 @@ namespace Cold_Ship
         {
             platforms = new List<Platform>();
             portals = new List<Portal>();
+            ladders = new List<Ladder>();
         }
 
         //draw funtion
@@ -155,6 +161,11 @@ namespace Cold_Ship
             foreach (Portal portal in portals)
             {
                 camera.DrawPortal(portal);
+            }
+
+            foreach (Ladder ladder in ladders)
+            {
+                camera.DrawLadder(ladder);
             }
 
             //camera.DrawPlatform(platforms[0]);

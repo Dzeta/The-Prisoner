@@ -28,6 +28,8 @@ namespace Cold_Ship
         bool isExertingForce = false;
         bool stoppedExertingForce = false;
         public bool isjumping = false;
+        bool isClimbing = false;
+        bool canClimb = false;
 
         //declare constructor
         public Scene2DNode(Texture2D texture, Vector2 position)
@@ -77,7 +79,7 @@ namespace Cold_Ship
         }
 
         //update everything about the Scene2DNode object
-        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, Vector2 worldSize, ref float staminaExhaustionTimer)
+        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, List<Ladder> ladders, Vector2 worldSize, ref float staminaExhaustionTimer)
         {
             //register the position before updating (prevPosition)
             prevPosition = position;
@@ -90,6 +92,19 @@ namespace Cold_Ship
 
             //register keyboard inputs
             KeyboardState newKeyboardState = Keyboard.GetState();
+
+            canClimb = false;
+            if (ladders != null)
+            {
+                foreach (Ladder ladder in ladders)
+                {
+                    if (ladder.Update(this))
+                        canClimb = true;
+                }
+            }
+            if (!canClimb)
+                isClimbing = false;
+
             UpdateKeyboard(oldKeyboardState, newKeyboardState, ref jumpTimer);
             //Move();
             oldKeyboardState = newKeyboardState;
@@ -130,16 +145,27 @@ namespace Cold_Ship
 
             //apply gravity
             prevPosition = position;
-            if (position.Y < ground - texture.Height && jumpTimer > 250)
+            if (!isClimbing)
             {
-                velocity = new Vector2(0, 5);
+                if (position.Y < ground - texture.Height && jumpTimer > 250)
+                {
+                    velocity = new Vector2(0, 5);
+                }
+                else if (position.Y > ground - texture.Height)
+                {
+                    isjumping = false;
+                    position.Y = ground - texture.Height;
+                }
+                Move();
             }
-            else if (position.Y > ground - texture.Height)
+            else
             {
-                isjumping = false;
-                position.Y = ground - texture.Height;
+                if (position.Y > ground - texture.Height)
+                {
+                    isClimbing = false;
+                    position.Y = ground - texture.Height;
+                }
             }
-            Move();
             foreach (Platform platform in platforms)
             {
                 if (!platform.Update(this, prevPosition, jumpTimer, ground, isjumping))
@@ -150,18 +176,18 @@ namespace Cold_Ship
         }
 
         //a method that applies gravity to the player sprite
-        public void ApplyGravity(float jumpTimer, float ground)
-        {
-            if (position.Y < ground - texture.Height && jumpTimer > 250)
-            {
-                velocity = new Vector2(0, 5);
-            }
-            else if (position.Y > ground - texture.Height)
-            {
-                isjumping = false;
-                position.Y = ground - texture.Height;
-            }
-        }
+        //public void ApplyGravity(float jumpTimer, float ground)
+        //{
+        //    if (position.Y < ground - texture.Height && jumpTimer > 250)
+        //    {
+        //        velocity = new Vector2(0, 5);
+        //    }
+        //    else if (position.Y > ground - texture.Height)
+        //    {
+        //        isjumping = false;
+        //        position.Y = ground - texture.Height;
+        //    }
+        //}
 
         //update the sprite position based on the keyboard inputs
         public void UpdateKeyboard(KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer)
@@ -217,6 +243,62 @@ namespace Cold_Ship
                             stamina -= 0.03;
                         }
                         break;
+                    case Keys.W:
+                        if (canClimb)
+                        {
+                            isClimbing = true;
+                            isjumping = false;
+                            if (newKeyboardState.IsKeyDown(Keys.LeftShift) && stamina != 0)
+                            {
+                                isExertingForce = true;
+                                stoppedExertingForce = false;
+                                position += new Vector2(0, -5);
+                                stamina -= 1;
+                            }
+                            else if (oldKeyboardState.IsKeyDown(Keys.LeftShift) && newKeyboardState.IsKeyUp(Keys.LeftShift))
+                            {
+                                isExertingForce = false;
+                                stoppedExertingForce = true;
+                                position += new Vector2(0, -3);
+                                stamina -= 0.03;
+                            }
+                            else
+                            {
+                                isExertingForce = false;
+                                //stoppedExertingForce = false;
+                                position += new Vector2(0, -3);
+                                stamina -= 0.03;
+                            }
+                        }
+                        break;
+                    case Keys.S:
+                        if (canClimb)
+                        {
+                            isClimbing = true;
+                            isjumping = false;
+                            if (newKeyboardState.IsKeyDown(Keys.LeftShift) && stamina != 0)
+                            {
+                                isExertingForce = true;
+                                stoppedExertingForce = false;
+                                position += new Vector2(0, 5);
+                                stamina -= 1;
+                            }
+                            else if (oldKeyboardState.IsKeyDown(Keys.LeftShift) && newKeyboardState.IsKeyUp(Keys.LeftShift))
+                            {
+                                isExertingForce = false;
+                                stoppedExertingForce = true;
+                                position += new Vector2(0, 3);
+                                stamina -= 0.03;
+                            }
+                            else
+                            {
+                                isExertingForce = false;
+                                //stoppedExertingForce = false;
+                                position += new Vector2(0, 3);
+                                stamina -= 0.03;
+                            }
+                        }
+                        break;
                     case Keys.Space:
                         if (!isjumping && oldKeyboardState.IsKeyUp(Keys.Space) && stamina != 0)
                         {
@@ -226,6 +308,7 @@ namespace Cold_Ship
                             jumpTimer = 0;
                             bodyTemperature -= 0.01;
                             stamina -= 0.5;
+                            isClimbing = false;
                         }
                         break;
                     default:

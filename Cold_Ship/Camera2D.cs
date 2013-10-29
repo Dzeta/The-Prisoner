@@ -109,5 +109,11 @@ namespace Cold_Ship
             Vector2 drawPosition = ApplyTransformations(item.position);
             item.Draw(spriteBatch, drawPosition);
         }
+
+        public void DrawLadder(Ladder ladder)
+        {
+            Vector2 drawPosition = ApplyTransformations(ladder.position);
+            ladder.Draw(spriteBatch, drawPosition);
+        }
     }
 }

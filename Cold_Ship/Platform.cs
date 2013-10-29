@@ -15,7 +15,7 @@ namespace Cold_Ship
         public Vector2 position;
         public Vector2 size;
         public Rectangle collisionUp, collisionDown, collisionLeft, collisionRight;
-        
+
         //optional parameter(usefulness to be determined)
         public Vector2 collisionUpPosition, collisionDownPosition, collisionLeftPosition, collisionRightPosition;
 
@@ -45,7 +45,7 @@ namespace Cold_Ship
                 {
                     canJump = false;
                 }
-                }
+            }
             if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionLeft))
             {
 

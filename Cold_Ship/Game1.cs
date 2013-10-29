@@ -65,7 +65,7 @@ namespace Cold_Ship
             screenSize = new Vector2(800, 600);
             graphics.PreferredBackBufferWidth = (int)screenSize.X;
             graphics.PreferredBackBufferHeight = (int)screenSize.Y;
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
 
             //initiate the timers
             bodyTempTimer = 0;

@@ -121,7 +121,7 @@ namespace Cold_Ship
             playerNode.updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);*/
 
             //update the player position with respect to keyboard input and platform collision
-            playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, worldSize, ref staminaExhaustionTimer);
+            playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
 
             foreach (Portal portal in portals)
             {
