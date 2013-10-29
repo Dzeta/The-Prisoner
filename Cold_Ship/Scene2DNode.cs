@@ -21,7 +21,7 @@ namespace Cold_Ship
         public double staminaLimit;
 
         //animation related variables
-        public enum Action_Status { FOWARD = 0, BACKWARD = 1 };
+        public enum Action_Status { FOWARD = 0, BACKWARD = 1, FORWARD_WITH_LIGHTER = 2, BACKWARD_WITH_LIGHTER = 3, CLIMB = 4 };
         public Action_Status actionStatus;
         public int maxFramesX, maxFramesY, currentFrame;
         public float animationTimer = 150;
@@ -169,16 +169,18 @@ namespace Cold_Ship
             prevPosition = position;
             if (!isClimbing)
             {
-                if (position.Y < ground - playerSpriteSize.Y && jumpTimer > 250)
+                Move();
+                if (position.Y < ground - playerSpriteSize.Y && jumpTimer > 200)
                 {
                     velocity = new Vector2(0, 5);
+                    
                 }
                 else if (position.Y > ground - playerSpriteSize.Y)
                 {
                     isjumping = false;
                     position.Y = ground - playerSpriteSize.Y;
                 }
-                Move();
+                
             }
             else
             {
@@ -226,6 +228,22 @@ namespace Cold_Ship
                             stoppedExertingForce = false;
                             position += new Vector2(-5, 0);
                             stamina -= 1;
+
+                            if (actionStatus != Action_Status.BACKWARD)
+                            {
+                                actionStatus = Action_Status.BACKWARD;
+                                currentFrame = 0;
+                            }
+                            else if (animationTimer > 75 && !isjumping)
+                            {
+                                currentFrame++;
+                                if (currentFrame >= maxFramesX)
+                                {
+                                    currentFrame = 0;
+                                }
+                                animationTimer = 0;
+                            }
+
                         }
                         else if (oldKeyboardState.IsKeyDown(Keys.LeftShift) && newKeyboardState.IsKeyUp(Keys.LeftShift))
                         {
@@ -265,6 +283,22 @@ namespace Cold_Ship
                             stoppedExertingForce = false;
                             position += new Vector2(5, 0);
                             stamina -= 1;
+
+                            if (actionStatus != Action_Status.FOWARD)
+                            {
+                                actionStatus = Action_Status.FOWARD;
+                                currentFrame = 0;
+                            }
+                            else if (animationTimer > 75 && !isjumping)
+                            {
+                                currentFrame++;
+                                if (currentFrame >= maxFramesX)
+                                {
+                                    currentFrame = 0;
+                                }
+                                animationTimer = 0;
+                            }
+
                         }
                         else if (oldKeyboardState.IsKeyDown(Keys.LeftShift) && newKeyboardState.IsKeyUp(Keys.LeftShift))
                         {
@@ -321,6 +355,22 @@ namespace Cold_Ship
                                 //stoppedExertingForce = false;
                                 position += new Vector2(0, -3);
                                 stamina -= 0.03;
+
+                                if (actionStatus != Action_Status.CLIMB)
+                                {
+                                    actionStatus = Action_Status.CLIMB;
+                                    currentFrame = 0;
+                                }
+                                else if (animationTimer > 150 && !isjumping)
+                                {
+                                    currentFrame++;
+                                    if (currentFrame >= 2)
+                                    {
+                                        currentFrame = 0;
+                                    }
+                                    animationTimer = 0;
+                                }
+
                             }
                         }
                         break;
@@ -349,6 +399,22 @@ namespace Cold_Ship
                                 //stoppedExertingForce = false;
                                 position += new Vector2(0, 3);
                                 stamina -= 0.03;
+
+                                if (actionStatus != Action_Status.CLIMB)
+                                {
+                                    actionStatus = Action_Status.CLIMB;
+                                    currentFrame = 0;
+                                }
+                                else if (animationTimer > 150 && !isjumping)
+                                {
+                                    currentFrame++;
+                                    if (currentFrame >= 2)
+                                    {
+                                        currentFrame = 0;
+                                    }
+                                    animationTimer = 0;
+                                }
+
                             }
                         }
                         break;

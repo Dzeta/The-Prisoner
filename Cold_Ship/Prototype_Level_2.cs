@@ -121,10 +121,10 @@ namespace Cold_Ship
             {
                 portal.Update(playerNode, ref gameLevel);
             }
-            
+
             //update the shadowFilter's position with respect to the playerNode
             shadowFilter.position = new Vector2((playerNode.position.X /*+ (playerNode.texture.Width / 2))*/) - (shadowFilter.texture.Width / 2),
-                (playerNode.position.Y + (playerNode.texture.Height / 2) - (shadowFilter.texture.Height / 2)));
+                (playerNode.position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.texture.Height / 2)));
 
 
             //update the camera based on the player and world size
@@ -149,7 +149,6 @@ namespace Cold_Ship
             spriteBatch.Begin();
             //draw the desired nodes onto screen through the camera
             camera.DrawNode(backgroundNode);
-            camera.DrawPlayerNode(playerNode);
             //camera.DrawNode(shadowFilter);
             //draw the platforms
             foreach (Platform platform in platforms)
@@ -167,6 +166,9 @@ namespace Cold_Ship
             {
                 camera.DrawLadder(ladder);
             }
+
+
+            camera.DrawPlayerNode(playerNode);
 
             //camera.DrawPlatform(platforms[0]);
             camera.DrawNode(shadowFilter);
