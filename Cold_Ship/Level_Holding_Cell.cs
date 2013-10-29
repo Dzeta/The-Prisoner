@@ -41,7 +41,7 @@ namespace Cold_Ship
         public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature, double stamina, double staminaLimit)
         {
             //load the needed textures
-            Texture2D playerTexture = Content.Load<Texture2D>("mario");
+            Texture2D playerTexture = Content.Load<Texture2D>("PlayerSpriteSheet");
             Texture2D backgroundTexture = Content.Load<Texture2D>("holdingcell");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
@@ -96,7 +96,7 @@ namespace Cold_Ship
             //}
             //else if (prevGameLevel > gameLevel)
             //{
-            playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 8, 2);
+            playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
             //}
 
             //staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100);

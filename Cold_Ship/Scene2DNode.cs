@@ -21,7 +21,7 @@ namespace Cold_Ship
         public double staminaLimit;
 
         //animation related variables
-        public enum Action_Status { FOWARD = 1, BACKWARD = 0 };
+        public enum Action_Status { FOWARD = 0, BACKWARD = 1 };
         public Action_Status actionStatus;
         public int maxFramesX, maxFramesY, currentFrame;
         public float animationTimer = 150;
