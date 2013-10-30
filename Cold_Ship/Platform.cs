@@ -41,10 +41,10 @@ namespace Cold_Ship
 
                 player.position = prevPosition;
 
-                if (player.position.X + player.playerSpriteSize.X > collisionUp.X + collisionUp.Width / 5 && player.position.X < collisionUp.X + collisionUp.Width / 5 * 4)
-                {
+                //if (player.position.X + player.playerSpriteSize.X > collisionUp.X + collisionUp.Width / 5 && player.position.X < collisionUp.X + collisionUp.Width / 5 * 4)
+                //{
                     canJump = false;
-                }
+                //}
             }
             if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionLeft))
             {
