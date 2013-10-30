@@ -124,5 +124,11 @@ namespace Cold_Ship
             Vector2 drawPosition = ApplyTransformations(ladder.position);
             ladder.Draw(spriteBatch, drawPosition);
         }
+
+        public void DrawInteractable(Interactable interactable)
+        {
+            Vector2 drawPosition = ApplyTransformations(interactable.position);
+            interactable.Draw(spriteBatch, drawPosition);
+        }
     }
 }
