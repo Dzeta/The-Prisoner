@@ -89,8 +89,8 @@ namespace Cold_Ship
             ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(484, worldSize.Y - 510)));
             ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(1893, worldSize.Y - 510)));
             ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(139, worldSize.Y - 744)));
-            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(904, worldSize.Y - 744)));
-            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(1713, worldSize.Y - 744)));
+            ladders.Add(new Ladder(platformTexture, new Vector2(20, 233), new Vector2(904, worldSize.Y - 747)));
+            ladders.Add(new Ladder(platformTexture, new Vector2(20, 233), new Vector2(1713, worldSize.Y - 747)));
             //ladders.Add(new Ladder(platformTexture, new Vector2(60, 150), new Vector2(750, worldSize.Y - 180)));
             //ladders.Add(new Ladder(platformTexture, new Vector2(40, 120), new Vector2(1000, worldSize.Y - 750)));
 
@@ -128,7 +128,8 @@ namespace Cold_Ship
         {
             //update the player position with respect to keyboard input and platform collision
             Vector2 prevPosition = playerNode.position;
-            playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
+            bool useLighter = filterOn;
+            playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
             //Check the player's collision with the world boundaries
             if (playerNode.position.X < 100 || playerNode.position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)

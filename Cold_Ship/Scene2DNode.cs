@@ -121,7 +121,7 @@ namespace Cold_Ship
         }
 
         //update everything about the Scene2DNode object
-        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, List<Ladder> ladders, Vector2 worldSize, ref float staminaExhaustionTimer)
+        public void Update(bool lighterAcquired, GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, List<Ladder> ladders, Vector2 worldSize, ref float staminaExhaustionTimer)
         {
             //register the position before updating (prevPosition)
             prevPosition = position;
@@ -148,7 +148,7 @@ namespace Cold_Ship
             if (!canClimb)
                 isClimbing = false;
 
-            UpdateKeyboard(oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
+            UpdateKeyboard(lighterAcquired, oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
             //Move();
             oldKeyboardState = newKeyboardState;
 
@@ -235,7 +235,7 @@ namespace Cold_Ship
         //}
 
         //update the sprite position based on the keyboard inputs
-        public void UpdateKeyboard(KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer, ref float animationTimer)
+        public void UpdateKeyboard(bool lighterAcquired,KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer, ref float animationTimer)
         {
             Keys[] keys = newKeyboardState.GetPressedKeys();
             foreach (Keys key in keys)
@@ -250,19 +250,39 @@ namespace Cold_Ship
                             position += new Vector2(-5, 0);
                             stamina -= 1;
 
-                            if (actionStatus != Action_Status.BACKWARD)
+                            if (!lighterAcquired)
                             {
-                                actionStatus = Action_Status.BACKWARD;
-                                currentFrame = 0;
-                            }
-                            else if (animationTimer > 75 && !isjumping)
-                            {
-                                currentFrame++;
-                                if (currentFrame >= maxFramesX)
+                                if (actionStatus != Action_Status.BACKWARD)
                                 {
+                                    actionStatus = Action_Status.BACKWARD;
                                     currentFrame = 0;
                                 }
-                                animationTimer = 0;
+                                else if (animationTimer > 75 && !isjumping)
+                                {
+                                    currentFrame++;
+                                    if (currentFrame >= maxFramesX)
+                                    {
+                                        currentFrame = 0;
+                                    }
+                                    animationTimer = 0;
+                                }
+                            }
+                            else if (lighterAcquired)
+                            {
+                                if (actionStatus != Action_Status.BACKWARD_WITH_LIGHTER)
+                                {
+                                    actionStatus = Action_Status.BACKWARD_WITH_LIGHTER;
+                                    currentFrame = 0;
+                                }
+                                else if (animationTimer > 75 && !isjumping)
+                                {
+                                    currentFrame++;
+                                    if (currentFrame >= maxFramesX)
+                                    {
+                                        currentFrame = 0;
+                                    }
+                                    animationTimer = 0;
+                                }
                             }
 
                         }
@@ -280,19 +300,39 @@ namespace Cold_Ship
                             position += new Vector2(-3, 0);
                             stamina -= 0.03;
 
-                            if (actionStatus != Action_Status.BACKWARD)
+                            if (!lighterAcquired)
                             {
-                                actionStatus = Action_Status.BACKWARD;
-                                currentFrame = 0;
-                            }
-                            else if (animationTimer > 150 && !isjumping)
-                            {
-                                currentFrame++;
-                                if (currentFrame >= maxFramesX)
+                                if (actionStatus != Action_Status.BACKWARD)
                                 {
+                                    actionStatus = Action_Status.BACKWARD;
                                     currentFrame = 0;
                                 }
-                                animationTimer = 0;
+                                else if (animationTimer > 150 && !isjumping)
+                                {
+                                    currentFrame++;
+                                    if (currentFrame >= maxFramesX)
+                                    {
+                                        currentFrame = 0;
+                                    }
+                                    animationTimer = 0;
+                                }
+                            }
+                            else if (lighterAcquired)
+                            {
+                                if (actionStatus != Action_Status.BACKWARD_WITH_LIGHTER)
+                                {
+                                    actionStatus = Action_Status.BACKWARD_WITH_LIGHTER;
+                                    currentFrame = 0;
+                                }
+                                else if (animationTimer > 150 && !isjumping)
+                                {
+                                    currentFrame++;
+                                    if (currentFrame >= maxFramesX)
+                                    {
+                                        currentFrame = 0;
+                                    }
+                                    animationTimer = 0;
+                                }
                             }
                     
                         }
@@ -305,19 +345,39 @@ namespace Cold_Ship
                             position += new Vector2(5, 0);
                             stamina -= 1;
 
-                            if (actionStatus != Action_Status.FOWARD)
+                            if (!lighterAcquired)
                             {
-                                actionStatus = Action_Status.FOWARD;
-                                currentFrame = 0;
-                            }
-                            else if (animationTimer > 75 && !isjumping)
-                            {
-                                currentFrame++;
-                                if (currentFrame >= maxFramesX)
+                                if (actionStatus != Action_Status.FOWARD)
                                 {
+                                    actionStatus = Action_Status.FOWARD;
                                     currentFrame = 0;
                                 }
-                                animationTimer = 0;
+                                else if (animationTimer > 75 && !isjumping)
+                                {
+                                    currentFrame++;
+                                    if (currentFrame >= maxFramesX)
+                                    {
+                                        currentFrame = 0;
+                                    }
+                                    animationTimer = 0;
+                                }
+                            }
+                            else if (lighterAcquired)
+                            {
+                                if (actionStatus != Action_Status.FORWARD_WITH_LIGHTER)
+                                {
+                                    actionStatus = Action_Status.FORWARD_WITH_LIGHTER;
+                                    currentFrame = 0;
+                                }
+                                else if (animationTimer > 75 && !isjumping)
+                                {
+                                    currentFrame++;
+                                    if (currentFrame >= maxFramesX)
+                                    {
+                                        currentFrame = 0;
+                                    }
+                                    animationTimer = 0;
+                                }
                             }
 
                         }
@@ -335,19 +395,39 @@ namespace Cold_Ship
                             position += new Vector2(3, 0);
                             stamina -= 0.03;
 
-                            if (actionStatus != Action_Status.FOWARD)
+                            if (!lighterAcquired)
                             {
-                                actionStatus = Action_Status.FOWARD;
-                                currentFrame = 0;
-                            }
-                            else if (animationTimer > 150 && !isjumping)
-                            {
-                                currentFrame++;
-                                if (currentFrame >= maxFramesX)
+                                if (actionStatus != Action_Status.FOWARD)
                                 {
+                                    actionStatus = Action_Status.FOWARD;
                                     currentFrame = 0;
                                 }
-                                animationTimer = 0;
+                                else if (animationTimer > 150 && !isjumping)
+                                {
+                                    currentFrame++;
+                                    if (currentFrame >= maxFramesX)
+                                    {
+                                        currentFrame = 0;
+                                    }
+                                    animationTimer = 0;
+                                }
+                            }
+                            else if (lighterAcquired)
+                            {
+                                if (actionStatus != Action_Status.FORWARD_WITH_LIGHTER)
+                                {
+                                    actionStatus = Action_Status.FORWARD_WITH_LIGHTER;
+                                    currentFrame = 0;
+                                }
+                                else if (animationTimer > 150 && !isjumping)
+                                {
+                                    currentFrame++;
+                                    if (currentFrame >= maxFramesX)
+                                    {
+                                        currentFrame = 0;
+                                    }
+                                    animationTimer = 0;
+                                }
                             }
                         }
                         break;

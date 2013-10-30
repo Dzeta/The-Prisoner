@@ -11,8 +11,8 @@ namespace Cold_Ship
     public class PickUpItem : Scene2DNode
     {
         //item type enum
-        public enum ItemType {LIGHT, STAMINA, TEMPERATURE};
-        public enum ItemEffectDuration { TEMPORARY, PERMANENT };
+        public enum ItemType {LIGHT, STAMINA, TEMPERATURE, NONE};
+        public enum ItemEffectDuration { TEMPORARY, PERMANENT, NONE };
 
         //declare member data
         public ItemType itemType;
@@ -48,7 +48,7 @@ namespace Cold_Ship
                         playerNode.staminaLimit += effect;
                         playerNode.stamina = playerNode.staminaLimit;
                     }
-                    }
+                }
 
                 else if (itemType == ItemType.TEMPERATURE)
                 {
