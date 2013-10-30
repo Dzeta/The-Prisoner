@@ -83,17 +83,24 @@ namespace Cold_Ship
             platforms.Add(new Platform(platformTexture, new Vector2(890, 20), new Vector2(0, worldSize.Y - 280)));
             platforms.Add(new Platform(platformTexture, new Vector2(375, 20), new Vector2(925, worldSize.Y - 280)));
             platforms.Add(new Platform(platformTexture, new Vector2(619, 20), new Vector2(1345, worldSize.Y - 280)));
-            platforms.Add(new Platform(platformTexture, new Vector2(500, 15), new Vector2(400, worldSize.Y - 960)));
+            platforms.Add(new Platform(platformTexture, new Vector2(478, 20), new Vector2(0, worldSize.Y - 510)));
+            platforms.Add(new Platform(platformTexture, new Vector2(1370, 20), new Vector2(511, worldSize.Y - 510)));
+            platforms.Add(new Platform(platformTexture, new Vector2(50, 20), new Vector2(1920, worldSize.Y - 510)));
 
             //initialize ladders and add them to the list
             ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(897, worldSize.Y - 280)));
             ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(1308, worldSize.Y - 280)));
+            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(484, worldSize.Y - 510)));
+            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(1893, worldSize.Y - 510)));
+            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(139, worldSize.Y - 744)));
+            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(904, worldSize.Y - 744)));
+            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(1713, worldSize.Y - 744)));
             //ladders.Add(new Ladder(platformTexture, new Vector2(60, 150), new Vector2(750, worldSize.Y - 180)));
             //ladders.Add(new Ladder(platformTexture, new Vector2(40, 120), new Vector2(1000, worldSize.Y - 750)));
 
             //initialize the needed portals
             backwardDoor = new Portal(platformTexture, new Vector2(100, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.BACKWARD);
-            fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 32, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.FOWARD);
+            fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 32 - 75, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.FOWARD);
             portals.Add(backwardDoor);
             portals.Add(fowardDoor);
 
@@ -130,7 +137,13 @@ namespace Cold_Ship
             playerNode.updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);*/
 
             //update the player position with respect to keyboard input and platform collision
+            Vector2 prevPosition = playerNode.position;
             playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
+
+            if (playerNode.position.X < 100 || playerNode.position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
+            {
+                playerNode.position = prevPosition;
+            }
 
             foreach (Portal portal in portals)
             {
