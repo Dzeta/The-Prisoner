@@ -174,14 +174,21 @@ namespace Cold_Ship
             //recover stamina
             if (staminaExhaustionTimer > 1500)
             {
-                stamina += 0.04;
+                if (stamina < staminaLimit)
+                {
+                    stamina += 0.04;
+                }
             }
             if (stamina < 0)
             {
                 stamina = 0;
-                staminaExhaustionTimer = 0;
+                staminaExhaustionTimer = 700;
             }
-            else if (stamina > staminaLimit)
+            else if (stamina > staminaLimit + 5)
+            {
+                //staminaLimit = stamina;
+            }
+            else if (stamina > staminaLimit && stamina < staminaLimit + 5)
             {
                 stamina = staminaLimit;
             }
@@ -248,7 +255,7 @@ namespace Cold_Ship
                             isExertingForce = true;
                             stoppedExertingForce = false;
                             position += new Vector2(-5, 0);
-                            stamina -= 1;
+                            stamina -= 0.2;
 
                             if (!lighterAcquired)
                             {
@@ -343,7 +350,7 @@ namespace Cold_Ship
                             isExertingForce = true;
                             stoppedExertingForce = false;
                             position += new Vector2(5, 0);
-                            stamina -= 1;
+                            stamina -= 0.2;
 
                             if (!lighterAcquired)
                             {

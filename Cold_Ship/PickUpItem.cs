@@ -45,8 +45,9 @@ namespace Cold_Ship
                     }
                     else if (itemEffectDuration == ItemEffectDuration.TEMPORARY)
                     {
-                        playerNode.staminaLimit += effect;
-                        playerNode.stamina = playerNode.staminaLimit;
+                        //playerNode.staminaLimit += effect;
+                        //playerNode.stamina = playerNode.staminaLimit;
+                        playerNode.stamina += effect;
                     }
                 }
 
