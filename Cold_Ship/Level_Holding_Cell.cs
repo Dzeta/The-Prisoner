@@ -33,6 +33,7 @@ namespace Cold_Ship
         Camera2D camera;
         Portal fowardDoor, backwardDoor;
         List<Portal> portals;
+        List<DialogueBubble> dialogueBubbles;
 
         PickUpItem staminaBooster;
 
@@ -109,8 +110,9 @@ namespace Cold_Ship
             //{
             playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
             // Load the text with respect to the current player's position
-            speechTest = DialogueBubble.GetNewInstance(PrisonerGame, playerNode.position, new Rectangle(0, 0, (int)PrisonerGame.screenSize.X, (int)PrisonerGame.screenSize.Y), "This place stinks..."); 
-          //}
+            speechTest = DialogueBubble.GetNewInstance(PrisonerGame, playerNode.position, new Rectangle(0, 0, (int)PrisonerGame.screenSize.X, (int)PrisonerGame.screenSize.Y), "This place stinks...");
+            
+            //}
 
           //staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100);
         }
@@ -180,6 +182,8 @@ namespace Cold_Ship
             //camera.DrawNode(shadowFilter);
             //draw the platforms
             speechTest.Draw(spriteBatch);
+           
+
             foreach (Platform platform in platforms)
             {
                 camera.DrawPlatform(platform);

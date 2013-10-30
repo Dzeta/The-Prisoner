@@ -83,16 +83,16 @@ namespace Cold_Ship
             platforms.Add(new Platform(platformTexture, new Vector2(890, 20), new Vector2(0, worldSize.Y - 280)));
             platforms.Add(new Platform(platformTexture, new Vector2(375, 20), new Vector2(925, worldSize.Y - 280)));
             platforms.Add(new Platform(platformTexture, new Vector2(619, 20), new Vector2(1345, worldSize.Y - 280)));
-            platforms.Add(new Platform(platformTexture, new Vector2(478, 20), new Vector2(0, worldSize.Y - 510)));
-            platforms.Add(new Platform(platformTexture, new Vector2(1370, 20), new Vector2(511, worldSize.Y - 510)));
+            platforms.Add(new Platform(platformTexture, new Vector2(475, 20), new Vector2(0, worldSize.Y - 510)));
+            platforms.Add(new Platform(platformTexture, new Vector2(1367, 20), new Vector2(514, worldSize.Y - 510)));
             platforms.Add(new Platform(platformTexture, new Vector2(50, 20), new Vector2(1920, worldSize.Y - 510)));
             platforms.Add(new Platform(platformTexture, new Vector2(133, 20), new Vector2(0, worldSize.Y - 744)));
-            platforms.Add(new Platform(platformTexture, new Vector2(730, 20), new Vector2(167, worldSize.Y - 744)));
-            platforms.Add(new Platform(platformTexture, new Vector2(776, 20), new Vector2(930, worldSize.Y - 744)));
-            platforms.Add(new Platform(platformTexture, new Vector2(250, 20), new Vector2(964, worldSize.Y - 744)));
+            platforms.Add(new Platform(platformTexture, new Vector2(727, 20), new Vector2(167, worldSize.Y - 744)));
+            platforms.Add(new Platform(platformTexture, new Vector2(773, 20), new Vector2(933, worldSize.Y - 744)));
+            platforms.Add(new Platform(platformTexture, new Vector2(250, 20), new Vector2(1739, worldSize.Y - 744)));
             //roadblocks
             platforms.Add(new Platform(platformTexture, new Vector2(130, 130), new Vector2(963, worldSize.Y - 178)));
-            platforms.Add(new Platform(platformTexture, new Vector2(130, 130), new Vector2(1350, worldSize.Y - 410)));
+            platforms.Add(new Platform(platformTexture, new Vector2(130, 130), new Vector2(1150, worldSize.Y - 410)));
 
             //initialize ladders and add them to the list
             ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(897, worldSize.Y - 280)));
@@ -149,7 +149,7 @@ namespace Cold_Ship
 
             if (playerNode.position.X < 100 || playerNode.position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
             {
-                playerNode.position = prevPosition;
+                playerNode.position.X = prevPosition.X;
             }
 
             foreach (Portal portal in portals)
