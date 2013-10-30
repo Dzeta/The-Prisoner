@@ -11,8 +11,17 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-    public class Level_Holding_Cell
+  public class GameLevel
+  {
+    public Game1 PrisonerGame { get; set; }
+    public GameLevel(Game1 game)
     {
+      this.PrisonerGame = game;
+    }
+  }
+
+  public class Level_Holding_Cell : GameLevel
+  {
         //declare member variables
         public SpriteBatch spriteBatch;
         Vector2 worldSize, screenSize;
@@ -27,8 +36,10 @@ namespace Cold_Ship
 
         PickUpItem staminaBooster;
 
+        private DialogueBubble speechTest;
+
         //declare constructor
-        public Level_Holding_Cell(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Holding_Cell(Game1 theGame, SpriteBatch spriteBatch, Vector2 screenSize) : base(theGame)
         {
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
@@ -97,9 +108,11 @@ namespace Cold_Ship
             //else if (prevGameLevel > gameLevel)
             //{
             playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
-            //}
+            // Load the text with respect to the current player's position
+            speechTest = DialogueBubble.GetNewInstance(PrisonerGame, playerNode.position, new Rectangle(0, 0, (int)PrisonerGame.screenSize.X, (int)PrisonerGame.screenSize.Y), "This place stinks..."); 
+          //}
 
-            //staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100);
+          //staminaBooster = new PickUpItem(platformTexture, new Vector2(100, worldSize.Y - 50), new Vector2(15, 15), PickUpItem.ItemType.STAMINA, 100);
         }
 
         //unload contents
@@ -112,6 +125,10 @@ namespace Cold_Ship
         //update function
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
+
+          // Update Dialogues
+          speechTest.Update(gameTime);
+      
             //outdated codes that's now in the Update method
             /*bodyTempTimer += gameTime.ElapsedGameTime.Milliseconds;
             exhaustionTimer += gameTime.ElapsedGameTime.Milliseconds;
@@ -162,6 +179,7 @@ namespace Cold_Ship
             camera.DrawPlayerNode(playerNode);
             //camera.DrawNode(shadowFilter);
             //draw the platforms
+            speechTest.Draw(spriteBatch);
             foreach (Platform platform in platforms)
             {
                 camera.DrawPlatform(platform);

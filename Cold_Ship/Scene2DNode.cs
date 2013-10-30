@@ -9,12 +9,35 @@ using Microsoft.Xna.Framework;
 
 namespace Cold_Ship
 {
-    public class Scene2DNode
+  // Generic Sprite 2D class for inheritance
+  public class GenericSprite2D
+  {
+    public Texture2D texture;
+    public Vector2 position;
+    public Rectangle BoundBox;
+
+    public GenericSprite2D(Texture2D texture, Vector2 position, Rectangle boundBox)
     {
+      this.texture = texture;
+      this.position = position;
+      this.BoundBox = boundBox;
+    }
+
+    public bool CheckCollision(GenericSprite2D sprite)
+    {
+      return this.BoundBox.Intersects(sprite.BoundBox);
+    }
+
+    public void Draw(SpriteBatch spriteBatch)
+    {
+      spriteBatch.Draw(texture, position, Color.White);
+    }
+  }
+
+  public class Scene2DNode : GenericSprite2D
+  {
         //declare member variables
-        public Texture2D texture;
-        public Vector2 position;
-        public Vector2 prevPosition;
+    public Vector2 prevPosition;
         public Vector2 velocity;
         public double bodyTemperature;
         public double stamina;
@@ -38,16 +61,14 @@ namespace Cold_Ship
         bool canClimb = false;
 
         //declare constructor for inheritance
-        public Scene2DNode(Texture2D texture, Vector2 position)
+        public Scene2DNode(Texture2D texture, Vector2 position) : base(texture, position, Rectangle.Empty)
         {
-            this.texture = texture;
-            this.position = position;
             velocity = new Vector2(0, 0);
             this.bodyTemperature = 36;
         }
 
         //declare constructor for player sprite
-        public Scene2DNode(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit, int maxFramesX, int maxFramesY)
+        public Scene2DNode(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit, int maxFramesX, int maxFramesY) : base(texture, position, Rectangle.Empty)
         {
             this.texture = texture;
             this.position = position;

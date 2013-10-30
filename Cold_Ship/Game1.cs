@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -22,9 +23,15 @@ namespace Cold_Ship
         //declare needed global variables, commented out variables are no longer used
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        //Camera2D camera;
         //Scene2DNode playerNode, backgroundNode;
-        Vector2 screenSize/*, worldSize*/;
+        public Vector2 screenSize { get; set; }/*, worldSize*/
+
+        // Freeze but display the regular screen
+        // Used for dialogue
+        // A few unique state that the game can be, these states are linear
+        // Which means they cannot be combined togheter with one another
+        public enum GameState { Frozen, Paused, Ended, Playing, Initialized }
+        private Stack<GameState> _gameState; 
         //SpriteFont font;
         //Texture2D statusDisplayTexture;
         float bodyTempTimer;
@@ -44,12 +51,22 @@ namespace Cold_Ship
         double stamina = 100;
         double staminaLimit = 100;
 
-        public Game1()
-            : base()
-        {
+        public Game1() : base() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+          this._gameState = new Stack<GameState>();
+          this._gameState.Push(GameState.Initialized);
+
+            
         }
+
+        // Bunch of helper methods to deal with the state of the game at any moment
+        public GameState GetCurrentGameState() { return _gameState.Peek(); }
+        private void _setCurrentGameState(GameState state) { this._gameState.Push(state); }
+        public void ActivateState(GameState state) { this._setCurrentGameState(state); }
+        public GameState RestoreLastState() { return this._gameState.Pop(); }
+        public bool IsGameState(GameState state) { return this.GetCurrentGameState() == state; }
+
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -60,7 +77,6 @@ namespace Cold_Ship
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             //initiate screen size
             screenSize = new Vector2(800, 600);
             graphics.PreferredBackBufferWidth = (int)screenSize.X;
@@ -84,7 +100,7 @@ namespace Cold_Ship
 
             prototypeLevel = new Prototype_Level(spriteBatch, screenSize);
             prototypeLevel2 = new Prototype_Level_2(spriteBatch, screenSize);
-            levelHoldingCell = new Level_Holding_Cell(spriteBatch, screenSize);
+            levelHoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
 
             base.Initialize();
         }
