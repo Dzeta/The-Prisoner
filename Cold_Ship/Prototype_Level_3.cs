@@ -85,7 +85,7 @@ namespace Cold_Ship
 
             staminaBooster = new PickUpItem(platformTexture, new Vector2(65, 1800), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
             lightSwitch = new Interactable(platformTexture, new Vector2(2000, 475), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
-            generator = new Interactable(platformTexture, new Vector2(1935, worldSize.Y - 63), new Vector2(103, 63), Interactable.Type_Of_Interactable.GENERATOR);
+            generator = new Interactable(Content.Load<Texture2D>("generator_off"), new Vector2(1935, worldSize.Y - 63), new Vector2(103, 63), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("generator_on"));
         }
 
         private void createPlatforms(Texture2D platformTexture)

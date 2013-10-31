@@ -79,9 +79,9 @@ namespace Cold_Ship
             platforms.Add(platform7);
             platforms.Add(platform8);
             platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(20, worldSize.Y - 750)));
-            platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(100, worldSize.Y - 850)));
-            platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(200, worldSize.Y - 950)));
-            platforms.Add(new Platform(platformTexture, new Vector2(500, 15), new Vector2(400, worldSize.Y - 960)));
+            platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(100, worldSize.Y - 860)));
+            platforms.Add(new Platform(platformTexture, new Vector2(80, 15), new Vector2(200, worldSize.Y - 900)));
+            platforms.Add(new Platform(platformTexture, new Vector2(500, 15), new Vector2(400, worldSize.Y - 900)));
 
             ladders.Add(new Ladder(platformTexture, new Vector2(60, 150), new Vector2(750, worldSize.Y - 180)));
             ladders.Add(new Ladder(platformTexture, new Vector2(40, 120), new Vector2(80, worldSize.Y - 750)));

@@ -9,33 +9,33 @@ using Microsoft.Xna.Framework;
 
 namespace Cold_Ship
 {
-  // Generic Sprite 2D class for inheritance
-  public class GenericSprite2D
-  {
-    public Texture2D texture;
-    public Vector2 position;
-    public Rectangle BoundBox;
-
-    public GenericSprite2D(Texture2D texture, Vector2 position, Rectangle boundBox)
+    // Generic Sprite 2D class for inheritance
+    public class GenericSprite2D
     {
-      this.texture = texture;
-      this.position = position;
-      this.BoundBox = boundBox;
-    }
+        public Texture2D texture;
+        public Vector2 position;
+        public Rectangle BoundBox;
 
-    public bool CheckCollision(GenericSprite2D sprite)
+        public GenericSprite2D(Texture2D texture, Vector2 position, Rectangle boundBox)
+        {
+            this.texture = texture;
+            this.position = position;
+            this.BoundBox = boundBox;
+        }
+
+        public bool CheckCollision(GenericSprite2D sprite)
+        {
+            return this.BoundBox.Intersects(sprite.BoundBox);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, position, Color.White);
+        }
+    }
+    
+    public class Scene2DNode : GenericSprite2D
     {
-      return this.BoundBox.Intersects(sprite.BoundBox);
-    }
-
-    public void Draw(SpriteBatch spriteBatch)
-    {
-      spriteBatch.Draw(texture, position, Color.White);
-    }
-  }
-
-  public class Scene2DNode : GenericSprite2D
-  {
         //declare member variables
         public Vector2 prevPosition;
         public Vector2 velocity;
@@ -573,6 +573,10 @@ namespace Cold_Ship
             }
         }
 
-        
+        //return player hitbox
+        public Rectangle getPlayerHitBox()
+        {
+            return new Rectangle((int)position.X, (int)position.Y, (int)playerSpriteSize.X, (int)playerSpriteSize.Y);
+        }
     }
 }
