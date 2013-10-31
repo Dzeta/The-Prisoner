@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.GamerServices;
 namespace Cold_Ship
 {
     //declare the enum for game levels
-    public enum Game_Level { LEVEL_HOLDING_CELL, PROTOTYPE, LEVEL1 };
+    public enum Game_Level { LEVEL_HOLDING_CELL, PROTOTYPE, LEVEL1, LEVEL2 };
 
     /// <summary>
     /// This is the main type for your game
@@ -43,9 +43,10 @@ namespace Cold_Ship
         //List<Platform> platforms;
         Prototype_Level prototypeLevel;
         Prototype_Level_2 prototypeLevel2;
+        Prototype_Level_3 prototypeLevel3;
         Level_Holding_Cell levelHoldingCell;
-        Game_Level gameLevel = Game_Level.LEVEL_HOLDING_CELL;
-        Game_Level prevGameLevel = Game_Level.LEVEL_HOLDING_CELL;
+        Game_Level gameLevel = Game_Level.LEVEL2;
+        Game_Level prevGameLevel = Game_Level.LEVEL1;
 
         double bodyTemperature = 36;
         double stamina = 100;
@@ -100,6 +101,7 @@ namespace Cold_Ship
 
             prototypeLevel = new Prototype_Level(spriteBatch, screenSize);
             prototypeLevel2 = new Prototype_Level_2(spriteBatch, screenSize);
+            prototypeLevel3 = new Prototype_Level_3(spriteBatch, screenSize);
             levelHoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
 
             base.Initialize();
@@ -166,6 +168,9 @@ namespace Cold_Ship
                 case Game_Level.LEVEL1:
                     prototypeLevel2.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
                     break;
+                case Game_Level.LEVEL2:
+                    prototypeLevel3.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+                    break;
                 case Game_Level.LEVEL_HOLDING_CELL:
                     levelHoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
                     break;
@@ -184,6 +189,7 @@ namespace Cold_Ship
             // TODO: Unload any non ContentManager content here
             prototypeLevel.Unload();
             prototypeLevel2.Unload();
+            prototypeLevel3.Unload();
             levelHoldingCell.Unload();
         }
 
@@ -224,6 +230,9 @@ namespace Cold_Ship
                 case Game_Level.LEVEL1:
                     //LoadContent();
                     bodyTemperature = prototypeLevel2.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+                    break;
+                case Game_Level.LEVEL2:
+                    bodyTemperature = prototypeLevel3.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
                     break;
                 case Game_Level.LEVEL_HOLDING_CELL:
                     bodyTemperature = levelHoldingCell.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit); 
@@ -288,6 +297,9 @@ namespace Cold_Ship
                     break;
                 case Game_Level.LEVEL1:
                     prototypeLevel2.Draw(framesPerSecond);
+                    break;
+                case Game_Level.LEVEL2:
+                    prototypeLevel3.Draw(framesPerSecond);
                     break;
                 case Game_Level.LEVEL_HOLDING_CELL:
                     levelHoldingCell.Draw(framesPerSecond);

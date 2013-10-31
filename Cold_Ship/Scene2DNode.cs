@@ -37,7 +37,7 @@ namespace Cold_Ship
   public class Scene2DNode : GenericSprite2D
   {
         //declare member variables
-    public Vector2 prevPosition;
+        public Vector2 prevPosition;
         public Vector2 velocity;
         public double bodyTemperature;
         public double stamina;
