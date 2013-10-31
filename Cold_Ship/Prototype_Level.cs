@@ -47,7 +47,7 @@ namespace Cold_Ship
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("PlayerSpriteSheet");
-            Texture2D backgroundTexture = Content.Load<Texture2D>("prisonblock");
+            Texture2D backgroundTexture = Content.Load<Texture2D>("prisonblock_final");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
 
@@ -84,13 +84,14 @@ namespace Cold_Ship
             platforms.Add(new Platform(platformTexture, new Vector2(130, 130), new Vector2(1150, worldSize.Y - 410)));
 
             //initialize ladders and add them to the list
-            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(897, worldSize.Y - 280)));
-            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(1308, worldSize.Y - 280)));
-            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(484, worldSize.Y - 510)));
-            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(1893, worldSize.Y - 510)));
-            ladders.Add(new Ladder(platformTexture, new Vector2(20, 230), new Vector2(139, worldSize.Y - 744)));
-            ladders.Add(new Ladder(platformTexture, new Vector2(20, 233), new Vector2(904, worldSize.Y - 747)));
-            ladders.Add(new Ladder(platformTexture, new Vector2(20, 233), new Vector2(1713, worldSize.Y - 747)));
+            Texture2D ladderTexture = Content.Load<Texture2D>("ladder");
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(890, worldSize.Y - 282)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1301, worldSize.Y - 282)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(478, worldSize.Y - 512)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1887, worldSize.Y - 512)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(134, worldSize.Y - 747)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(898, worldSize.Y - 749)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1707, worldSize.Y - 749)));
             //ladders.Add(new Ladder(platformTexture, new Vector2(60, 150), new Vector2(750, worldSize.Y - 180)));
             //ladders.Add(new Ladder(platformTexture, new Vector2(40, 120), new Vector2(1000, worldSize.Y - 750)));
 
@@ -111,8 +112,8 @@ namespace Cold_Ship
             }
 
             staminaBooster = new PickUpItem(platformTexture, new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
-            lightSwitch = new Interactable(platformTexture, new Vector2(1521, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
-            generator = new Interactable(platformTexture, new Vector2(1807, worldSize.Y - 807), new Vector2(103, 63), Interactable.Type_Of_Interactable.GENERATOR);
+            lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
+            generator = new Interactable(Content.Load<Texture2D>("generator_off"), new Vector2(1807, worldSize.Y - 809), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("generator_on"));
         }
 
         //unload contents
@@ -187,7 +188,7 @@ namespace Cold_Ship
                 camera.DrawPortal(portal);
             }
             camera.DrawPickUpItem(staminaBooster);
-            camera.DrawInteractable(lightSwitch);
+            //camera.DrawInteractable(lightSwitch);
             camera.DrawInteractable(generator);
             camera.DrawPlayerNode(playerNode);
 

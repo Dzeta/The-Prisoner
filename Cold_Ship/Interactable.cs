@@ -17,13 +17,15 @@ namespace Cold_Ship
         //declare member variables
         public Vector2 size;
         public Type_Of_Interactable typeOfInteractable;
+        public Texture2D altTexture;
 
         //Constructor
-        public Interactable(Texture2D texture, Vector2 position, Vector2 size, Type_Of_Interactable type) :
+        public Interactable(Texture2D texture, Vector2 position, Vector2 size, Type_Of_Interactable type, Texture2D altTexture = null) :
             base(texture, position)
         {
             this.size = size;
             this.typeOfInteractable = type;
+            this.altTexture = altTexture;
         }
 
         //Update function (detect collision, etc.)
@@ -38,6 +40,10 @@ namespace Cold_Ship
                     {
                         case Type_Of_Interactable.GENERATOR:
                             generatorOn = true;
+                            if (altTexture != null)
+                            {
+                                texture = altTexture;
+                            }
                             break;
                         case Type_Of_Interactable.LIGHT_SWITCH:
                             if (generatorOn)

@@ -54,7 +54,7 @@ namespace Cold_Ship
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("PlayerSpriteSheet");
-            Texture2D backgroundTexture = Content.Load<Texture2D>("holdingcell");
+            Texture2D backgroundTexture = Content.Load<Texture2D>("holdingcell_final");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
 
