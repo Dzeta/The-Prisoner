@@ -80,8 +80,8 @@ namespace Cold_Ship
             platforms.Add(new Platform(platformTexture, new Vector2(773, 20), new Vector2(933, worldSize.Y - 744)));
             platforms.Add(new Platform(platformTexture, new Vector2(250, 20), new Vector2(1742, worldSize.Y - 744)));
             //walls
-            platforms.Add(new Platform(platformTexture, new Vector2(130, 130), new Vector2(963, worldSize.Y - 178)));
-            platforms.Add(new Platform(platformTexture, new Vector2(130, 130), new Vector2(1150, worldSize.Y - 410)));
+            platforms.Add(new Platform(platformTexture, new Vector2(130, 270), new Vector2(963, worldSize.Y - 270)));
+            platforms.Add(new Platform(platformTexture, new Vector2(130, 230), new Vector2(1150, worldSize.Y - 508)));
 
             //initialize ladders and add them to the list
             Texture2D ladderTexture = Content.Load<Texture2D>("ladder");
