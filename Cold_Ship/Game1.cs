@@ -41,7 +41,7 @@ namespace Cold_Ship
         Prototype_Level prototypeLevel1;
         Prototype_Level_2 prototypeLevel2;
         Level_Holding_Cell levelHoldingCell;
-        Game_Level gameLevel = Game_Level.LEVEL_HOLDING_CELL;
+        Game_Level gameLevel = Game_Level.LEVEL2;
         Game_Level prevGameLevel = Game_Level.LEVEL_HOLDING_CELL;
 
         double bodyTemperature = 36;

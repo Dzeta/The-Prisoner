@@ -42,6 +42,7 @@
     <Compile Include="Interactable.cs" />
     <Compile Include="Ladder.cs" />
     <Compile Include="Level_Holding_Cell.cs" />
+    <Compile Include="MovingPlatform.cs" />
     <Compile Include="PickUpItem.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="Portal.cs" />
