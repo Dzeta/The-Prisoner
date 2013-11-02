@@ -227,20 +227,6 @@ namespace Cold_Ship
             }
         }
 
-        //a method that applies gravity to the player sprite
-        //public void ApplyGravity(float jumpTimer, float ground)
-        //{
-        //    if (position.Y < ground - texture.Height && jumpTimer > 250)
-        //    {
-        //        velocity = new Vector2(0, 5);
-        //    }
-        //    else if (position.Y > ground - texture.Height)
-        //    {
-        //        isjumping = false;
-        //        position.Y = ground - texture.Height;
-        //    }
-        //}
-
         //update the sprite position based on the keyboard inputs
         public void UpdateKeyboard(bool lighterAcquired,KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer, ref float animationTimer)
         {

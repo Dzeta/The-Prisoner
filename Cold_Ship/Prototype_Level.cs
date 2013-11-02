@@ -59,7 +59,6 @@ namespace Cold_Ship
             font = Content.Load<SpriteFont>("Score");
 
             //initialize the needed nodes and camera
-            //playerNode = new Scene2DNode(playerTexture, new Vector2(35, worldSize.Y - 64));
             backgroundNode = new Scene2DNode(backgroundTexture, new Vector2(0, 0));
             shadowFilter = new Scene2DNode(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
@@ -92,8 +91,6 @@ namespace Cold_Ship
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(134, worldSize.Y - 747)));
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(898, worldSize.Y - 749)));
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1707, worldSize.Y - 749)));
-            //ladders.Add(new Ladder(platformTexture, new Vector2(60, 150), new Vector2(750, worldSize.Y - 180)));
-            //ladders.Add(new Ladder(platformTexture, new Vector2(40, 120), new Vector2(1000, worldSize.Y - 750)));
 
             //initialize the needed portals
             backwardDoor = new Portal(platformTexture, new Vector2(100, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.BACKWARD);
@@ -169,7 +166,6 @@ namespace Cold_Ship
             //draw the desired nodes onto screen through the camera
             camera.DrawNode(backgroundNode);
             
-            //camera.DrawNode(shadowFilter);
             //draw the platforms
             foreach (Platform platform in platforms)
             {
@@ -192,10 +188,6 @@ namespace Cold_Ship
             camera.DrawInteractable(generator);
             camera.DrawPlayerNode(playerNode);
 
-            
-
-            //camera.DrawPlatform(platforms[0]);
-            //camera.DrawNode(shadowFilter);
             if (filterOn)
             {
                 camera.DrawFilter(shadowFilter, filterScale);

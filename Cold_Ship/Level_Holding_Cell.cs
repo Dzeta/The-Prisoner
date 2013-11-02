@@ -31,7 +31,7 @@ namespace Cold_Ship
         SpriteFont font;
         Scene2DNode playerNode, backgroundNode, shadowFilter;
         Camera2D camera;
-        Portal fowardDoor, backwardDoor;
+        Portal fowardDoor;
         List<Portal> portals;
         List<DialogueBubble> dialogueBubbles;
 
@@ -66,7 +66,6 @@ namespace Cold_Ship
             font = Content.Load<SpriteFont>("Score");
 
             //initialize the needed nodes and camera
-            //playerNode = new Scene2DNode(playerTexture, new Vector2(35, worldSize.Y - 64));
             backgroundNode = new Scene2DNode(backgroundTexture, new Vector2(0, 0));
             shadowFilter = new Scene2DNode(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
@@ -76,23 +75,13 @@ namespace Cold_Ship
             Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
             
             //initialize the needed portals
-            //backwardDoor = new Portal(platformTexture, new Vector2(0, worldSize.Y - 64), new Vector2(32, 64), Portal.PortalType.BACKWARD);
             fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 251, worldSize.Y - 280), new Vector2(15, 80), Portal.PortalType.FOWARD);
-            //portals.Add(backwardDoor);
             portals.Add(fowardDoor);
 
-            //initialize the playerNode
-            //if (prevGameLevel <= gameLevel)
-            //{
-            //    playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64), bodyTemperature);
-            //}
-            //else if (prevGameLevel > gameLevel)
-            //{
             playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
             // Load the text with respect to the current player's position
             speechTest = DialogueBubble.GetNewInstance(PrisonerGame, playerNode.position, new Rectangle(0, 0, (int)PrisonerGame.screenSize.X, (int)PrisonerGame.screenSize.Y), "Pickup the lighter!");
             
-            //}
             Texture2D lighterTexture = Content.Load<Texture2D>("lighter");
             lighter = new PickUpItem(lighterTexture, new Vector2(fowardDoor.position.X - 32 - 150, fowardDoor.position.Y + 50), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);
         }
@@ -110,16 +99,8 @@ namespace Cold_Ship
 
           // Update Dialogues
           speechTest.Update(gameTime);
-      
-            //outdated codes that's now in the Update method
-            /*bodyTempTimer += gameTime.ElapsedGameTime.Milliseconds;
-            exhaustionTimer += gameTime.ElapsedGameTime.Milliseconds;
-            KeyboardState newKeyboardState = Keyboard.GetState();
-            playerNode.UpdateKeyboard(oldKeyboardState, newKeyboardState);
-            oldKeyboardState = newKeyboardState;
-            playerNode.updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);*/
 
-            //update the player position with respect to keyboard input and platform collision
+          //update the player position with respect to keyboard input and platform collision
           bool useLighter = false;
             playerNode.Update(useLighter ,gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
 
@@ -165,7 +146,6 @@ namespace Cold_Ship
             //draw the platforms
             speechTest.Draw(spriteBatch);
            
-
             foreach (Platform platform in platforms)
             {
                 camera.DrawPlatform(platform);
@@ -176,10 +156,7 @@ namespace Cold_Ship
             {
                 camera.DrawPortal(portal);
             }
-            //camera.DrawPickUpItem(staminaBooster);
 
-            //camera.DrawPlatform(platforms[0]);
-            //camera.DrawFilter(shadowFilter, 0.5f);
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
             //draw the status display and the body temperature
