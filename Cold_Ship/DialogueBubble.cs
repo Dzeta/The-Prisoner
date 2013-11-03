@@ -13,9 +13,10 @@ namespace Cold_Ship
   public class DialogueBubble : GenericSprite2D
   {
     public const int LINE_FEED_LENGTH = 20; // Empirical number
-    // Sense of typing the character out on the screen
-    public const int CHAR_FEED_INTERVAL = 200; // Empirical number
+    public const int DEFAULT_PLAY_THROUGH_SPEED = 200;
 
+    // Sense of typing the character out on the screen
+    private int _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Empirical number
         
     // AUTIO ENGINES
     public static AudioEngine engine { get; set; }
@@ -29,10 +30,10 @@ namespace Cold_Ship
     // All number below are determined empirically
     private static Vector2 _textWhenBubbleIsTop = new Vector2(12, 12);
     private static Vector2 _textWhenBubbleIsBottom = new Vector2(12, 32);
-    private static Vector2 _bubbleLeftTop = new Vector2(-150, -250);
-    private static Vector2 _bubbleRightTop = new Vector2(-20, -250);
-    private static Vector2 _bubbleLeftBottom = new Vector2(-150, -170);
-    private static Vector2 _bubbleRightBottom = new Vector2(-20, -170);
+    private static Vector2 _bubbleLeftTop = new Vector2(-130, -50);
+    private static Vector2 _bubbleRightTop = new Vector2(-20, -50);
+    private static Vector2 _bubbleLeftBottom = new Vector2(-140, 60);
+    private static Vector2 _bubbleRightBottom = new Vector2(-20, 60);
 
     private static Rectangle _bubbleSpriteRightBottom = new Rectangle(186, 0, 186, 60);
     private static Rectangle _bubbleSpriteRightTop = new Rectangle(186, 60, 186, 60);
@@ -55,6 +56,7 @@ namespace Cold_Ship
     private int _currentRow = 0; // Always start at 0
     private int _currentRowCharPosition; // Always start at 0
     private List<string> _scroller;
+    private string _msg;
     private int _charDisplayTimer;
 
     private bool _isPlaying;
@@ -105,6 +107,11 @@ namespace Cold_Ship
           this._textStartPosition = _textWhenBubbleIsTop;
         }
       }
+    }
+
+    public void SetPlayThroughSpeed(int speed)
+    {
+      this._playThroughSpeed = speed;
     }
 
     public static DialogueBubble GetNewInstance(Game1 level, Vector2 speakerPosition, Rectangle windowBound, string msg)
@@ -179,7 +186,8 @@ namespace Cold_Ship
     public void Update(GameTime gameTime)
     {
       _charDisplayTimer += gameTime.ElapsedGameTime.Milliseconds;
-      if (_charDisplayTimer >= CHAR_FEED_INTERVAL)
+
+      if (_charDisplayTimer >= _playThroughSpeed)
       {
         if (_currentRow < _scroller.Count && _currentRowCharPosition < _scroller[_currentRow].Length)
         {
@@ -192,6 +200,8 @@ namespace Cold_Ship
           DialogueBubble.soundBank.PlayCue("sound-next-chat");
           _currentRow++;
           _currentRowCharPosition = 0;
+          _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Reset the playthrought speed
+
         }
         else
         {
