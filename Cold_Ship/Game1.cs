@@ -1,4 +1,4 @@
-﻿#region Using Statements
+#region Using Statements
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -21,17 +21,22 @@ namespace Cold_Ship
     public class Game1 : Game
     {
         //declare needed global variables, commented out variables are no longer used
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         //Scene2DNode playerNode, backgroundNode;
         public Vector2 screenSize { get; set; }/*, worldSize*/
+        public Texture2D DebugTexture { get; set; }
 
         // Freeze but display the regular screen
         // Used for dialogue
         // A few unique state that the game can be, these states are linear
         // Which means they cannot be combined togheter with one another
-        public enum GameState { Frozen, Paused, Ended, Playing, Initialized }
+        // Only frozen is implemented so far, pause still needs work
+        public enum GameState { FROZEN, DIALOGUING, PAUSED, ENDED, PLAYING, INTIALIZED }
         private Stack<GameState> _gameState; 
+        // DIALOGUE USED COMPOENTS
+        public List<DialogueBubble> DialogueQueue { get; set; }
+
         //SpriteFont font;
         //Texture2D statusDisplayTexture;
         float bodyTempTimer;
@@ -52,9 +57,8 @@ namespace Cold_Ship
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
           this._gameState = new Stack<GameState>();
-          this._gameState.Push(GameState.Initialized);
-
-            
+          this._gameState.Push(GameState.INTIALIZED);
+          this._gameState.Push(GameState.PLAYING);
         }
 
         // Bunch of helper methods to deal with the state of the game at any moment
@@ -96,6 +100,9 @@ namespace Cold_Ship
             prototypeLevel2 = new Prototype_Level_2(spriteBatch, screenSize);
             levelHoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
 
+            // DIALOGUE USED COMPONENT
+            this.DialogueQueue = new List<DialogueBubble>();
+            DebugTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
             base.Initialize();
         }
 

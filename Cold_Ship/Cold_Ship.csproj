@@ -40,6 +40,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="HelperFunction.cs" />
     <Compile Include="Interactable.cs" />
+    <Compile Include="InvisibleChatTriggerBox.cs" />
     <Compile Include="Ladder.cs" />
     <Compile Include="Level_Holding_Cell.cs" />
     <Compile Include="MovingPlatform.cs" />

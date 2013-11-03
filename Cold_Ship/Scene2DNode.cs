@@ -33,7 +33,7 @@ namespace Cold_Ship
             spriteBatch.Draw(texture, position, Color.White);
         }
     }
-    
+
     public class Scene2DNode : GenericSprite2D
     {
         //declare member variables
@@ -149,6 +149,7 @@ namespace Cold_Ship
                 isClimbing = false;
 
             UpdateKeyboard(lighterAcquired, oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
+
             //Move();
             oldKeyboardState = newKeyboardState;
 
@@ -182,6 +183,7 @@ namespace Cold_Ship
             if (stamina < 0)
             {
                 stamina = 0;
+
                 staminaExhaustionTimer = 700;
             }
             else if (stamina > staminaLimit + 5)
@@ -189,6 +191,10 @@ namespace Cold_Ship
                 //staminaLimit = stamina;
             }
             else if (stamina > staminaLimit && stamina < staminaLimit + 5)
+            {
+                staminaExhaustionTimer = 0;
+            }
+            else if (stamina > staminaLimit)
             {
                 stamina = staminaLimit;
             }
@@ -201,14 +207,14 @@ namespace Cold_Ship
                 if (position.Y < ground - playerSpriteSize.Y && jumpTimer > 200)
                 {
                     velocity = new Vector2(0, 5);
-                    
+
                 }
                 else if (position.Y > ground - playerSpriteSize.Y)
                 {
                     isjumping = false;
                     position.Y = ground - playerSpriteSize.Y;
                 }
-                
+
             }
             else
             {
@@ -327,7 +333,7 @@ namespace Cold_Ship
                                     animationTimer = 0;
                                 }
                             }
-                    
+
                         }
                         break;
                     case Keys.D:
@@ -555,7 +561,7 @@ namespace Cold_Ship
                     //refexhaustionTimer = 0;
                 }
                 refbodyTempTimer = 0;
-      
+
             }
         }
 

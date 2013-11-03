@@ -144,9 +144,9 @@ namespace Cold_Ship
         _mono8 = level.Content.Load<SpriteFont>("manaspace0");
       if (engine == null)
       {
-        engine = new AudioEngine("SOUND_SPEECH_ENGINE.xgs");
-        soundBank = new SoundBank(engine, "SOUND_SPEECH_SOUNDBANK.xsb");
-        waveBank = new WaveBank(engine, "SOUND_SPEECH_WAVEBANK.xwb");
+        engine = new AudioEngine("Content\\SOUND_SPEECH_ENGINE.xgs");
+        soundBank = new SoundBank(engine, "Content\\SOUND_SPEECH_SOUNDBANK.xsb");
+        waveBank = new WaveBank(engine, "Content\\SOUND_SPEECH_WAVEBANK.xwb");
       }
 
       return new DialogueBubble(level, _bubbleTextureMono, speakerPosition, DialogueBubble.ComputeScroller(msg), xPos, yPos);
@@ -159,8 +159,16 @@ namespace Cold_Ship
 
     public void Play()
     {
+      this._gameLevel.DialogueQueue.Add(this);
       this._isPlaying = true;
-      this._gameLevel.ActivateState(Game1.GameState.Frozen);
+      this._gameLevel.ActivateState(Game1.GameState.DIALOGUING);
+    }
+
+    public void End()
+    {
+      this._gameLevel.DialogueQueue.Remove(this);
+      this._isPlaying = false;
+      this._gameLevel.RestoreLastState();
     }
 
     public void Pause()
@@ -187,17 +195,17 @@ namespace Cold_Ship
         }
         else
         {
-          _isPlaying = false;
+          this.End();
         }
       } 
-
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-      spriteBatch.Draw(_bubbleTexture, this.position, this._sourceRectangle, Color.White);
-      spriteBatch.DrawString(_mono8, this._scroller[this._currentRow].Substring(0, _currentRowCharPosition), Vector2.Add(this.position, _textStartPosition), Color.White);
-      
+      spriteBatch.Draw(_bubbleTexture, this.position, this._sourceRectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+      spriteBatch.DrawString(_mono8, this._scroller[this._currentRow].Substring(0, _currentRowCharPosition),
+        Vector2.Add(this.position, _textStartPosition), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+
     }
 
     private static List<string> ComputeScroller(string message)

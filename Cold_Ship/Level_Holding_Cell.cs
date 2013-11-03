@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,7 +39,10 @@ namespace Cold_Ship
 
         private DialogueBubble speechTest;
 
+        PickUpItem staminaBooster;
         //declare constructor
+
+        public List<InvisibleChatTriggerBox> AllChatTriggers;
         public Level_Holding_Cell(Game1 theGame, SpriteBatch spriteBatch, Vector2 screenSize) : base(theGame)
         {
             this.spriteBatch = spriteBatch;
@@ -47,6 +50,7 @@ namespace Cold_Ship
             this.screenSize = screenSize;
             portals = new List<Portal>();
 
+            this.AllChatTriggers = new List<InvisibleChatTriggerBox>();
         }
 
         //load content
@@ -73,14 +77,16 @@ namespace Cold_Ship
 
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
-            
+
             //initialize the needed portals
             fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 251, worldSize.Y - 280), new Vector2(15, 80), Portal.PortalType.FOWARD);
             portals.Add(fowardDoor);
 
             playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
             // Load the text with respect to the current player's position
+
             speechTest = DialogueBubble.GetNewInstance(PrisonerGame, playerNode.position, new Rectangle(0, 0, (int)PrisonerGame.screenSize.X, (int)PrisonerGame.screenSize.Y), "Pickup the lighter!");
+
             
             Texture2D lighterTexture = Content.Load<Texture2D>("lighter");
             lighter = new PickUpItem(lighterTexture, new Vector2(fowardDoor.position.X - 32 - 150, fowardDoor.position.Y + 50), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);
@@ -98,11 +104,12 @@ namespace Cold_Ship
         {
 
           // Update Dialogues
-          speechTest.Update(gameTime);
+          //foreach (InvisibleChatTriggerBox chatTrigger in AllChatTriggers)
+            // if (chatTrigger.GetHitBox().Intersects(playerNode.))
 
-          //update the player position with respect to keyboard input and platform collision
-          bool useLighter = false;
-            playerNode.Update(useLighter ,gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
+            //update the player position with respect to keyboard input and platform collision
+            bool useLighter = false;
+            playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
 
             if (playerNode.position.X < 250)
             {
@@ -145,7 +152,20 @@ namespace Cold_Ship
             //camera.DrawNode(shadowFilter);
             //draw the platforms
             speechTest.Draw(spriteBatch);
-           
+
+
+          if (this.PrisonerGame.IsGameState(Game1.GameState.DIALOGUING))
+          {
+            foreach (DialogueBubble dialogue in this.PrisonerGame.DialogueQueue)
+            {
+              if (dialogue.IsPlaying())
+              {
+                dialogue.Draw(spriteBatch);
+                break;
+              }
+            }
+          }
+
             foreach (Platform platform in platforms)
             {
                 camera.DrawPlatform(platform);
@@ -163,6 +183,11 @@ namespace Cold_Ship
             spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
             spriteBatch.DrawString(font, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
             spriteBatch.DrawString(font, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
+
+
+            // Draw all invisible chat trigger
+            foreach (InvisibleChatTriggerBox invisibleTrigger in AllChatTriggers)
+              spriteBatch.Draw(PrisonerGame.DebugTexture, invisibleTrigger.GetHitBox(), Color.White);
             spriteBatch.End();
         }
     }
