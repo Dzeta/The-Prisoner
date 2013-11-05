@@ -93,6 +93,8 @@ namespace Cold_Ship
         {
             Vector2 sizeBasePlatform = new Vector2(120, 15);
             platforms.Add(new MovingPlatform(platformTexture, sizeBasePlatform, new Vector2(130, 400), new Vector2(0, 0.3f), new Vector2(100, 100)));
+            platforms.Add(new MovingPlatform(platformTexture, sizeBasePlatform, new Vector2(100, 580), new Vector2(-0.3f, 0), new Vector2(100, 100)));
+            //platforms.Add(new MovingPlatform(platformTexture, sizeBasePlatform, new Vector2(180, 350), new Vector2(0.3f, 0.0f), new Vector2(100, 100)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(0, 350)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(372, 273)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(712, 220)));
@@ -106,7 +108,6 @@ namespace Cold_Ship
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(466, 392)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(540, 550)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(280, 448)));
-            platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(86, 560)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(0, 805)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(128, 708)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(325, 660)));

@@ -23,6 +23,7 @@ namespace Cold_Ship
 
         public override bool Update(Scene2DNode player, Vector2 prevPosition, float jumpTimer, float ground, bool isJumping)
         {
+            bool ret = false;
             if (position.X + velocity.X > startPosition.X + limits.X || position.X + velocity.X < startPosition.X - limits.X)
                 velocity.X = -velocity.X;
             if (position.Y + velocity.Y > startPosition.Y + limits.Y || position.Y + velocity.Y < startPosition.Y - limits.Y)
@@ -35,11 +36,13 @@ namespace Cold_Ship
             collisionLeft = new Rectangle((int)position.X, (int)(position.Y + (1 * (size.Y / 15))), (int)size.X / 1000, (int)(size.Y));
             collisionRight = new Rectangle((int)(position.X + (7 * (size.X / 8))), (int)(position.Y + (1 * (size.Y / 15))), (int)size.X / 10, (int)(size.Y));
 
+            ret = base.Update(player, prevPosition, jumpTimer, ground, isJumping);
+
             // TODO something to change there to make the player follow the platform smoothly
-            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionUp))
+            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y + 5).Intersects(collisionUp))
                 player.position += velocity;
 
-            return base.Update(player, prevPosition, jumpTimer, ground, isJumping);
+            return ret;
         }
     }
 }
