@@ -24,9 +24,9 @@ namespace Cold_Ship
         Camera2D camera;
         Portal fowardDoor, backwardDoor;
         List<Portal> portals;
-        bool filterOn = true, generatorOn = false;
+        bool filterOn = true, generatorOn = false, doorCanOpen = false;
         float filterScale = 1;
-        Interactable lightSwitch, generator;
+        Interactable lightSwitch, generator, doorSwitch;
         PickUpItem staminaBooster;
 
         //declare constructor
@@ -86,6 +86,7 @@ namespace Cold_Ship
             staminaBooster = new PickUpItem(platformTexture, new Vector2(65, 1800), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
             lightSwitch = new Interactable(platformTexture, new Vector2(2000, 475), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
             generator = new Interactable(Content.Load<Texture2D>("generator_off"), new Vector2(1935, worldSize.Y - 63), new Vector2(103, 63), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("generator_on"));
+            doorSwitch = new Interactable(platformTexture, new Vector2(1120, 1700), new Vector2(31, 43), Interactable.Type_Of_Interactable.DOOR_SWITCH);
         }
 
         private void createPlatforms(Texture2D platformTexture)
@@ -219,11 +220,12 @@ namespace Cold_Ship
             //update portals
             foreach (Portal portal in portals)
             {
-                portal.Update(playerNode, ref gameLevel);
+                portal.Update(playerNode, ref gameLevel, doorCanOpen);
             }
 
-            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale);
-            generator.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale);
+            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale, ref doorCanOpen);
+            generator.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale, ref doorCanOpen);
+            doorSwitch.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale, ref doorCanOpen);
 
             staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 
@@ -262,6 +264,7 @@ namespace Cold_Ship
             camera.DrawPickUpItem(staminaBooster);
             camera.DrawInteractable(lightSwitch);
             camera.DrawInteractable(generator);
+            camera.DrawInteractable(doorSwitch);
             camera.DrawPlayerNode(playerNode);
 
 

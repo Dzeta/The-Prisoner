@@ -12,7 +12,7 @@ namespace Cold_Ship
     public class Interactable : Scene2DNode
     {
         //declare enum for type of interactable
-        public enum Type_Of_Interactable {GENERATOR, LIGHT_SWITCH};
+        public enum Type_Of_Interactable {GENERATOR, LIGHT_SWITCH, DOOR_SWITCH};
        
         //declare member variables
         public Vector2 size;
@@ -29,7 +29,7 @@ namespace Cold_Ship
         }
 
         //Update function (detect collision, etc.)
-        public void Update(Scene2DNode playerNode, ref bool generatorOn, ref bool filterOn, ref float filterScale)
+        public void Update(Scene2DNode playerNode, ref bool generatorOn, ref bool filterOn, ref float filterScale, ref bool doorCanOpen)
         {
             if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
             {
@@ -50,6 +50,10 @@ namespace Cold_Ship
                             {
                                 filterOn = false;
                             }
+                            break;
+                        case Type_Of_Interactable.DOOR_SWITCH:
+                            if (generatorOn)
+                                doorCanOpen = true;
                             break;
                     }
                 }

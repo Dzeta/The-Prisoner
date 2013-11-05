@@ -25,7 +25,7 @@ namespace Cold_Ship
         Portal fowardDoor, backwardDoor;
         List<Portal> portals;
         List<Ladder> ladders;
-        bool filterOn = true, generatorOn = false;
+        bool filterOn = true, generatorOn = false, doorCanOpen = false;
         float filterScale = 1;
         Interactable lightSwitch, generator;
 
@@ -138,11 +138,11 @@ namespace Cold_Ship
             //update portals
             foreach (Portal portal in portals)
             {
-                portal.Update(playerNode, ref gameLevel);
+                portal.Update(playerNode, ref gameLevel, true);
             }
 
-            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale);
-            generator.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale);
+            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale, ref doorCanOpen);
+            generator.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale, ref doorCanOpen);
 
             staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 

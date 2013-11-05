@@ -135,7 +135,7 @@ namespace Cold_Ship
 
       foreach (Portal portal in portals)
       {
-        portal.Update(playerNode, ref gameLevel);
+        portal.Update(playerNode, ref gameLevel, true);
       }
 
       lighter.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
