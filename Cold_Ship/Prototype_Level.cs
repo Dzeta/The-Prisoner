@@ -126,7 +126,7 @@ namespace Cold_Ship
             generator = new Interactable(Content.Load<Texture2D>("generator_off"), new Vector2(1807, worldSize.Y - 809), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("generator_on"));
 
             worldObjects.Add(staminaBooster);
-            worldObjects.Add(lightSwitch);
+            //worldObjects.Add(lightSwitch);
             worldObjects.Add(generator);
 
             worldObjects.Add(playerNode);

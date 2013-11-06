@@ -84,7 +84,7 @@ namespace Cold_Ship
       portals.Add(fowardDoor);
       worldObjects.AddRange(portals);
 
-      playerNode = new Character(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
+      playerNode = new Character(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 200 - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
       // Load the text with respect to the current player's position
 
       if (!visited)
@@ -101,8 +101,11 @@ namespace Cold_Ship
 
 
       Texture2D lighterTexture = Content.Load<Texture2D>("lighter");
-      lighter = new PickUpItem(lighterTexture, new Vector2(fowardDoor.position.X - 32 - 260, fowardDoor.position.Y + 55), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);
-      worldObjects.Add(lighter);
+      if (!visited)
+      {
+          lighter = new PickUpItem(lighterTexture, new Vector2(fowardDoor.position.X - 32 - 260, fowardDoor.position.Y + 55), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);
+          worldObjects.Add(lighter);
+      }
       worldObjects.Add(playerNode);
     }
 
