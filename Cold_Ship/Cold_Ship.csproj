@@ -37,7 +37,9 @@
   <ItemGroup>
     <Compile Include="Camera2D.cs" />
     <Compile Include="DialogueBubble.cs" />
+    <Compile Include="Filter.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Generic2DSprite.cs" />
     <Compile Include="HelperFunction.cs" />
     <Compile Include="Interactable.cs" />
     <Compile Include="InvisibleChatTriggerBox.cs" />

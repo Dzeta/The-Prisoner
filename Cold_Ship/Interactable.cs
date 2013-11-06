@@ -29,7 +29,7 @@ namespace Cold_Ship
         }
 
         //Update function (detect collision, etc.)
-        public void Update(Scene2DNode playerNode, ref bool generatorOn, ref bool filterOn, ref float filterScale, ref bool doorCanOpen)
+        public void Update(Character playerNode, ref bool generatorOn, ref bool filterOn, Filter filter, ref bool doorCanOpen)
         {
             if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
             {

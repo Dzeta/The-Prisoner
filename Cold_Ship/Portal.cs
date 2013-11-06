@@ -25,7 +25,7 @@ namespace Cold_Ship
         }
 
         //check is the player has interacted with the portal
-        public void Update(Scene2DNode playerNode, ref Game_Level gameLevel, bool doorCanOpen)
+        public void Update(Character playerNode, ref Game_Level gameLevel, bool doorCanOpen)
         {
             if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y) .Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
             {

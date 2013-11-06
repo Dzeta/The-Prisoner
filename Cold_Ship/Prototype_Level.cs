@@ -15,21 +15,28 @@ namespace Cold_Ship
     {
         //declare member variables
         public SpriteBatch spriteBatch;
-        Vector2 worldSize, screenSize;
-        List<Platform> platforms;
-        float ground;
-        Texture2D statusDisplayTexture;
         SpriteFont font;
-        Scene2DNode playerNode, backgroundNode, shadowFilter;
+
+        Vector2 worldSize, screenSize;
+        float ground;
+
+        Texture2D statusDisplayTexture;
+
         Camera2D camera;
-        Portal fowardDoor, backwardDoor;
+        Character playerNode;
+        Filter shadowFilter;
+        GenericSprite2D backgroundNode;
+
+        List<GenericSprite2D> worldObjects;
+
+        List<Platform> platforms;
         List<Portal> portals;
         List<Ladder> ladders;
-        bool filterOn = true, generatorOn = false, doorCanOpen = false;
-        float filterScale = 1;
+        Portal fowardDoor, backwardDoor;
         Interactable lightSwitch, generator;
-
         PickUpItem staminaBooster;
+
+        bool filterOn = true, generatorOn = false, doorCanOpen = false;
 
         //declare constructor
         public Prototype_Level(SpriteBatch spriteBatch, Vector2 screenSize)
@@ -39,6 +46,7 @@ namespace Cold_Ship
             this.screenSize = screenSize;
             portals = new List<Portal>();
             ladders = new List<Ladder>();
+            worldObjects = new List<GenericSprite2D>();
             
         }
 
@@ -59,8 +67,9 @@ namespace Cold_Ship
             font = Content.Load<SpriteFont>("Score");
 
             //initialize the needed nodes and camera
-            backgroundNode = new Scene2DNode(backgroundTexture, new Vector2(0, 0));
-            shadowFilter = new Scene2DNode(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
+            backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
+            worldObjects.Add(backgroundNode);
+            shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
@@ -92,33 +101,49 @@ namespace Cold_Ship
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(898, worldSize.Y - 749)));
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1707, worldSize.Y - 749)));
 
+            worldObjects.AddRange(platforms);
+            worldObjects.AddRange(ladders);
+
             //initialize the needed portals
             backwardDoor = new Portal(platformTexture, new Vector2(100, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.BACKWARD);
             fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 32 - 75, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.FOWARD);
             portals.Add(backwardDoor);
             portals.Add(fowardDoor);
+            worldObjects.AddRange(portals);
 
             //initialize the playerNode
             if (prevGameLevel <= gameLevel)
             {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+                playerNode = new Character(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
             else if (prevGameLevel >= gameLevel)
             {
-                playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+                playerNode = new Character(playerTexture, new Vector2(fowardDoor.position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
 
             staminaBooster = new PickUpItem(platformTexture, new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
             lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
             generator = new Interactable(Content.Load<Texture2D>("generator_off"), new Vector2(1807, worldSize.Y - 809), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("generator_on"));
+
+            worldObjects.Add(staminaBooster);
+            worldObjects.Add(lightSwitch);
+            worldObjects.Add(generator);
+
+            worldObjects.Add(playerNode);
         }
 
         //unload contents
         public void Unload()
         {
+            platforms.Clear();
+            portals.Clear();
+            ladders.Clear();
+            worldObjects.Clear();
+
             platforms = new List<Platform>();
             portals = new List<Portal>();
             ladders = new List<Ladder>();
+            worldObjects = new List<GenericSprite2D>();
         }
 
         //update function
@@ -141,8 +166,8 @@ namespace Cold_Ship
                 portal.Update(playerNode, ref gameLevel, true);
             }
 
-            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale, ref doorCanOpen);
-            generator.Update(playerNode, ref generatorOn, ref filterOn, ref filterScale, ref doorCanOpen);
+            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
+            generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
 
             staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 
@@ -163,35 +188,13 @@ namespace Cold_Ship
         public void Draw(int framesPerSecond)
         {
             spriteBatch.Begin();
-            //draw the desired nodes onto screen through the camera
-            camera.DrawNode(backgroundNode);
-            
-            //draw the platforms
-            foreach (Platform platform in platforms)
-            {
-                camera.DrawPlatform(platform);
-            }
-
-            //draw ladders
-            foreach (Ladder ladder in ladders)
-            {
-                camera.DrawLadder(ladder);
-            }
-
-            //draw the portals
-            foreach (Portal portal in portals)
-            {
-                camera.DrawPortal(portal);
-            }
-            camera.DrawPickUpItem(staminaBooster);
-            //camera.DrawInteractable(lightSwitch);
-            camera.DrawInteractable(generator);
-            camera.DrawPlayerNode(playerNode);
+            ////draw the desired nodes onto screen through the camera
+            foreach (GenericSprite2D element in worldObjects)
+                camera.DrawNode(element);
 
             if (filterOn)
-            {
-                camera.DrawFilter(shadowFilter, filterScale);
-            }
+                camera.DrawNode(shadowFilter);
+
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
             //draw the status display and the body temperature

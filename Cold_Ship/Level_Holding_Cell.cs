@@ -29,17 +29,17 @@ namespace Cold_Ship
     float ground;
     Texture2D statusDisplayTexture;
     SpriteFont font;
-    Scene2DNode playerNode, backgroundNode, shadowFilter;
+    Character playerNode;
+    GenericSprite2D backgroundNode;
     Camera2D camera;
     Portal fowardDoor;
     List<Portal> portals;
     List<DialogueBubble> dialogueBubbles;
+    List<GenericSprite2D> worldObjects;
 
     PickUpItem lighter;
 
-    PickUpItem staminaBooster;
     //declare constructor
-
     public List<InvisibleChatTriggerBox> AllChatTriggers;
     public Level_Holding_Cell(Game1 theGame, SpriteBatch spriteBatch, Vector2 screenSize)
       : base(theGame)
@@ -48,6 +48,7 @@ namespace Cold_Ship
       platforms = new List<Platform>();
       this.screenSize = screenSize;
       portals = new List<Portal>();
+      worldObjects = new List<GenericSprite2D>();
 
       this.AllChatTriggers = new List<InvisibleChatTriggerBox>();
     }
@@ -69,8 +70,8 @@ namespace Cold_Ship
       font = Content.Load<SpriteFont>("Score");
 
       //initialize the needed nodes and camera
-      backgroundNode = new Scene2DNode(backgroundTexture, new Vector2(0, 0));
-      shadowFilter = new Scene2DNode(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
+      backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
+      worldObjects.Add(backgroundNode);
       camera = new Camera2D(spriteBatch);
       camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
@@ -80,8 +81,9 @@ namespace Cold_Ship
       //initialize the needed portals
       fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 251, worldSize.Y - 280), new Vector2(15, 80), Portal.PortalType.FOWARD);
       portals.Add(fowardDoor);
+      worldObjects.AddRange(portals);
 
-      playerNode = new Scene2DNode(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
+      playerNode = new Character(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
       // Load the text with respect to the current player's position
 
       AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "Good, you're awake.", false));
@@ -96,6 +98,8 @@ namespace Cold_Ship
 
       Texture2D lighterTexture = Content.Load<Texture2D>("lighter");
       lighter = new PickUpItem(lighterTexture, new Vector2(fowardDoor.position.X - 32 - 260, fowardDoor.position.Y + 55), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);
+      worldObjects.Add(lighter);
+      worldObjects.Add(playerNode);
     }
 
     //unload contents
@@ -103,6 +107,7 @@ namespace Cold_Ship
     {
       platforms = new List<Platform>();
       portals = new List<Portal>();
+      worldObjects = new List<GenericSprite2D>();
     }
 
     //update function
@@ -140,11 +145,6 @@ namespace Cold_Ship
 
       lighter.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 
-      //update the shadowFilter's position with respect to the playerNode
-      shadowFilter.position = new Vector2((playerNode.position.X /*+ (playerNode.texture.Width / 2))*/) - (shadowFilter.texture.Width / 2),
-          (playerNode.position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.texture.Height / 2)));
-
-
       //update the camera based on the player and world size
       camera.TranslateWithSprite(playerNode, screenSize);
       camera.CapCameraPosition(worldSize, screenSize);
@@ -163,23 +163,8 @@ namespace Cold_Ship
           spriteBatch.Draw(this.PrisonerGame.DebugTexture, box.GetHitBox(), Color.Pink);
 
       //draw the desired nodes onto screen through the camera
-      camera.DrawNode(backgroundNode);
-      //camera.DrawNode(playerNode);
-      camera.DrawPickUpItem(lighter);
-      camera.DrawPlayerNode(playerNode);
-      //camera.DrawNode(shadowFilter);
-      //draw the platforms
-
-      foreach (Platform platform in platforms)
-      {
-        camera.DrawPlatform(platform);
-      }
-
-      //draw the portals
-      foreach (Portal portal in portals)
-      {
-        camera.DrawPortal(portal);
-      }
+      foreach (GenericSprite2D element in worldObjects)
+          camera.DrawNode(element);
 
       //draw the fps
       spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);

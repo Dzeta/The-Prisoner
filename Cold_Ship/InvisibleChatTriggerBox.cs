@@ -60,7 +60,7 @@ namespace Cold_Ship
       }
     }
 
-    public void InteractWith(Scene2DNode player, Game1 gameLevel)
+    public void InteractWith(Character player, Game1 gameLevel)
     {
       if (!this._isConsumed)
       {

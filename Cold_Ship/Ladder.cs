@@ -23,7 +23,7 @@ namespace Cold_Ship
         }
 
         //update method that handles the collisions
-        public bool Update(Scene2DNode player)
+        public bool Update(Character player)
         {
             return collision.Intersects(new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y));
         }

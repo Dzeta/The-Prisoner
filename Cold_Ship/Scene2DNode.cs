@@ -9,32 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace Cold_Ship
 {
-    // Generic Sprite 2D class for inheritance
-    public abstract class GenericSprite2D
-    {
-        public Texture2D texture;
-        public Vector2 position;
-        public Rectangle BoundBox;
-
-        public GenericSprite2D(Texture2D texture, Vector2 position, Rectangle boundBox)
-        {
-            this.texture = texture;
-            this.position = position;
-            this.BoundBox = boundBox;
-        }
-
-        public bool CheckCollision(GenericSprite2D sprite)
-        {
-            return this.BoundBox.Intersects(sprite.BoundBox);
-        }
-
-        public virtual void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
-        {
-            spriteBatch.Draw(texture, drawPosition, Color.White);
-        }
-    }
-
-    public class Scene2DNode : GenericSprite2D
+    public class Character : GenericSprite2D
     {
         //declare member variables
         public Vector2 prevPosition;
@@ -61,14 +36,14 @@ namespace Cold_Ship
         bool canClimb = false;
 
         //declare constructor for inheritance
-        public Scene2DNode(Texture2D texture, Vector2 position) : base(texture, position, Rectangle.Empty)
+        public Character(Texture2D texture, Vector2 position) : base(texture, position, Rectangle.Empty)
         {
             velocity = new Vector2(0, 0);
             this.bodyTemperature = 36;
         }
 
         //declare constructor for player sprite
-        public Scene2DNode(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit, int maxFramesX, int maxFramesY) : base(texture, position, Rectangle.Empty)
+        public Character(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit, int maxFramesX, int maxFramesY) : base(texture, position, Rectangle.Empty)
         {
             this.texture = texture;
             this.position = position;
@@ -85,33 +60,12 @@ namespace Cold_Ship
             playerSpriteSize = new Vector2((float)texture.Width / maxFramesX, (float)texture.Height / maxFramesY);
         }
 
-        //declare draw method
-        public void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
-        {
-            spriteBatch.Draw(texture, drawPosition, Color.White);
-        }
-
-
         //draws the player sprite onto screen
-        public void DrawPlayer(SpriteBatch spriteBatch, Vector2 drawPosition)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
             int line = (int)actionStatus;
             Rectangle rect = new Rectangle(currentFrame * (int)playerSpriteSize.X, line * (int)playerSpriteSize.Y, (int)playerSpriteSize.X, (int)playerSpriteSize.Y);
             spriteBatch.Draw(texture, drawPosition, rect, Color.White);
-        }
-
-        //draws the shadow filter onto the screen, the size of the filter
-        //is changed according to the parameter
-        public void DrawFilter(SpriteBatch spriteBatch, Vector2 drawPosition, float scale)
-        {
-            //update the shadowFilter's position with respect to the playerNode
-            if (scale < 1)
-            {
-                spriteBatch.Draw(texture, drawPosition, Color.White);
-            }
-            drawPosition = new Vector2((drawPosition.X /*+ (playerNode.texture.Width / 2))*/) + ((texture.Width - texture.Width * scale) / 2),
-            (drawPosition.Y /*+ (playerNode.playerSpriteSize.Y / 2)*/ + ((texture.Height - texture.Height * scale) / 2)));
-            spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, texture.Width, texture.Height), Color.White, 0f, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         }
 
         //move the sprite

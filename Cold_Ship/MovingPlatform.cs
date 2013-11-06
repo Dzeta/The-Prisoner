@@ -21,7 +21,7 @@ namespace Cold_Ship
             this.limits = limits;
         }
 
-        public override bool Update(Scene2DNode player, Vector2 prevPosition, float jumpTimer, float ground, bool isJumping)
+        public override bool Update(Character player, Vector2 prevPosition, float jumpTimer, float ground, bool isJumping)
         {
             bool ret = false;
             if (position.X + velocity.X > startPosition.X + limits.X || position.X + velocity.X < startPosition.X - limits.X)

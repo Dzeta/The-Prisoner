@@ -39,7 +39,7 @@ namespace Cold_Ship
         }
 
         //move the camera with respect to a sprite
-        public void TranslateWithSprite(Scene2DNode node, Vector2 screenSize)
+        public void TranslateWithSprite(GenericSprite2D node, Vector2 screenSize)
         {
             //horizontal transformations
             if (ApplyTransformations(node.position).X > screenSize.X / 3 * 1.5f)
@@ -79,56 +79,6 @@ namespace Cold_Ship
         {
             Vector2 drawPosition = ApplyTransformations(node.position);
             node.Draw(spriteBatch, drawPosition);
-        }
-
-
-        //draw the player sprite onto screen with respect to the camera
-        public void DrawPlayerNode(Scene2DNode node)
-        {
-            Vector2 drawPosition = ApplyTransformations(node.position);
-            node.DrawPlayer(spriteBatch, drawPosition);
-        }
-
-
-        //draw the shadow filter onto screen wtih respect to the camera
-        public void DrawFilter(Scene2DNode node, float scale)
-        {
-            Vector2 drawPosition = ApplyTransformations(node.position);
-            node.DrawFilter(spriteBatch, drawPosition, scale);
-        }
-
-
-        //draw the platform on screen with respect to the camera
-        public void DrawPlatform(Platform platform)
-        {
-            Vector2 drawPosition = ApplyTransformations(platform.position);
-            platform.Draw(spriteBatch, drawPosition);
-        }
-
-        //draw the portal on screen with respect to the camera
-        public void DrawPortal(Portal portal)
-        {
-            Vector2 drawPosition = ApplyTransformations(portal.position);
-            portal.Draw(spriteBatch, drawPosition);
-        }
-
-        //draw the pickUpItem on screen with respect to the camera
-        public void DrawPickUpItem(PickUpItem item)
-        {
-            Vector2 drawPosition = ApplyTransformations(item.position);
-            item.Draw(spriteBatch, drawPosition);
-        }
-
-        public void DrawLadder(Ladder ladder)
-        {
-            Vector2 drawPosition = ApplyTransformations(ladder.position);
-            ladder.Draw(spriteBatch, drawPosition);
-        }
-
-        public void DrawInteractable(Interactable interactable)
-        {
-            Vector2 drawPosition = ApplyTransformations(interactable.position);
-            interactable.Draw(spriteBatch, drawPosition);
         }
     }
 }
