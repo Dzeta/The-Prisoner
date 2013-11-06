@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-    public class Prototype_Level
+    public class Common_Room_Level
     {
         //declare member variables
         public SpriteBatch spriteBatch;
@@ -39,7 +39,7 @@ namespace Cold_Ship
         bool filterOn = true, generatorOn = false, doorCanOpen = false;
 
         //declare constructor
-        public Prototype_Level(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Common_Room_Level(SpriteBatch spriteBatch, Vector2 screenSize)
         {
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
@@ -47,7 +47,7 @@ namespace Cold_Ship
             portals = new List<Portal>();
             ladders = new List<Ladder>();
             worldObjects = new List<GenericSprite2D>();
-            
+
         }
 
         //load content
@@ -75,7 +75,7 @@ namespace Cold_Ship
 
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
-            
+
             //initialize the platforms and add them to the list
             platforms.Add(new Platform(platformTexture, new Vector2(890, 20), new Vector2(0, worldSize.Y - 280)));
             platforms.Add(new Platform(platformTexture, new Vector2(375, 20), new Vector2(925, worldSize.Y - 280)));
@@ -88,8 +88,8 @@ namespace Cold_Ship
             platforms.Add(new Platform(platformTexture, new Vector2(773, 20), new Vector2(933, worldSize.Y - 744)));
             platforms.Add(new Platform(platformTexture, new Vector2(250, 20), new Vector2(1742, worldSize.Y - 744)));
             //walls
-            //platforms.Add(new Platform(platformTexture, new Vector2(130, 270), new Vector2(963, worldSize.Y - 270)));
-            //platforms.Add(new Platform(platformTexture, new Vector2(130, 230), new Vector2(1150, worldSize.Y - 508)));
+            platforms.Add(new Platform(platformTexture, new Vector2(130, 270), new Vector2(963, worldSize.Y - 270)));
+            platforms.Add(new Platform(platformTexture, new Vector2(130, 230), new Vector2(1150, worldSize.Y - 508)));
 
             //initialize ladders and add them to the list
             Texture2D ladderTexture = Content.Load<Texture2D>("ladder");
@@ -193,7 +193,6 @@ namespace Cold_Ship
                 camera.DrawNode(element);
 
             if (filterOn)
-                //shadowFilter.filterScale = 0.5f;
                 camera.DrawNode(shadowFilter);
 
             //draw the fps

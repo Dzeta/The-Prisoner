@@ -35,7 +35,7 @@ namespace Cold_Ship
                         gameLevel += 1;
                 }
                 
-                if (portalType == PortalType.BACKWARD)
+                else if (portalType == PortalType.BACKWARD)
                 {
                     gameLevel -= 1;
                 }

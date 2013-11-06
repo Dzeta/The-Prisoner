@@ -243,7 +243,7 @@ namespace Cold_Ship
             //update portals
             foreach (Portal portal in portals)
             {
-                portal.Update(playerNode, ref gameLevel, doorCanOpen);
+                portal.Update(playerNode, ref gameLevel, /*doorCanOpen*/true);
             }
 
             lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);

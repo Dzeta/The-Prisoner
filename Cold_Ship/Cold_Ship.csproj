@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Camera2D.cs" />
+    <Compile Include="Common_Room_Level.cs" />
     <Compile Include="DialogueBubble.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="Game1.cs" />

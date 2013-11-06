@@ -20,7 +20,7 @@ using KeyboardState = Microsoft.Xna.Framework.Input.KeyboardState;
 namespace Cold_Ship
 {
   //declare the enum for game levels
-  public enum Game_Level { LEVEL_HOLDING_CELL, LEVEL1, LEVEL2 };
+  public enum Game_Level { LEVEL_HOLDING_CELL, LEVEL_PRISON_BLOCKS, LEVEL_GENERATOR, LEVEL_COMMON_ROOM };
 
   /// <summary>
   /// This is the main type for your game
@@ -55,8 +55,11 @@ namespace Cold_Ship
     Prototype_Level prototypeLevel1;
     Prototype_Level_2 prototypeLevel2;
     Level_Holding_Cell levelHoldingCell;
+    Common_Room_Level levelCommonRoom;
+
     Game_Level gameLevel = Game_Level.LEVEL_HOLDING_CELL;
     Game_Level prevGameLevel = Game_Level.LEVEL_HOLDING_CELL;
+
 
     double bodyTemperature = 36;
     double stamina = 100;
@@ -110,6 +113,8 @@ namespace Cold_Ship
       prototypeLevel1 = new Prototype_Level(spriteBatch, screenSize);
       prototypeLevel2 = new Prototype_Level_2(spriteBatch, screenSize);
       levelHoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
+      levelCommonRoom = new Common_Room_Level(spriteBatch, screenSize);
+
 
       // DIALOGUE USED COMPONENT
       this.DialogueQueue = new List<DialogueBubble>();
@@ -125,14 +130,17 @@ namespace Cold_Ship
     {
       switch (gameLevel)
       {
-        case Game_Level.LEVEL1:
+        case Game_Level.LEVEL_PRISON_BLOCKS:
           prototypeLevel1.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
           break;
-        case Game_Level.LEVEL2:
+        case Game_Level.LEVEL_GENERATOR:
           prototypeLevel2.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
           break;
         case Game_Level.LEVEL_HOLDING_CELL:
           levelHoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+          break;
+        case Game_Level.LEVEL_COMMON_ROOM:
+          levelCommonRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
           break;
       }
     }
@@ -146,6 +154,7 @@ namespace Cold_Ship
       prototypeLevel1.Unload();
       prototypeLevel2.Unload();
       levelHoldingCell.Unload();
+      levelCommonRoom.Unload();
     }
 
     /// <summary>
@@ -175,14 +184,17 @@ namespace Cold_Ship
 
       switch (gameLevel)
       {
-        case Game_Level.LEVEL1:
+        case Game_Level.LEVEL_PRISON_BLOCKS:
           bodyTemperature = prototypeLevel1.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
           break;
-        case Game_Level.LEVEL2:
+        case Game_Level.LEVEL_GENERATOR:
           bodyTemperature = prototypeLevel2.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
           break;
         case Game_Level.LEVEL_HOLDING_CELL:
           bodyTemperature = levelHoldingCell.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+          break;
+        case Game_Level.LEVEL_COMMON_ROOM:
+          bodyTemperature = levelCommonRoom.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
           break;
       }
 
@@ -220,14 +232,17 @@ namespace Cold_Ship
 
       switch (gameLevel)
       {
-        case Game_Level.LEVEL1:
+        case Game_Level.LEVEL_PRISON_BLOCKS:
           prototypeLevel1.Draw(framesPerSecond);
           break;
-        case Game_Level.LEVEL2:
+        case Game_Level.LEVEL_GENERATOR:
           prototypeLevel2.Draw(framesPerSecond);
           break;
         case Game_Level.LEVEL_HOLDING_CELL:
           levelHoldingCell.Draw(framesPerSecond);
+          break;
+        case Game_Level.LEVEL_COMMON_ROOM:
+          levelCommonRoom.Draw(framesPerSecond);
           break;
       }
 
