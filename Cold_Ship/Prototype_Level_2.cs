@@ -15,19 +15,24 @@ namespace Cold_Ship
     {
         //declare member variables
         public SpriteBatch spriteBatch;
-        Vector2 worldSize, screenSize;
-        List<Platform> platforms;
-        float ground;
-        Texture2D statusDisplayTexture;
         SpriteFont font;
-        Scene2DNode playerNode, backgroundNode, shadowFilter;
+        
+        Vector2 worldSize, screenSize;
+        float ground;
+
+        Texture2D statusDisplayTexture;
+
         Camera2D camera;
-        Portal fowardDoor, backwardDoor;
+        Scene2DNode playerNode, backgroundNode, shadowFilter;
+
+        List<Platform> platforms;
         List<Portal> portals;
-        bool filterOn = true, generatorOn = false, doorCanOpen = false;
-        float filterScale = 1;
+        Portal fowardDoor, backwardDoor;
         Interactable lightSwitch, generator, doorSwitch;
         PickUpItem staminaBooster;
+        
+        bool filterOn = true, generatorOn = false, doorCanOpen = false;
+        float filterScale = 1;
 
         //declare constructor
         public Prototype_Level_2(SpriteBatch spriteBatch, Vector2 screenSize)
@@ -94,7 +99,6 @@ namespace Cold_Ship
             Vector2 sizeBasePlatform = new Vector2(120, 15);
             platforms.Add(new MovingPlatform(platformTexture, sizeBasePlatform, new Vector2(130, 400), new Vector2(0, 0.3f), new Vector2(100, 100)));
             platforms.Add(new MovingPlatform(platformTexture, sizeBasePlatform, new Vector2(100, 580), new Vector2(-0.3f, 0), new Vector2(100, 100)));
-            //platforms.Add(new MovingPlatform(platformTexture, sizeBasePlatform, new Vector2(180, 350), new Vector2(0.3f, 0.0f), new Vector2(100, 100)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(0, 350)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(372, 273)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(712, 220)));
@@ -250,7 +254,6 @@ namespace Cold_Ship
             //draw the desired nodes onto screen through the camera
             camera.DrawNode(backgroundNode);
 
-            //camera.DrawNode(shadowFilter);
             //draw the platforms
             foreach (Platform platform in platforms)
             {
@@ -268,10 +271,6 @@ namespace Cold_Ship
             camera.DrawInteractable(doorSwitch);
             camera.DrawPlayerNode(playerNode);
 
-
-
-            //camera.DrawPlatform(platforms[0]);
-            //camera.DrawNode(shadowFilter);
             if (filterOn)
             {
                 camera.DrawFilter(shadowFilter, filterScale);

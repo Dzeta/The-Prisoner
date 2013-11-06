@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 namespace Cold_Ship
 {
     // Generic Sprite 2D class for inheritance
-    public class GenericSprite2D
+    public abstract class GenericSprite2D
     {
         public Texture2D texture;
         public Vector2 position;
@@ -28,9 +28,9 @@ namespace Cold_Ship
             return this.BoundBox.Intersects(sprite.BoundBox);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, drawPosition, Color.White);
         }
     }
 

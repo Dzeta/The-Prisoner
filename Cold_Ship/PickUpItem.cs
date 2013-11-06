@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace Cold_Ship
 {
-    public class PickUpItem : Scene2DNode
+    public class PickUpItem : GenericSprite2D
     {
         //item type enum
         public enum ItemType {LIGHT, STAMINA, TEMPERATURE, NONE};
@@ -22,7 +22,7 @@ namespace Cold_Ship
 
         //constructor
         public PickUpItem(Texture2D texture, Vector2 position, Vector2 size, ItemType itemType, float effect, ItemEffectDuration itemEffectDuration) :
-            base(texture, position)
+            base(texture, position, Rectangle.Empty)
         {
             this.itemType = itemType;
             this.effect = effect;
@@ -63,7 +63,7 @@ namespace Cold_Ship
 
 
         //draw the item onto screen
-        public void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
             spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
         }

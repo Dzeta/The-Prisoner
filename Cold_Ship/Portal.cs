@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace Cold_Ship
 {
-    public class Portal : Scene2DNode
+    public class Portal : GenericSprite2D
     {
         //declare member data
         public Vector2 size;
@@ -18,7 +18,7 @@ namespace Cold_Ship
 
         //constructor that initialize the texture and position
         public Portal(Texture2D texture, Vector2 position, Vector2 size, PortalType portalType ) :
-            base(texture, position)
+            base(texture, position, Rectangle.Empty)
         {
             this.size = size;
             this.portalType = portalType;
@@ -48,7 +48,7 @@ namespace Cold_Ship
         }
 
         //draw the portal onto screen
-        public void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
             spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
         }

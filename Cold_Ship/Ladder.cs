@@ -8,20 +8,17 @@ using Microsoft.Xna.Framework;
 
 namespace Cold_Ship
 {
-    public class Ladder
+    public class Ladder : GenericSprite2D
     {
         //declare member variables
-        public Texture2D texture;
-        public Vector2 position;
         public Vector2 size;
         
         private Rectangle collision;
         //declare constructor
         public Ladder(Texture2D texture, Vector2 size, Vector2 position)
+            : base(texture, position, Rectangle.Empty)
         {
-            this.texture = texture;
             this.size = size;
-            this.position = position;
             collision = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
         }
 
@@ -32,7 +29,7 @@ namespace Cold_Ship
         }
 
         //draw method that draws the platform onto the screen
-        public void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
             spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
         }

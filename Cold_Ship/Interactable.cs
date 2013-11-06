@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace Cold_Ship
 {
-    public class Interactable : Scene2DNode
+    public class Interactable : GenericSprite2D
     {
         //declare enum for type of interactable
         public enum Type_Of_Interactable {GENERATOR, LIGHT_SWITCH, DOOR_SWITCH};
@@ -21,7 +21,7 @@ namespace Cold_Ship
 
         //Constructor
         public Interactable(Texture2D texture, Vector2 position, Vector2 size, Type_Of_Interactable type, Texture2D altTexture = null) :
-            base(texture, position)
+            base(texture, position, Rectangle.Empty)
         {
             this.size = size;
             this.typeOfInteractable = type;
@@ -61,7 +61,7 @@ namespace Cold_Ship
         }
 
         //draw the item onto screen
-        public void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
             spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
         }
