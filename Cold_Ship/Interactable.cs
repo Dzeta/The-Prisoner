@@ -13,7 +13,7 @@ namespace Cold_Ship
     {
         //declare enum for type of interactable
         public enum Type_Of_Interactable {GENERATOR, LIGHT_SWITCH, DOOR_SWITCH};
-       
+
         //declare member variables
         public Vector2 size;
         public Type_Of_Interactable typeOfInteractable;
