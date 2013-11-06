@@ -13,7 +13,7 @@ namespace Cold_Ship
   public class DialogueBubble : GenericSprite2D
   {
     public const int LINE_FEED_LENGTH = 20; // Empirical number
-    public const int DEFAULT_PLAY_THROUGH_SPEED = 200;
+    public const int DEFAULT_PLAY_THROUGH_SPEED = 150;
 
     // Sense of typing the character out on the screen
     private int _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Empirical number

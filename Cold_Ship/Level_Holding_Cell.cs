@@ -36,6 +36,7 @@ namespace Cold_Ship
     List<Portal> portals;
     List<DialogueBubble> dialogueBubbles;
     List<GenericSprite2D> worldObjects;
+    bool visited = false;
 
     PickUpItem lighter;
 
@@ -86,14 +87,17 @@ namespace Cold_Ship
       playerNode = new Character(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
       // Load the text with respect to the current player's position
 
-      AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "Good, you're awake.", false));
-      AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "There isn't much time.", false));
-      AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "The ship is going down.", false));
-      AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "You need to fix it up if you want to live.", false));
-      AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "You do want to live, don't you?", false));
-      AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "I hear space death isn't very pleasant, though.", false));
-      AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "Up to you.", false));
-      AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 10, fowardDoor.position.Y + 30), "You definitely should pick that lighter up before you get out of here.", true));
+      if (!visited)
+      {
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "Good, you're awake.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "There isn't much time.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "The ship is going down.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "You need to fix it up if you want to live.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "You do want to live, don't you?", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "I hear space death isn't very pleasant, though.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "Up to you.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 10, fowardDoor.position.Y + 30), "You definitely should pick that lighter up before you get out of here.", false));
+      }
 
 
       Texture2D lighterTexture = Content.Load<Texture2D>("lighter");
@@ -108,6 +112,7 @@ namespace Cold_Ship
       platforms = new List<Platform>();
       portals = new List<Portal>();
       worldObjects = new List<GenericSprite2D>();
+      visited = true;
     }
 
     //update function
@@ -138,9 +143,12 @@ namespace Cold_Ship
         playerNode.position.X = worldSize.X - 250 - 31;
       }
 
-      foreach (Portal portal in portals)
+      if (lighter.position != new Vector2(fowardDoor.position.X - 32 - 260, fowardDoor.position.Y + 55))
       {
-        portal.Update(playerNode, ref gameLevel, true);
+          foreach (Portal portal in portals)
+          {
+              portal.Update(playerNode, ref gameLevel, true);
+          }
       }
 
       lighter.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
