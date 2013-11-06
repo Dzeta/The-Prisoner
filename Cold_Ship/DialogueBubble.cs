@@ -17,12 +17,12 @@ namespace Cold_Ship
 
     // Sense of typing the character out on the screen
     private int _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Empirical number
-        
+
     // AUTIO ENGINES
     public static AudioEngine engine { get; set; }
     public static SoundBank soundBank { get; set; }
     public static WaveBank waveBank { get; set; }
-        
+
     private static Texture2D _bubbleTextureMono;
     private static Texture2D _bubbleTextureHasMore;
     private static SpriteFont _mono8;
@@ -207,7 +207,7 @@ namespace Cold_Ship
         {
           this.End();
         }
-      } 
+      }
     }
 
     public void Draw(SpriteBatch spriteBatch)
