@@ -112,6 +112,9 @@
     <Content Include="Content\prisonblock_final.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\RADIUS_OF_LIGHT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\speech-has-more.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

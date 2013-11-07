@@ -13,6 +13,7 @@ namespace Cold_Ship
   public class DialogueBubble : GenericSprite2D
   {
     public const int LINE_FEED_LENGTH = 20; // Empirical number
+    public const int LINE_FEED_PAUSE = 1000; // Pause between line feeds
     public const int DEFAULT_PLAY_THROUGH_SPEED = 150;
 
     // Sense of typing the character out on the screen
@@ -58,6 +59,7 @@ namespace Cold_Ship
     private List<string> _scroller;
     private string _msg;
     private int _charDisplayTimer;
+    private int _lineFeedPauseTimer;
 
     private bool _isPlaying;
     private Game1 _gameLevel;
@@ -189,19 +191,33 @@ namespace Cold_Ship
 
       if (_charDisplayTimer >= _playThroughSpeed)
       {
-        if (_currentRow < _scroller.Count && _currentRowCharPosition < _scroller[_currentRow].Length)
+        if (_currentRow < _scroller.Count)
         {
-          DialogueBubble.soundBank.PlayCue("sound-next-char");
-          _currentRowCharPosition++;
-          _charDisplayTimer = 0;
-        }
-        else if (_currentRow < _scroller.Count - 1)
-        {
-          DialogueBubble.soundBank.PlayCue("sound-next-chat");
-          _currentRow++;
-          _currentRowCharPosition = 0;
-          _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Reset the playthrought speed
-
+          if (_currentRowCharPosition < _scroller[_currentRow].Length)
+          {
+            DialogueBubble.soundBank.PlayCue("sound-next-char");
+            _currentRowCharPosition++;
+            _charDisplayTimer = 0;
+          }
+          else
+          {
+            _lineFeedPauseTimer += gameTime.ElapsedGameTime.Milliseconds;
+            if (_lineFeedPauseTimer >= LINE_FEED_PAUSE)
+            {
+              if (_currentRow < _scroller.Count - 1)
+              {
+                DialogueBubble.soundBank.PlayCue("sound-next-chat");
+                _currentRow++;
+                _currentRowCharPosition = 0;
+                _lineFeedPauseTimer = 0;
+                _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Reset the playthrought speed
+              }
+              else
+              {
+                this.End();
+              }
+            }
+          }
         }
         else
         {
