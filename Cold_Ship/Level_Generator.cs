@@ -36,7 +36,7 @@ namespace Cold_Ship
         PickUpItem staminaBooster;
         Reactor reactor;
         
-        bool filterOn = false, generatorOn = false;
+        bool filterOn = true, generatorOn = false;
 
         //declare constructor
         public Level_Generator(SpriteBatch spriteBatch, Vector2 screenSize)

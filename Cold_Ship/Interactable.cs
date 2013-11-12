@@ -34,7 +34,7 @@ namespace Cold_Ship
             if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
             {
                 KeyboardState keyboard = Keyboard.GetState();
-                if (keyboard.IsKeyDown(Keys.E))
+                if (keyboard.IsKeyDown(HelperFunction.KeyUse))
                 {
                     switch (typeOfInteractable)
                     {

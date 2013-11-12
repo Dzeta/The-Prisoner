@@ -193,10 +193,10 @@ namespace Cold_Ship
             Keys[] keys = newKeyboardState.GetPressedKeys();
             foreach (Keys key in keys)
             {
-                switch (key)
-                {
-                    case Keys.A:
-                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(Keys.LeftShift) && stamina != 0)
+
+                    if(key == HelperFunction.KeyLeft)
+                    {
+                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
                         {
                             isExertingForce = true;
                             stoppedExertingForce = false;
@@ -239,7 +239,7 @@ namespace Cold_Ship
                             }
 
                         }
-                        else if (oldKeyboardState.IsKeyDown(Keys.LeftShift) && newKeyboardState.IsKeyUp(Keys.LeftShift))
+                        else if (oldKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && newKeyboardState.IsKeyUp(HelperFunction.KeySpeed))
                         {
                             isExertingForce = false;
                             stoppedExertingForce = true;
@@ -289,9 +289,10 @@ namespace Cold_Ship
                             }
 
                         }
-                        break;
-                    case Keys.D:
-                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(Keys.LeftShift) && stamina != 0)
+                    }
+                    else if (key == HelperFunction.KeyRight)
+                    {
+                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
                         {
                             isExertingForce = true;
                             stoppedExertingForce = false;
@@ -334,7 +335,7 @@ namespace Cold_Ship
                             }
 
                         }
-                        else if (oldKeyboardState.IsKeyDown(Keys.LeftShift) && newKeyboardState.IsKeyUp(Keys.LeftShift))
+                        else if (oldKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && newKeyboardState.IsKeyUp(HelperFunction.KeySpeed))
                         {
                             isExertingForce = false;
                             stoppedExertingForce = true;
@@ -383,20 +384,21 @@ namespace Cold_Ship
                                 }
                             }
                         }
-                        break;
-                    case Keys.W:
+                    }
+                    else if (key == HelperFunction.KeyUp)
+                    {
                         if (canClimb)
                         {
                             isClimbing = true;
                             isjumping = false;
-                            if (newKeyboardState.IsKeyDown(Keys.LeftShift) && stamina != 0)
+                            if (newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
                             {
                                 isExertingForce = true;
                                 stoppedExertingForce = false;
                                 position += new Vector2(0, -5);
                                 stamina -= 1;
                             }
-                            else if (oldKeyboardState.IsKeyDown(Keys.LeftShift) && newKeyboardState.IsKeyUp(Keys.LeftShift))
+                            else if (oldKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && newKeyboardState.IsKeyUp(HelperFunction.KeySpeed))
                             {
                                 isExertingForce = false;
                                 stoppedExertingForce = true;
@@ -427,20 +429,21 @@ namespace Cold_Ship
 
                             }
                         }
-                        break;
-                    case Keys.S:
+                    }
+                    else if (key == HelperFunction.KeyDown)
+                    {
                         if (canClimb)
                         {
                             isClimbing = true;
                             isjumping = false;
-                            if (newKeyboardState.IsKeyDown(Keys.LeftShift) && stamina != 0)
+                            if (newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
                             {
                                 isExertingForce = true;
                                 stoppedExertingForce = false;
                                 position += new Vector2(0, 5);
                                 stamina -= 1;
                             }
-                            else if (oldKeyboardState.IsKeyDown(Keys.LeftShift) && newKeyboardState.IsKeyUp(Keys.LeftShift))
+                            else if (oldKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && newKeyboardState.IsKeyUp(HelperFunction.KeySpeed))
                             {
                                 isExertingForce = false;
                                 stoppedExertingForce = true;
@@ -471,8 +474,9 @@ namespace Cold_Ship
 
                             }
                         }
-                        break;
-                    case Keys.Space:
+                    }
+                    else if (key == HelperFunction.KeyJump)
+                    {
                         if (!isjumping && oldKeyboardState.IsKeyUp(Keys.Space) && stamina != 0)
                         {
                             position += new Vector2(0, -40);
@@ -483,11 +487,7 @@ namespace Cold_Ship
                             stamina -= 0.5;
                             isClimbing = false;
                         }
-                        break;
-                    default:
-                        //velocity = new Vector2(0, 0);
-                        break;
-                }
+                    }
             }
             if (keys.Length == 0)
             {
