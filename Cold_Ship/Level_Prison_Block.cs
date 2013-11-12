@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-    public class Prototype_Level
+    public class Level_Prison_Block
     {
         //declare member variables
         public SpriteBatch spriteBatch;
@@ -32,14 +32,14 @@ namespace Cold_Ship
         List<Platform> platforms;
         List<Portal> portals;
         List<Ladder> ladders;
-        Portal fowardDoor, backwardDoor;
+        Portal forwardDoor, backwardDoor;
         Interactable lightSwitch, generator;
         PickUpItem staminaBooster;
 
-        bool filterOn = true, generatorOn = false, doorCanOpen = false;
+        bool filterOn = true, generatorOn = false;
 
         //declare constructor
-        public Prototype_Level(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Prison_Block(SpriteBatch spriteBatch, Vector2 screenSize)
         {
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
@@ -105,10 +105,11 @@ namespace Cold_Ship
             worldObjects.AddRange(ladders);
 
             //initialize the needed portals
-            backwardDoor = new Portal(platformTexture, new Vector2(100, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.BACKWARD);
-            fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 32 - 75, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.FOWARD);
+            backwardDoor = new Portal(new Vector2(100, worldSize.Y - 72 - 50), new Vector2(51, 72), Portal.PortalType.BACKWARD, Content);
+            forwardDoor = new Portal(new Vector2(worldSize.X - 32 - 75, worldSize.Y - 72 - 50), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
+            forwardDoor.canOpen = true;
             portals.Add(backwardDoor);
-            portals.Add(fowardDoor);
+            portals.Add(forwardDoor);
             worldObjects.AddRange(portals);
 
             //initialize the playerNode
@@ -118,7 +119,7 @@ namespace Cold_Ship
             }
             else if (prevGameLevel >= gameLevel)
             {
-                playerNode = new Character(playerTexture, new Vector2(fowardDoor.position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+                playerNode = new Character(playerTexture, new Vector2(forwardDoor.position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
 
             staminaBooster = new PickUpItem(platformTexture, new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
@@ -163,11 +164,11 @@ namespace Cold_Ship
             //update portals
             foreach (Portal portal in portals)
             {
-                portal.Update(playerNode, ref gameLevel, true);
+                portal.Update(playerNode, ref gameLevel);
             }
 
-            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
-            generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
+            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
+            generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
 
             staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 

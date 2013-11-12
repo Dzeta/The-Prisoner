@@ -32,7 +32,7 @@ namespace Cold_Ship
     Character playerNode;
     GenericSprite2D backgroundNode;
     Camera2D camera;
-    Portal fowardDoor;
+    Portal forwardDoor;
     List<Portal> portals;
     List<DialogueBubble> dialogueBubbles;
     List<GenericSprite2D> worldObjects;
@@ -80,30 +80,31 @@ namespace Cold_Ship
       Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
 
       //initialize the needed portals
-      fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 251, worldSize.Y - 280), new Vector2(15, 80), Portal.PortalType.FOWARD);
-      portals.Add(fowardDoor);
+      forwardDoor = new Portal(new Vector2(worldSize.X - 251, worldSize.Y - 288), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
+      forwardDoor.canOpen = true;
+      portals.Add(forwardDoor);
       worldObjects.AddRange(portals);
 
-      playerNode = new Character(playerTexture, new Vector2(fowardDoor.position.X - 32 - 200, worldSize.Y - 200 - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
+      playerNode = new Character(playerTexture, new Vector2(forwardDoor.position.X - 32 - 200, worldSize.Y - 200 - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
       // Load the text with respect to the current player's position
 
       if (!visited)
       {
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "Good, you're awake.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "There isn't much time.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "The ship is going down.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "You need to fix it up if you want to live.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "You do want to live, don't you?", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "I hear space death isn't very pleasant, though.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 200, fowardDoor.position.Y + 30), "Up to you.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(fowardDoor.position.X - 10, fowardDoor.position.Y + 30), "You definitely should pick that lighter up before you get out of here.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Good, you're awake.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "There isn't much time.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "The ship is going down.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You need to fix it up if you want to live.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You do want to live, don't you?", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "I hear space death isn't very pleasant, though.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Up to you.", false));
+          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 10, forwardDoor.position.Y + 30), "You definitely should pick that lighter up before you get out of here.", false));
       }
 
 
       Texture2D lighterTexture = Content.Load<Texture2D>("lighter");
       if (!visited)
       {
-          lighter = new PickUpItem(lighterTexture, new Vector2(fowardDoor.position.X - 32 - 260, fowardDoor.position.Y + 55), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);
+          lighter = new PickUpItem(lighterTexture, new Vector2(forwardDoor.position.X - 32 - 260, forwardDoor.position.Y + 55), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);
           worldObjects.Add(lighter);
       }
       worldObjects.Add(playerNode);
@@ -129,7 +130,7 @@ namespace Cold_Ship
           chatTrigger.Update(gameTime);
         if (!chatTrigger.IsConsumed() 
             &&chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
-          chatTrigger.InteractWith(new Vector2(fowardDoor.position.X - 50, fowardDoor.position.Y), PrisonerGame);
+          chatTrigger.InteractWith(new Vector2(forwardDoor.position.X - 50, forwardDoor.position.Y), PrisonerGame);
       }
 
       //update the player position with respect to keyboard input and platform collision
@@ -146,11 +147,11 @@ namespace Cold_Ship
         playerNode.position.X = worldSize.X - 250 - 31;
       }
 
-      if (lighter.position != new Vector2(fowardDoor.position.X - 32 - 260, fowardDoor.position.Y + 55))
+      if (lighter.position != new Vector2(forwardDoor.position.X - 32 - 260, forwardDoor.position.Y + 55))
       {
           foreach (Portal portal in portals)
           {
-              portal.Update(playerNode, ref gameLevel, true);
+              portal.Update(playerNode, ref gameLevel);
           }
       }
 

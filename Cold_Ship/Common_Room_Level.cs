@@ -105,8 +105,8 @@ namespace Cold_Ship
             worldObjects.AddRange(ladders);
 
             //initialize the needed portals
-            backwardDoor = new Portal(platformTexture, new Vector2(100, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.BACKWARD);
-            fowardDoor = new Portal(platformTexture, new Vector2(worldSize.X - 32 - 75, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.FOWARD);
+            backwardDoor = new Portal(new Vector2(100, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.BACKWARD, Content);
+            fowardDoor = new Portal(new Vector2(worldSize.X - 32 - 75, worldSize.Y - 64 - 50), new Vector2(32, 64), Portal.PortalType.FOWARD, Content);
             portals.Add(backwardDoor);
             portals.Add(fowardDoor);
             worldObjects.AddRange(portals);
@@ -163,7 +163,7 @@ namespace Cold_Ship
             //update portals
             foreach (Portal portal in portals)
             {
-                portal.Update(playerNode, ref gameLevel, true);
+                portal.Update(playerNode, ref gameLevel);
             }
 
             lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);

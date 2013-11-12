@@ -52,8 +52,8 @@ namespace Cold_Ship
     float exhaustionTimer, staminaExhaustionTimer;
     float jumpTimer;
     KeyboardState oldKeyboardState;
-    Prototype_Level prototypeLevel1;
-    Prototype_Level_2 prototypeLevel2;
+    Level_Prison_Block prototypeLevel1;
+    Level_Generator prototypeLevel2;
     Level_Holding_Cell levelHoldingCell;
     Common_Room_Level levelCommonRoom;
 
@@ -110,8 +110,8 @@ namespace Cold_Ship
       // Create a new SpriteBatch, which can be used to draw textures.
       spriteBatch = new SpriteBatch(GraphicsDevice);
 
-      prototypeLevel1 = new Prototype_Level(spriteBatch, screenSize);
-      prototypeLevel2 = new Prototype_Level_2(spriteBatch, screenSize);
+      prototypeLevel1 = new Level_Prison_Block(spriteBatch, screenSize);
+      prototypeLevel2 = new Level_Generator(spriteBatch, screenSize);
       levelHoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
       levelCommonRoom = new Common_Room_Level(spriteBatch, screenSize);
 
