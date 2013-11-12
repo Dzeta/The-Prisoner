@@ -34,8 +34,9 @@ namespace Cold_Ship
         Portal forwardDoor, backwardDoor;
         Interactable lightSwitch, generator, doorSwitch;
         PickUpItem staminaBooster;
+        Reactor reactor;
         
-        bool filterOn = true, generatorOn = false;
+        bool filterOn = false, generatorOn = false;
 
         //declare constructor
         public Level_Generator(SpriteBatch spriteBatch, Vector2 screenSize)
@@ -69,6 +70,9 @@ namespace Cold_Ship
             shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
+
+            reactor = new Reactor(Content, new Vector2(598, 468));
+            worldObjects.Add(reactor);
 
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
@@ -234,6 +238,7 @@ namespace Cold_Ship
             Vector2 prevPosition = playerNode.position;
             bool useLighter = filterOn;
             playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
+            reactor.Update(gameTime);
 
             //Check the player's collision with the world boundaries
             if (playerNode.position.X < 100 || playerNode.position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
