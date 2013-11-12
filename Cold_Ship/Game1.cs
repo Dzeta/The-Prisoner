@@ -128,21 +128,21 @@ namespace Cold_Ship
     /// </summary>
     protected override void LoadContent()
     {
-      switch (gameLevel)
-      {
-        case Game_Level.LEVEL_PRISON_BLOCKS:
-          prototypeLevel1.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-          break;
-        case Game_Level.LEVEL_GENERATOR:
-          prototypeLevel2.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-          break;
-        case Game_Level.LEVEL_HOLDING_CELL:
-          levelHoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-          break;
-        case Game_Level.LEVEL_COMMON_ROOM:
-          levelCommonRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-          break;
-      }
+      //switch (gameLevel)
+      //{
+      //  case Game_Level.LEVEL_PRISON_BLOCKS:
+        prototypeLevel1.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+      //    break;
+      //  case Game_Level.LEVEL_GENERATOR:
+        prototypeLevel2.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+      //    break;
+      //  case Game_Level.LEVEL_HOLDING_CELL:
+        levelHoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+      //    break;
+      //  case Game_Level.LEVEL_COMMON_ROOM:
+        levelCommonRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+      //    break;
+      //}
     }
 
     /// <summary>
@@ -200,8 +200,8 @@ namespace Cold_Ship
 
       if (prevGameLevel != gameLevel)
       {
-        UnloadContent();
-        LoadContent();
+        //UnloadContent();
+        //LoadContent();
         prevGameLevel = gameLevel;
       }
 
