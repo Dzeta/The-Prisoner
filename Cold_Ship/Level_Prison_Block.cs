@@ -15,7 +15,7 @@ namespace Cold_Ship
     {
         //declare member variables
         public SpriteBatch spriteBatch;
-        SpriteFont font;
+        SpriteFont manaspace12;
 
         Vector2 worldSize, screenSize;
         float ground;
@@ -63,8 +63,8 @@ namespace Cold_Ship
             worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);
             ground = worldSize.Y - 50;
 
-            //load font
-            font = Content.Load<SpriteFont>("Score");
+            //load manaspace12
+            manaspace12 = Content.Load<SpriteFont>("manaspace12");
 
             //initialize the needed nodes and camera
             backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
@@ -198,11 +198,11 @@ namespace Cold_Ship
                 camera.DrawNode(shadowFilter);
 
             //draw the fps
-            spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
+            spriteBatch.DrawString(manaspace12, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
             //draw the status display and the body temperature
             spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
-            spriteBatch.DrawString(font, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
+            spriteBatch.DrawString(manaspace12, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
+            spriteBatch.DrawString(manaspace12, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
             spriteBatch.End();
         }
     }
