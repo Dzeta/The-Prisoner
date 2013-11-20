@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-    public class Common_Room_Level
+    public class Level_Common_Room
     {
         //declare member variables
         public SpriteBatch spriteBatch;
@@ -39,7 +39,7 @@ namespace Cold_Ship
         bool filterOn = true, generatorOn = false, doorCanOpen = false;
 
         //declare constructor
-        public Common_Room_Level(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Common_Room(SpriteBatch spriteBatch, Vector2 screenSize)
         {
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
