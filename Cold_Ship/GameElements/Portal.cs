@@ -20,12 +20,12 @@ namespace Cold_Ship
 
         //constructor that initialize the texture and position
         public Portal(Vector2 position, Vector2 size, PortalType portalType, ContentManager Content) :
-            base(Content.Load<Texture2D>("door"), position, Rectangle.Empty)
+            base(Content.Load<Texture2D>("Objects\\door"), position, Rectangle.Empty)
         {
             this.size = size;
             this.portalType = portalType;
-            doorLightGreen = Content.Load<Texture2D>("doorlight_green");
-            doorLightRed = Content.Load<Texture2D>("doorlight_red");
+            doorLightGreen = Content.Load<Texture2D>("Objects\\doorlight_green");
+            doorLightRed = Content.Load<Texture2D>("Objects\\doorlight_red");
             canOpen = (portalType == PortalType.BACKWARD)
                                 ? true
                                 : false;

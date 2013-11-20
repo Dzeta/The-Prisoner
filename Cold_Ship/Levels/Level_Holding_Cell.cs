@@ -58,8 +58,8 @@ namespace Cold_Ship
     public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature, double stamina, double staminaLimit)
     {
       //load the needed textures
-      Texture2D playerTexture = Content.Load<Texture2D>("PlayerSpriteSheet");
-      Texture2D backgroundTexture = Content.Load<Texture2D>("holdingcell_final");
+      Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
+      Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\holdingcell_final");
       statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
 
@@ -68,7 +68,7 @@ namespace Cold_Ship
       ground = worldSize.Y - 200;
 
       //load font
-      font = Content.Load<SpriteFont>("Score");
+      font = Content.Load<SpriteFont>("Fonts\\Score");
 
       //initialize the needed nodes and camera
       backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
@@ -77,7 +77,7 @@ namespace Cold_Ship
       camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
       //initialize the needed platforms
-      Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
+      Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
 
       //initialize the needed portals
       forwardDoor = new Portal(new Vector2(worldSize.X - 251, worldSize.Y - 288), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
@@ -101,7 +101,7 @@ namespace Cold_Ship
       }
 
 
-      Texture2D lighterTexture = Content.Load<Texture2D>("lighter");
+      Texture2D lighterTexture = Content.Load<Texture2D>("Objects\\lighter");
       if (!visited)
       {
           lighter = new PickUpItem(lighterTexture, new Vector2(forwardDoor.position.X - 32 - 260, forwardDoor.position.Y + 55), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);

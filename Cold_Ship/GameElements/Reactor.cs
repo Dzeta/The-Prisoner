@@ -16,11 +16,11 @@ namespace Cold_Ship
         float timerChangeState = 2000;
 
         public Reactor(ContentManager Content, Vector2 position)
-            : base(Content.Load<Texture2D>("reactor_01"), position, Rectangle.Empty)
+            : base(Content.Load<Texture2D>("Textures\\reactor_01"), position, Rectangle.Empty)
         {
-            textures[0] = Content.Load<Texture2D>("reactor_01");
-            textures[1] = Content.Load<Texture2D>("reactor_02");
-            textures[2] = Content.Load<Texture2D>("reactor_03");
+            textures[0] = Content.Load<Texture2D>("Textures\\reactor_01");
+            textures[1] = Content.Load<Texture2D>("Textures\\reactor_02");
+            textures[2] = Content.Load<Texture2D>("Textures\\reactor_03");
         }
 
         public void Update(GameTime gameTime)

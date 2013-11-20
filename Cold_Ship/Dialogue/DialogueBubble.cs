@@ -123,12 +123,12 @@ namespace Cold_Ship
       if (_bubbleTextureHasMore == null)
         _bubbleTextureHasMore = level.Content.Load<Texture2D>("speech-has-more");
       if (_mono8 == null)
-        _mono8 = level.Content.Load<SpriteFont>("manaspace0");
+        _mono8 = level.Content.Load<SpriteFont>("Fonts\\manaspace0");
       if (engine == null)
       {
-        engine = new AudioEngine("Content\\SOUND_SPEECH_ENGINE.xgs");
-        soundBank = new SoundBank(engine, "Content\\SOUND_SPEECH_SOUNDBANK.xsb");
-        waveBank = new WaveBank(engine, "Content\\SOUND_SPEECH_WAVEBANK.xwb");
+        engine = new AudioEngine("Content\\Sounds\\SOUND_SPEECH_ENGINE.xgs");
+        soundBank = new SoundBank(engine, "Content\\Sounds\\SOUND_SPEECH_SOUNDBANK.xsb");
+        waveBank = new WaveBank(engine, "Content\\Sounds\\SOUND_SPEECH_WAVEBANK.xwb");
       }
 
       // We gonna place the bubble based on the player's position left or right of the screen middle
@@ -150,7 +150,7 @@ namespace Cold_Ship
       if (_bubbleTextureHasMore == null)
         _bubbleTextureHasMore = level.Content.Load<Texture2D>("speech-has-more");
       if (_mono8 == null)
-        _mono8 = level.Content.Load<SpriteFont>("manaspace0");
+        _mono8 = level.Content.Load<SpriteFont>("Fonts\\manaspace0");
       if (engine == null)
       {
         engine = new AudioEngine("Content\\SOUND_SPEECH_ENGINE.xgs");

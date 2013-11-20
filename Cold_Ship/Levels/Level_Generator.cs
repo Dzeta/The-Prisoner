@@ -52,8 +52,8 @@ namespace Cold_Ship
         public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature, double stamina, double staminaLimit)
         {
             //load the needed textures
-            Texture2D playerTexture = Content.Load<Texture2D>("PlayerSpriteSheet");
-            Texture2D backgroundTexture = Content.Load<Texture2D>("engineroom_bg");
+            Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
+            Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\engineroom_bg");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
             //initialize the world size and the ground coordinate according to the world size
@@ -61,7 +61,7 @@ namespace Cold_Ship
             ground = worldSize.Y - 50;
 
             //load font
-            font = Content.Load<SpriteFont>("Score");
+            font = Content.Load<SpriteFont>("Fonts\\Score");
 
             //initialize the needed nodes and camera
             //playerNode = new Scene2DNode(playerTexture, new Vector2(35, worldSize.Y - 64));
@@ -71,11 +71,11 @@ namespace Cold_Ship
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
-            reactor = new Reactor(Content, new Vector2(598, 468));
+            reactor = new Reactor(Content, new Vector2(578, 472));
             worldObjects.Add(reactor);
 
             //initialize the needed platforms
-            Texture2D platformTexture = Content.Load<Texture2D>("platformTexture");
+            Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
 
             //initialize the platforms and add them to the list
             createPlatforms(platformTexture);
@@ -99,9 +99,9 @@ namespace Cold_Ship
             }
 
             staminaBooster = new PickUpItem(platformTexture, new Vector2(165, 1750), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
-            lightSwitch = new Interactable(Content.Load<Texture2D>("lightswitch"), new Vector2(1900, 425), new Vector2(23, 32), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
-            generator = new Interactable(Content.Load<Texture2D>("generator_off"), new Vector2(worldSize.X - 246, ground - 63), new Vector2(103, 63), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("generator_on"));
-            doorSwitch = new Interactable(Content.Load<Texture2D>("doorswitch"), new Vector2(1120, 1650), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH);
+            lightSwitch = new Interactable(Content.Load<Texture2D>("Objects\\lightswitch"), new Vector2(1900, 425), new Vector2(23, 32), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
+            generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(worldSize.X - 246, ground - 63), new Vector2(103, 63), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
+            doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch"), new Vector2(1120, 1650), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH);
 
             worldObjects.Add(staminaBooster);
             worldObjects.Add(lightSwitch);
