@@ -16,5 +16,25 @@ namespace Cold_Ship
       public static Keys KeyJump = Keys.Space;   
       public static Keys KeyUse = Keys.E;
       public static Keys KeySpeed = Keys.LeftShift;
+
+      private static List<Keys> usedKeys;
+
+      public static List<Keys> UsedKeys()
+      {
+          if (usedKeys == null)
+              usedKeys = new List<Keys>();
+          else
+              usedKeys.Clear();
+
+          usedKeys.Add(KeyLeft);
+          usedKeys.Add(KeyUp);
+          usedKeys.Add(KeyDown);
+          usedKeys.Add(KeyRight);
+          usedKeys.Add(KeyJump);
+          usedKeys.Add(KeyUse);
+          usedKeys.Add(KeySpeed);
+
+          return usedKeys;
+      }
   }
 }
