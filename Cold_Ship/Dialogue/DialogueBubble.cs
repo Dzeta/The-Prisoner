@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Cold_Ship
 {
@@ -17,7 +18,7 @@ namespace Cold_Ship
     public const int DEFAULT_PLAY_THROUGH_SPEED = 150;
 
     // Sense of typing the character out on the screen
-    private int _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Empirical number
+    private float _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Empirical number
 
     // AUTIO ENGINES
     public static AudioEngine engine { get; set; }
@@ -60,6 +61,7 @@ namespace Cold_Ship
     private string _msg;
     private int _charDisplayTimer;
     private int _lineFeedPauseTimer;
+    private int _lineFeedPauseInterval = LINE_FEED_PAUSE;
 
     private bool _isPlaying;
     private Cold_Ship _gameLevel;
@@ -111,7 +113,7 @@ namespace Cold_Ship
       }
     }
 
-    public void SetPlayThroughSpeed(int speed)
+    private void _SetPlayThroughSpeed(float speed)
     {
       this._playThroughSpeed = speed;
     }
@@ -187,6 +189,7 @@ namespace Cold_Ship
 
     public void Update(GameTime gameTime)
     {
+      this._ListenForChatSpeedThrough();
       _charDisplayTimer += gameTime.ElapsedGameTime.Milliseconds;
 
       if (_charDisplayTimer >= _playThroughSpeed)
@@ -202,7 +205,9 @@ namespace Cold_Ship
           else
           {
             _lineFeedPauseTimer += gameTime.ElapsedGameTime.Milliseconds;
-            if (_lineFeedPauseTimer >= LINE_FEED_PAUSE)
+            this._ListenForLineFeedPause();
+
+            if (_lineFeedPauseTimer >= this._lineFeedPauseInterval)
             {
               if (_currentRow < _scroller.Count - 1)
               {
@@ -210,6 +215,7 @@ namespace Cold_Ship
                 _currentRow++;
                 _currentRowCharPosition = 0;
                 _lineFeedPauseTimer = 0;
+                _lineFeedPauseInterval = LINE_FEED_PAUSE;
                 _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Reset the playthrought speed
               }
               else
@@ -251,6 +257,17 @@ namespace Cold_Ship
       }
 
       return localScroller;
+    }
+    private void _ListenForChatSpeedThrough()
+    {
+      if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+        this._playThroughSpeed = 1;
+    }
+
+    private void _ListenForLineFeedPause()
+    {
+      if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+        this._lineFeedPauseInterval = 1;
     }
   }
 }
