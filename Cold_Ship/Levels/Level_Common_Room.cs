@@ -37,6 +37,7 @@ namespace Cold_Ship
         PickUpItem staminaBooster;
 
         List<GenericSprite2D> openingWindow = new List<GenericSprite2D>();
+        List<Platform> walls = new List<Platform>();
 
         bool filterOn = true, generatorOn = false, doorCanOpen = false;
 
@@ -105,8 +106,10 @@ namespace Cold_Ship
             //platforms.Add(new Platform(platformTexture, new Vector2(250, 20), new Vector2(1742, worldSize.Y - 744)));
 
             //walls
-            //platforms.Add(new Platform(platformTexture, new Vector2(130, 270), new Vector2(963, worldSize.Y - 270)));
-            //platforms.Add(new Platform(platformTexture, new Vector2(130, 230), new Vector2(1150, worldSize.Y - 508)));
+            walls.Add(new Platform(platformTexture, new Vector2(41, 193), new Vector2(worldSize.X - 693, worldSize.Y - 245)));
+            walls.Add(new Platform(platformTexture, new Vector2(65, 199), new Vector2(worldSize.X - 353, worldSize.Y - 477)));
+            
+            
 
             //initialize ladders and add them to the list
             //Load ladder texture
@@ -122,6 +125,7 @@ namespace Cold_Ship
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1707, worldSize.Y - 749)));
 
             worldObjects.AddRange(platforms);
+            platforms.AddRange(walls);
             worldObjects.AddRange(ladders);
 
             //initialize the needed portals
@@ -143,7 +147,7 @@ namespace Cold_Ship
             }
 
             //Pickup item
-            staminaBooster = new PickUpItem(platformTexture, new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
+            staminaBooster = new PickUpItem(platformTexture, new Vector2(worldSize.X - 1413, worldSize.Y - 111), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
             //Light switch
             lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
             //Generator
@@ -190,6 +194,7 @@ namespace Cold_Ship
         }
 
         //update function
+        bool wallsRetracted = false;
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
             //Update timer
@@ -198,6 +203,15 @@ namespace Cold_Ship
             //update the player position with respect to keyboard input and platform collision
             Vector2 prevPosition = playerNode.position;
             bool useLighter = filterOn;
+            //if (!generatorOn)
+            //{
+            //    platforms.AddRange(walls);
+            //}
+            if (generatorOn && !wallsRetracted)
+            {
+               platforms.RemoveRange(platforms.Count - 2, 2);
+               wallsRetracted = true;
+            }
             playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
             //Check the player's collision with the world boundaries
@@ -217,7 +231,10 @@ namespace Cold_Ship
             doorSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref fowardDoor.canOpen);
             doorSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref roomDoor.canOpen);
 
-            staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
+            if (insideRoom)
+            {
+                staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
+            }
 
             //update the shadowFilter's position with respect to the playerNode
             shadowFilter.position = new Vector2((playerNode.position.X /*+ (playerNode.texture.Width / 2))*/) - (shadowFilter.texture.Width / 2),
@@ -290,6 +307,11 @@ namespace Cold_Ship
                 camera.DrawNode(element);
             }
             camera.DrawNode(roomDoor);
+            if (!generatorOn)
+            {
+                camera.DrawNode(walls[0]);
+                camera.DrawNode(walls[1]);
+            }
             if (!insideRoom)
             {
                 camera.DrawNode(playerNode);

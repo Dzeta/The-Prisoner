@@ -57,8 +57,8 @@ namespace Cold_Ship
     Level_Holding_Cell levelHoldingCell;
     Level_Common_Room levelCommonRoom;
 
-    Game_Level gameLevel = Game_Level.LEVEL_HOLDING_CELL;
-    Game_Level prevGameLevel = Game_Level.LEVEL_HOLDING_CELL;
+    Game_Level gameLevel = Game_Level.LEVEL_COMMON_ROOM;
+    Game_Level prevGameLevel = Game_Level.LEVEL_GENERATOR;
 
 
     double bodyTemperature = 36;
