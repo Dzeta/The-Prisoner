@@ -44,7 +44,7 @@ namespace Cold_Ship
         //timer and counter for opening window
         float openWindowTimer = 0;
         int windowAnimationCounter = 0;
-        //If inside the room
+        //Bool flag to check wether the player is inside the room
         bool insideRoom = false;
 
         //declare constructor
@@ -79,6 +79,7 @@ namespace Cold_Ship
             font = Content.Load<SpriteFont>("Fonts\\Score");
 
             //initialize the needed nodes and camera
+            //load the various layers of background node
             backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
             backgroundFront = new GenericSprite2D(backgroundFrontTexture, new Vector2(0, 0), Rectangle.Empty);
             backgroundMiddle = new GenericSprite2D(backgroundMiddleLayer, new Vector2(0, 0), Rectangle.Empty);
@@ -153,7 +154,7 @@ namespace Cold_Ship
             //Generator
             generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(142, worldSize.Y - 510 - 65), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
             //Door switch
-            doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch"), new Vector2(worldSize.X - 199, worldSize.Y - 350), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH);
+            doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(worldSize.X - 199, worldSize.Y - 350), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH, Content.Load <Texture2D>("Objects\\doorswitch_on"));
 
             worldObjects.Add(staminaBooster);
             //worldObjects.Add(lightSwitch);
@@ -202,7 +203,8 @@ namespace Cold_Ship
 
             //update the player position with respect to keyboard input and platform collision
             Vector2 prevPosition = playerNode.position;
-            bool useLighter = filterOn;
+            //bool useLighter = filterOn;
+
             //if (!generatorOn)
             //{
             //    platforms.AddRange(walls);
@@ -212,7 +214,7 @@ namespace Cold_Ship
                platforms.RemoveRange(platforms.Count - 2, 2);
                wallsRetracted = true;
             }
-            playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
+            playerNode.Update(!generatorOn, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
             //Check the player's collision with the world boundaries
             if (playerNode.position.X < 100 || playerNode.position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
@@ -237,6 +239,7 @@ namespace Cold_Ship
             }
 
             //update the shadowFilter's position with respect to the playerNode
+            filterOn = !generatorOn;
             shadowFilter.position = new Vector2((playerNode.position.X /*+ (playerNode.texture.Width / 2))*/) - (shadowFilter.texture.Width / 2),
                 (playerNode.position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.texture.Height / 2)));
 
@@ -318,7 +321,7 @@ namespace Cold_Ship
             }
 
             if (filterOn)
-                //camera.DrawNode(shadowFilter);
+                camera.DrawNode(shadowFilter);
 
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);

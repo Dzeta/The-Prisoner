@@ -28,6 +28,7 @@ namespace Cold_Ship
             this.altTexture = altTexture;
         }
 
+
         //Update function (detect collision, etc.)
         public void Update(Character playerNode, ref bool generatorOn, ref bool filterOn, Filter filter, ref bool doorCanOpen)
         {
@@ -49,11 +50,21 @@ namespace Cold_Ship
                             if (generatorOn)
                             {
                                 filterOn = false;
+                                if (altTexture != null)
+                                {
+                                    texture = altTexture;
+                                }
                             }
                             break;
                         case Type_Of_Interactable.DOOR_SWITCH:
                             if (generatorOn)
+                            {
                                 doorCanOpen = true;
+                                if (altTexture != null)
+                                {
+                                    texture = altTexture;
+                                }
+                            }
                             break;
                     }
                 }
