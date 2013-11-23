@@ -90,14 +90,14 @@ namespace Cold_Ship
 
       if (!visited)
       {
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Good, you're awake.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "There isn't much time.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "The ship is going down.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You need to fix it up if you want to live.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You do want to live, don't you?", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "I hear space death isn't very pleasant, though.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Up to you.", false));
-          AllChatTriggers.Add(new InvisibleChatTriggerBox(new Vector2(forwardDoor.position.X - 10, forwardDoor.position.Y + 30), "You definitely should pick that lighter up before you get out of here.", false));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Good, you're awake.", false));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "There isn't much time.", false));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "The ship is going down.", false));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You need to fix it up if you want to live.", false));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You do want to live, don't you?", false));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "I hear space death isn't very pleasant, though.", false));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Up to you.", false));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 10, forwardDoor.position.Y + 30), "You definitely should pick that lighter up before you get out of here.", true));
       }
 
 

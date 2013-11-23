@@ -9,8 +9,9 @@ using Microsoft.Xna.Framework;
 
 namespace Cold_Ship
 {
-    public class Character : GenericSprite2D
+    public class Character : GenericSprite2D, IWatchfulConditional
     {
+        public static Cold_Ship GameInstance;
         //declare member variables
         public Vector2 prevPosition;
         public Vector2 velocity;
@@ -35,11 +36,16 @@ namespace Cold_Ship
         bool isClimbing = false;
         bool canClimb = false;
 
+        private PocketLightSource _pocketLight;
+
         //declare constructor for inheritance
-        public Character(Texture2D texture, Vector2 position) : base(texture, position, Rectangle.Empty)
+        public Character(Cold_Ship gameInstance, Texture2D texture, Vector2 position) : base(texture, position, Rectangle.Empty)
         {
+            if (GameInstance == null) GameInstance = gameInstance;
             velocity = new Vector2(0, 0);
             this.bodyTemperature = 36;
+
+            this._pocketLight = PocketLightSource.GetNewInstance(gameInstance, this);
         }
 
         //declare constructor for player sprite
@@ -66,6 +72,8 @@ namespace Cold_Ship
             int line = (int)actionStatus;
             Rectangle rect = new Rectangle(currentFrame * (int)playerSpriteSize.X, line * (int)playerSpriteSize.Y, (int)playerSpriteSize.X, (int)playerSpriteSize.Y);
             spriteBatch.Draw(texture, drawPosition, rect, Color.White);
+
+            if (_pocketLight != null) _pocketLight.Draw(spriteBatch);
         }
 
         //move the sprite
@@ -77,6 +85,8 @@ namespace Cold_Ship
         //update everything about the Scene2DNode object
         public void Update(bool lighterAcquired, GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, List<Ladder> ladders, Vector2 worldSize, ref float staminaExhaustionTimer)
         {
+            if (_pocketLight != null) _pocketLight.Update(gameTime);
+
             //register the position before updating (prevPosition)
             prevPosition = position;
             //update timers
@@ -186,6 +196,9 @@ namespace Cold_Ship
                 }
             }
         }
+
+        public bool HasLighter() { return this._pocketLight != null; }
+        public bool GetCondition() { return this.HasLighter(); }
 
         //update the sprite position based on the keyboard inputs
         public void UpdateKeyboard(bool lighterAcquired,KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer, ref float animationTimer)
