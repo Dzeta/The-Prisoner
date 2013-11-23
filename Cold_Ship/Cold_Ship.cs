@@ -41,7 +41,7 @@ namespace Cold_Ship
         // A few unique state that the game can be, these states are linear
         // Which means they cannot be combined togheter with one another
         // Only frozen is implemented so far, pause still needs work
-        public enum GameState { FROZEN, DIALOGUING, PAUSED, ENDED, PLAYING, INTIALIZED }
+        public enum GameState { FROZEN, DIALOGUING, PAUSED, ENDED, PLAYING, INTIALIZED, MENU, KEY_BINDING }
         private Stack<GameState> _gameState;
         // DIALOGUE USED COMPOENTS
         public List<DialogueBubble> DialogueQueue { get; set; }
@@ -51,6 +51,11 @@ namespace Cold_Ship
         float bodyTempTimer;
         float exhaustionTimer, staminaExhaustionTimer;
         float jumpTimer;
+
+        MainMenu mainMenu;
+        PauseMenu pauseMenu;
+        KeyBindingMenu keyBindingMenu;
+
         KeyboardState oldKeyboardState;
         Level_Prison_Block prototypeLevel1;
         Level_Generator prototypeLevel2;
@@ -72,7 +77,7 @@ namespace Cold_Ship
             Content.RootDirectory = "Content";
             this._gameState = new Stack<GameState>();
             this._gameState.Push(GameState.INTIALIZED);
-            this._gameState.Push(GameState.PLAYING);
+            this._gameState.Push(GameState.MENU);
         }
 
         // Bunch of helper methods to deal with the state of the game at any moment
@@ -98,6 +103,10 @@ namespace Cold_Ship
             graphics.PreferredBackBufferHeight = (int)screenSize.Y;
             //graphics.IsFullScreen = true;
 
+            DialogueBubble.engine = new AudioEngine("Content\\Sounds\\SOUND_SPEECH_ENGINE.xgs");
+            DialogueBubble.soundBank = new SoundBank(DialogueBubble.engine, "Content\\Sounds\\SOUND_SPEECH_SOUNDBANK.xsb");
+            DialogueBubble.waveBank = new WaveBank(DialogueBubble.engine, "Content\\Sounds\\SOUND_SPEECH_WAVEBANK.xwb");
+
             //initiate the timers
             bodyTempTimer = 0;
             exhaustionTimer = 0;
@@ -109,6 +118,10 @@ namespace Cold_Ship
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            mainMenu = new MainMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
+            pauseMenu = new PauseMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
+            keyBindingMenu = new KeyBindingMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
 
             prototypeLevel1 = new Level_Prison_Block(spriteBatch, screenSize);
             prototypeLevel2 = new Level_Generator(spriteBatch, screenSize);
@@ -128,21 +141,10 @@ namespace Cold_Ship
         /// </summary>
         protected override void LoadContent()
         {
-            //switch (gameLevel)
-            //{
-            //  case Game_Level.LEVEL_PRISON_BLOCKS:
             prototypeLevel1.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-            //    break;
-            //  case Game_Level.LEVEL_GENERATOR:
             prototypeLevel2.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-            //    break;
-            //  case Game_Level.LEVEL_HOLDING_CELL:
             levelHoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-            //    break;
-            //  case Game_Level.LEVEL_COMMON_ROOM:
             levelCommonRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-            //    break;
-            //}
         }
 
         /// <summary>
@@ -165,7 +167,10 @@ namespace Cold_Ship
         protected override void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            {
+                if (this.GameStateIs(GameState.PLAYING))
+                    ActivateState(GameState.PAUSED);
+            }
 
             if (this.GameStateIs(GameState.DIALOGUING))
             {
@@ -204,6 +209,18 @@ namespace Cold_Ship
                     prevGameLevel = gameLevel;
                 }
             }
+            else if (this.GameStateIs(GameState.MENU))
+            {
+                mainMenu.Update(gameTime);
+            }
+            else if (this.GameStateIs(GameState.PAUSED))
+            {
+                pauseMenu.Update(gameTime);
+            }
+            else if (this.GameStateIs(GameState.KEY_BINDING))
+            {
+                keyBindingMenu.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -230,35 +247,50 @@ namespace Cold_Ship
                 frames = 0;
             }
 
-            switch (gameLevel)
+            if(this.GameStateIs(GameState.PLAYING) || this.GameStateIs(GameState.DIALOGUING))
             {
-                case Game_Level.LEVEL_PRISON_BLOCKS:
-                    prototypeLevel1.Draw(framesPerSecond);
-                    break;
-                case Game_Level.LEVEL_GENERATOR:
-                    prototypeLevel2.Draw(framesPerSecond);
-                    break;
-                case Game_Level.LEVEL_HOLDING_CELL:
-                    levelHoldingCell.Draw(framesPerSecond);
-                    break;
-                case Game_Level.LEVEL_COMMON_ROOM:
-                    levelCommonRoom.Draw(framesPerSecond);
-                    break;
-            }
-
-            // Putting dialogue here cause they need to be appearing on top of everything
-            if (this.GameStateIs(GameState.DIALOGUING))
-            {
-                spriteBatch.Begin();
-                foreach (DialogueBubble dialogue in this.DialogueQueue)
+                switch (gameLevel)
                 {
-                    if (dialogue.IsPlaying())
-                    {
-                        dialogue.Draw(spriteBatch);
+                    case Game_Level.LEVEL_PRISON_BLOCKS:
+                        prototypeLevel1.Draw(framesPerSecond);
                         break;
-                    }
+                    case Game_Level.LEVEL_GENERATOR:
+                        prototypeLevel2.Draw(framesPerSecond);
+                        break;
+                    case Game_Level.LEVEL_HOLDING_CELL:
+                        levelHoldingCell.Draw(framesPerSecond);
+                        break;
+                    case Game_Level.LEVEL_COMMON_ROOM:
+                        levelCommonRoom.Draw(framesPerSecond);
+                        break;
                 }
-                spriteBatch.End();
+
+                // Putting dialogue here cause they need to be appearing on top of everything
+                if (this.GameStateIs(GameState.DIALOGUING))
+                {
+                    spriteBatch.Begin();
+                    foreach (DialogueBubble dialogue in this.DialogueQueue)
+                    {
+                        if (dialogue.IsPlaying())
+                        {
+                            dialogue.Draw(spriteBatch);
+                            break;
+                        }
+                    }
+                    spriteBatch.End();
+                }
+            }
+            else if (this.GameStateIs(GameState.MENU))
+            {
+                mainMenu.Draw(spriteBatch);
+            }
+            else if (this.GameStateIs(GameState.PAUSED))
+            {
+                pauseMenu.Draw(spriteBatch);
+            }
+            else if (this.GameStateIs(GameState.KEY_BINDING))
+            {
+                keyBindingMenu.Draw(spriteBatch);
             }
 
             base.Draw(gameTime);
