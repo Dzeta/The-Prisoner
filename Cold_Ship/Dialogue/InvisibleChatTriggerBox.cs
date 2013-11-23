@@ -47,13 +47,13 @@ namespace Cold_Ship
 
     public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos, string m, bool p)
     {
-      return InvisibleChatTriggerBox.GetNewInstance(pos, m, p, null);
+      return new InvisibleChatTriggerBox(pos, m, p);
     }
 
     public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos,
-      string m, bool p, IWatchfulConditional w)
+      string m, IWatchfulConditional w)
     {
-      InvisibleChatTriggerBox _instance = new InvisibleChatTriggerBox(pos, m, p);
+      InvisibleChatTriggerBox _instance = new InvisibleChatTriggerBox(pos, m, false);
       _instance._watchee = w;
       return _instance;
     }

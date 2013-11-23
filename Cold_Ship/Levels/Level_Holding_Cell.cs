@@ -86,6 +86,7 @@ namespace Cold_Ship
       worldObjects.AddRange(portals);
 
       playerNode = new Character(playerTexture, new Vector2(forwardDoor.position.X - 32 - 200, worldSize.Y - 200 - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
+      playerNode._pocketLight = PocketLightSource.GetNewInstance(PrisonerGame, playerNode);
       // Load the text with respect to the current player's position
 
       if (!visited)
@@ -122,7 +123,6 @@ namespace Cold_Ship
     //update function
     public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
     {
-
       // Update Dialogues
       foreach (InvisibleChatTriggerBox chatTrigger in AllChatTriggers)
       {
@@ -184,7 +184,6 @@ namespace Cold_Ship
       spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
       spriteBatch.DrawString(font, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
       spriteBatch.DrawString(font, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
-
 
       // Draw all invisible chat trigger
       if (Cold_Ship.DEBUG_MODE)

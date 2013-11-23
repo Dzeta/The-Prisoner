@@ -36,7 +36,7 @@ namespace Cold_Ship
         bool isClimbing = false;
         bool canClimb = false;
 
-        private PocketLightSource _pocketLight;
+        public PocketLightSource _pocketLight;
 
         //declare constructor for inheritance
         public Character(Cold_Ship gameInstance, Texture2D texture, Vector2 position) : base(texture, position, Rectangle.Empty)

@@ -45,7 +45,6 @@ namespace Cold_Ship
         int windowAnimationCounter = 0;
         //If inside the room
         bool insideRoom = false;
-
         //declare constructor
         public Level_Common_Room(SpriteBatch spriteBatch, Vector2 screenSize)
         {
@@ -120,7 +119,6 @@ namespace Cold_Ship
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(134, worldSize.Y - 747)));
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(898, worldSize.Y - 749)));
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1707, worldSize.Y - 749)));
-
             worldObjects.AddRange(platforms);
             worldObjects.AddRange(ladders);
 
