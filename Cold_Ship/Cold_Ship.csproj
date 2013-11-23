@@ -36,6 +36,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Camera\Camera2D.cs" />
+    <Compile Include="GameElements\PocketLightSource.cs" />
+    <Compile Include="IWatchfulConditional.cs" />
     <Compile Include="Levels\Level_Common_Room.cs" />
     <Compile Include="Dialogue\DialogueBubble.cs" />
     <Compile Include="Camera\Filter.cs" />
@@ -118,9 +120,6 @@
     <Content Include="Content\Objects\lightswitch.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\RADIUS_OF_LIGHT.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Sounds\sound-next-char.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -137,6 +136,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\speech.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\radius_of_light.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\reactor_01.png">

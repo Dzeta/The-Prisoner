@@ -14,6 +14,9 @@ namespace Cold_Ship
         public Vector2 position;
         public Rectangle BoundBox;
 
+        public GenericSprite2D(Texture2D texture) : this(texture, Vector2.One, Rectangle.Empty) { }
+        public GenericSprite2D(Texture2D texture, Vector2 position) : this(texture, position, Rectangle.Empty) { }
+
         public GenericSprite2D(Texture2D texture, Vector2 position, Rectangle boundBox)
         {
             this.texture = texture;
@@ -29,6 +32,11 @@ namespace Cold_Ship
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
             spriteBatch.Draw(texture, drawPosition, Color.White);
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, this.position, Color.White);
         }
     }
 }
