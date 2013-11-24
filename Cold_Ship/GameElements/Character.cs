@@ -35,11 +35,13 @@ namespace Cold_Ship
         public bool isjumping = false;
         bool isClimbing = false;
         bool canClimb = false;
+        bool gravityIsEnabled = true;
 
         public PocketLightSource _pocketLight;
 
         //declare constructor for inheritance
-        public Character(Cold_Ship gameInstance, Texture2D texture, Vector2 position) : base(texture, position, Rectangle.Empty)
+        public Character(Cold_Ship gameInstance, Texture2D texture, Vector2 position)
+            : base(texture, position, Rectangle.Empty)
         {
             if (GameInstance == null) GameInstance = gameInstance;
             velocity = new Vector2(0, 0);
@@ -49,7 +51,8 @@ namespace Cold_Ship
         }
 
         //declare constructor for player sprite
-        public Character(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit, int maxFramesX, int maxFramesY) : base(texture, position, Rectangle.Empty)
+        public Character(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit, int maxFramesX, int maxFramesY)
+            : base(texture, position, Rectangle.Empty)
         {
             this.texture = texture;
             this.position = position;
@@ -101,12 +104,18 @@ namespace Cold_Ship
             KeyboardState newKeyboardState = Keyboard.GetState();
 
             canClimb = false;
+            gravityIsEnabled = true;
             if (ladders != null)
             {
                 foreach (Ladder ladder in ladders)
                 {
-                    if (ladder.Update(this))
+                    if (ladder.CanClimb(this))
                         canClimb = true;
+                    if (ladder.isOnTop(this))
+                    {
+                        isjumping = false;
+                        gravityIsEnabled = false;
+                    }
                 }
             }
             if (!canClimb)
@@ -114,11 +123,9 @@ namespace Cold_Ship
 
             UpdateKeyboard(lighterAcquired, oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
 
-            //Move();
             oldKeyboardState = newKeyboardState;
 
             //detect platform collision
-            //bool jumpable = false;
             foreach (Platform platform in platforms)
             {
                 if (!platform.Update(this, prevPosition, jumpTimer, ground, isjumping))
@@ -165,7 +172,7 @@ namespace Cold_Ship
 
             //apply gravity
             prevPosition = position;
-            if (!isClimbing)
+            if (!isClimbing && (gravityIsEnabled || newKeyboardState.IsKeyDown(HelperFunction.KeyDown)))
             {
                 Move();
                 if (position.Y < ground - playerSpriteSize.Y && jumpTimer > 200)
@@ -201,13 +208,18 @@ namespace Cold_Ship
         public bool GetCondition() { return this.HasLighter(); }
 
         //update the sprite position based on the keyboard inputs
-        public void UpdateKeyboard(bool lighterAcquired,KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer, ref float animationTimer)
+        public void UpdateKeyboard(bool lighterAcquired, KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer, ref float animationTimer)
         {
             Keys[] keys = newKeyboardState.GetPressedKeys();
             foreach (Keys key in keys)
             {
-
-                    if(key == HelperFunction.KeyLeft)
+                if (key == HelperFunction.KeyLeft)
+                {
+                    if (isClimbing) 
+                    {
+                        position += new Vector2(-3, 0);
+                    }
+                    else
                     {
                         if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
                         {
@@ -303,7 +315,14 @@ namespace Cold_Ship
 
                         }
                     }
-                    else if (key == HelperFunction.KeyRight)
+                }
+                else if (key == HelperFunction.KeyRight)
+                {
+                    if (isClimbing)
+                    {
+                        position += new Vector2(3, 0);
+                    }
+                    else
                     {
                         if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
                         {
@@ -336,7 +355,7 @@ namespace Cold_Ship
                                     actionStatus = Action_Status.FORWARD_WITH_LIGHTER;
                                     currentFrame = 0;
                                 }
-                                else if (animationTimer > 75 && !isjumping)
+                                else if (animationTimer > 75 && !isjumping && !isClimbing)
                                 {
                                     currentFrame++;
                                     if (currentFrame >= maxFramesX)
@@ -398,109 +417,110 @@ namespace Cold_Ship
                             }
                         }
                     }
-                    else if (key == HelperFunction.KeyUp)
+                }
+                else if (key == HelperFunction.KeyUp)
+                {
+                    if (canClimb)
                     {
-                        if (canClimb)
+                        isClimbing = true;
+                        isjumping = false;
+                        if (newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
                         {
-                            isClimbing = true;
-                            isjumping = false;
-                            if (newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
-                            {
-                                isExertingForce = true;
-                                stoppedExertingForce = false;
-                                position += new Vector2(0, -5);
-                                stamina -= 1;
-                            }
-                            else if (oldKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && newKeyboardState.IsKeyUp(HelperFunction.KeySpeed))
-                            {
-                                isExertingForce = false;
-                                stoppedExertingForce = true;
-                                position += new Vector2(0, -3);
-                                stamina -= 0.03;
-                            }
-                            else
-                            {
-                                isExertingForce = false;
-                                //stoppedExertingForce = false;
-                                position += new Vector2(0, -3);
-                                stamina -= 0.03;
+                            isExertingForce = true;
+                            stoppedExertingForce = false;
+                            position += new Vector2(0, -5);
+                            stamina -= 1;
+                        }
+                        else if (oldKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && newKeyboardState.IsKeyUp(HelperFunction.KeySpeed))
+                        {
+                            isExertingForce = false;
+                            stoppedExertingForce = true;
+                            position += new Vector2(0, -3);
+                            stamina -= 0.03;
+                        }
+                        else
+                        {
+                            isExertingForce = false;
+                            //stoppedExertingForce = false;
+                            position += new Vector2(0, -3);
+                            stamina -= 0.03;
 
-                                if (actionStatus != Action_Status.CLIMB)
+                            if (actionStatus != Action_Status.CLIMB)
+                            {
+                                actionStatus = Action_Status.CLIMB;
+                                currentFrame = 0;
+                            }
+                            else if (animationTimer > 150 && !isjumping)
+                            {
+                                currentFrame++;
+                                if (currentFrame >= 2)
                                 {
-                                    actionStatus = Action_Status.CLIMB;
                                     currentFrame = 0;
                                 }
-                                else if (animationTimer > 150 && !isjumping)
-                                {
-                                    currentFrame++;
-                                    if (currentFrame >= 2)
-                                    {
-                                        currentFrame = 0;
-                                    }
-                                    animationTimer = 0;
-                                }
-
+                                animationTimer = 0;
                             }
+
                         }
                     }
-                    else if (key == HelperFunction.KeyDown)
+                }
+                else if (key == HelperFunction.KeyDown)
+                {
+                    if (canClimb)
                     {
-                        if (canClimb)
+                        isClimbing = true;
+                        isjumping = false;
+                        if (newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
                         {
-                            isClimbing = true;
-                            isjumping = false;
-                            if (newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
-                            {
-                                isExertingForce = true;
-                                stoppedExertingForce = false;
-                                position += new Vector2(0, 5);
-                                stamina -= 1;
-                            }
-                            else if (oldKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && newKeyboardState.IsKeyUp(HelperFunction.KeySpeed))
-                            {
-                                isExertingForce = false;
-                                stoppedExertingForce = true;
-                                position += new Vector2(0, 3);
-                                stamina -= 0.03;
-                            }
-                            else
-                            {
-                                isExertingForce = false;
-                                //stoppedExertingForce = false;
-                                position += new Vector2(0, 3);
-                                stamina -= 0.03;
+                            isExertingForce = true;
+                            stoppedExertingForce = false;
+                            position += new Vector2(0, 5);
+                            stamina -= 1;
+                        }
+                        else if (oldKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && newKeyboardState.IsKeyUp(HelperFunction.KeySpeed))
+                        {
+                            isExertingForce = false;
+                            stoppedExertingForce = true;
+                            position += new Vector2(0, 3);
+                            stamina -= 0.03;
+                        }
+                        else
+                        {
+                            isExertingForce = false;
+                            //stoppedExertingForce = false;
+                            position += new Vector2(0, 3);
+                            stamina -= 0.03;
 
-                                if (actionStatus != Action_Status.CLIMB)
+                            if (actionStatus != Action_Status.CLIMB)
+                            {
+                                actionStatus = Action_Status.CLIMB;
+                                currentFrame = 0;
+                            }
+                            else if (animationTimer > 150 && !isjumping)
+                            {
+                                currentFrame++;
+                                if (currentFrame >= 2)
                                 {
-                                    actionStatus = Action_Status.CLIMB;
                                     currentFrame = 0;
                                 }
-                                else if (animationTimer > 150 && !isjumping)
-                                {
-                                    currentFrame++;
-                                    if (currentFrame >= 2)
-                                    {
-                                        currentFrame = 0;
-                                    }
-                                    animationTimer = 0;
-                                }
-
+                                animationTimer = 0;
                             }
+
                         }
                     }
-                    else if (key == HelperFunction.KeyJump)
+                }
+                else if (key == HelperFunction.KeyJump)
+                {
+                    if (!isjumping && oldKeyboardState.IsKeyUp(Keys.Space) && stamina != 0)
                     {
-                        if (!isjumping && oldKeyboardState.IsKeyUp(Keys.Space) && stamina != 0)
-                        {
-                            position += new Vector2(0, -40);
-                            velocity = new Vector2(0, -5);
-                            isjumping = true;
-                            jumpTimer = 0;
-                            bodyTemperature -= 0.01;
-                            stamina -= 0.5;
-                            isClimbing = false;
-                        }
+                        position += new Vector2(0, -40);
+                        velocity = new Vector2(0, -5);
+                        isjumping = true;
+                        jumpTimer = 0;
+                        bodyTemperature -= 0.01;
+                        stamina -= 0.5;
+                        isClimbing = false;
                     }
+                }
             }
             if (keys.Length == 0)
             {

@@ -179,7 +179,6 @@ namespace Cold_Ship
                     if (dialogue.IsPlaying())
                     {
                         dialogue.Update(gameTime);
-                        _ListenForChatSpeedThrough(dialogue);
                         break;
                     }
                 }
@@ -296,10 +295,5 @@ namespace Cold_Ship
             base.Draw(gameTime);
         }
 
-        private void _ListenForChatSpeedThrough(DialogueBubble currentSpeech)
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-                currentSpeech.SetPlayThroughSpeed(1);
-        }
     }
 }

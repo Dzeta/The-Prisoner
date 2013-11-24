@@ -97,9 +97,9 @@ namespace Cold_Ship
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1301, worldSize.Y - 282)));
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(478, worldSize.Y - 512)));
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1887, worldSize.Y - 512)));
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(134, worldSize.Y - 747)));
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(898, worldSize.Y - 749)));
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1707, worldSize.Y - 749)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 239), new Vector2(134, worldSize.Y - 749)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 239), new Vector2(898, worldSize.Y - 749)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 239), new Vector2(1707, worldSize.Y - 749)));
 
             worldObjects.AddRange(platforms);
             worldObjects.AddRange(ladders);

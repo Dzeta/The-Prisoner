@@ -112,9 +112,9 @@ namespace Cold_Ship
             Texture2D ladderTexture = Content.Load<Texture2D>("Objects\\ladder");
             //First floor
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(890, worldSize.Y - 282)));
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(worldSize.X - 609, worldSize.Y - 282)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 239), new Vector2(worldSize.X - 609, worldSize.Y - 286)));
             //Second floor
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(worldSize.X - 823, worldSize.Y - 512)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 239), new Vector2(worldSize.X - 823, worldSize.Y - 516)));
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1887, worldSize.Y - 512)));
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(134, worldSize.Y - 747)));
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(898, worldSize.Y - 749)));
