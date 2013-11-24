@@ -87,18 +87,21 @@ namespace Cold_Ship
 
       playerNode = new Character(playerTexture, new Vector2(forwardDoor.position.X - 32 - 200, worldSize.Y - 200 - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
       playerNode._pocketLight = PocketLightSource.GetNewInstance(PrisonerGame, playerNode);
+      playerNode._pocketLight.TurnOn();
+
       // Load the text with respect to the current player's position
 
       if (!visited)
       {
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Good, you're awake.", false));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "There isn't much time.", false));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "The ship is going down.", false));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You need to fix it up if you want to live.", false));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You do want to live, don't you?", false));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "I hear space death isn't very pleasant, though.", false));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Up to you.", false));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 10, forwardDoor.position.Y + 30), "You definitely should pick that lighter up before you get out of here.", true));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Good, you're awake."));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "There isn't much time."));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "The ship is going down."));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You need to fix it up if you want to live."));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You do want to live, don't you?"));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "I hear space death isn't very pleasant, though."));
+        AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance( new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Up to you.")); 
+        AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 10, forwardDoor.position.Y + 30),
+            "You definitely should pick that lighter up before you get out of here.", this.playerNode.HasLighter));
       }
 
 
@@ -126,10 +129,9 @@ namespace Cold_Ship
       // Update Dialogues
       foreach (InvisibleChatTriggerBox chatTrigger in AllChatTriggers)
       {
-        if (chatTrigger.IsPersisted())
-          chatTrigger.Update(gameTime);
+        chatTrigger.Update(gameTime);
         if (!chatTrigger.IsConsumed() 
-            &&chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
+            && chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
           chatTrigger.InteractWith(new Vector2(forwardDoor.position.X - 50, forwardDoor.position.Y), PrisonerGame);
       }
 
