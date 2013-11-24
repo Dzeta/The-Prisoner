@@ -69,7 +69,6 @@ namespace Cold_Ship
             //initialize the needed nodes and camera
             backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
             worldObjects.Add(backgroundNode);
-            shadowFilter = new Filter(Content.Load<Texture2D>("Textures\\radius_of_light"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 

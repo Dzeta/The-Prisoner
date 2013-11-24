@@ -48,6 +48,7 @@
     <Compile Include="GameElements\Interactable.cs" />
     <Compile Include="Dialogue\InvisibleChatTriggerBox.cs" />
     <Compile Include="GameElements\Ladder.cs" />
+    <Compile Include="Levels\Level_Entertainment_Room.cs" />
     <Compile Include="Levels\Level_Holding_Cell.cs" />
     <Compile Include="GameElements\MovingPlatform.cs" />
     <Compile Include="GameElements\PickUpItem.cs" />
@@ -84,6 +85,9 @@
     <Content Include="Content\Backgrounds\engineroom_bg.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Backgrounds\entertainmentroom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Backgrounds\holdingcell_final.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -117,6 +121,12 @@
     <Content Include="Content\Objects\doorswitch.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Objects\doorswitch_off.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\doorswitch_on.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Objects\generator_off.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -130,6 +140,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\lightswitch.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\lightswitch_off.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\lightswitch_on.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\window\window_01.png">
@@ -183,7 +199,13 @@
     <Content Include="Content\speech.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\radius_of_light.png">
+    <Content Include="Content\Textures\alpha_map.fx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\radius_of_light_no_alpha.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\raidus_of_light_with_alpha.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\reactor_01.png">
