@@ -195,7 +195,7 @@
     <Content Include="Content\speech.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\alpha_map.fx">
+    <Content Include="Content\Textures\mask.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\radius_of_light_no_alpha.png">
