@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-    public class Level_Common_Room
+    public class Level_Entertainment_Room
     {
         //declare member variables
         public SpriteBatch spriteBatch;
@@ -47,7 +47,7 @@ namespace Cold_Ship
         //Bool flag to check wether the player is inside the room
         bool insideRoom = false;
         //declare constructor
-        public Level_Common_Room(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Entertainment_Room(SpriteBatch spriteBatch, Vector2 screenSize)
         {
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
@@ -108,8 +108,8 @@ namespace Cold_Ship
             //walls
             walls.Add(new Platform(platformTexture, new Vector2(41, 193), new Vector2(worldSize.X - 693, worldSize.Y - 245)));
             walls.Add(new Platform(platformTexture, new Vector2(65, 199), new Vector2(worldSize.X - 353, worldSize.Y - 477)));
-            
-            
+
+
 
             //initialize ladders and add them to the list
             //Load ladder texture
@@ -152,7 +152,7 @@ namespace Cold_Ship
             //Generator
             generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(142, worldSize.Y - 510 - 65), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
             //Door switch
-            doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(worldSize.X - 199, worldSize.Y - 350), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH, Content.Load <Texture2D>("Objects\\doorswitch_on"));
+            doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(worldSize.X - 199, worldSize.Y - 350), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
 
             worldObjects.Add(staminaBooster);
             //worldObjects.Add(lightSwitch);
@@ -175,7 +175,7 @@ namespace Cold_Ship
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_09"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_10"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_11"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            
+
         }
 
         //unload contents
@@ -209,8 +209,8 @@ namespace Cold_Ship
             //}
             if (generatorOn && !wallsRetracted)
             {
-               platforms.RemoveRange(platforms.Count - 2, 2);
-               wallsRetracted = true;
+                platforms.RemoveRange(platforms.Count - 2, 2);
+                wallsRetracted = true;
             }
             playerNode.Update(!generatorOn, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
@@ -245,8 +245,8 @@ namespace Cold_Ship
             //update the camera based on the player and world size
             camera.TranslateWithSprite(playerNode, screenSize);
             camera.CapCameraPosition(worldSize, screenSize);
-            
-            
+
+
             //Check if the player is going into/out of the room
             if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)roomDoor.position.X, (int)roomDoor.position.Y, (int)roomDoor.size.X, (int)roomDoor.size.Y)))
             {
@@ -272,15 +272,15 @@ namespace Cold_Ship
                     playerNode.position.X = worldSize.X - 1431;
                 }
             }
-            
-            
+
+
             //return the body temperature
             return playerNode.bodyTemperature;
 
-            
+
         }
 
-        
+
         //draw funtion
         public void Draw(int framesPerSecond)
         {
@@ -289,7 +289,7 @@ namespace Cold_Ship
             camera.DrawNode(backgroundBack);
             if (generatorOn && openWindowTimer > 1000 && windowAnimationCounter <= 9)
             {
-                
+
                 windowAnimationCounter++;
                 openWindowTimer = 0;
             }
@@ -301,7 +301,7 @@ namespace Cold_Ship
             }
 
             camera.DrawNode(backgroundMiddle);
-            
+
             camera.DrawNode(backgroundFront);
             foreach (GenericSprite2D element in worldObjects)
             {
@@ -321,8 +321,8 @@ namespace Cold_Ship
             if (filterOn)
                 //camera.DrawNode(shadowFilter);
 
-            //draw the fps
-            spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
+                //draw the fps
+                spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
             //draw the status display and the body temperature
             spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
             spriteBatch.DrawString(font, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);

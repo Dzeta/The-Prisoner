@@ -20,7 +20,7 @@ using KeyboardState = Microsoft.Xna.Framework.Input.KeyboardState;
 namespace Cold_Ship
 {
     //declare the enum for game levels
-    public enum Game_Level { LEVEL_HOLDING_CELL, LEVEL_PRISON_BLOCKS, LEVEL_GENERATOR, LEVEL_COMMON_ROOM };
+    public enum Game_Level { LEVEL_HOLDING_CELL, LEVEL_PRISON_BLOCKS, LEVEL_GENERATOR, LEVEL_COMMON_ROOM, LEVEL_ENTERTAINMENT_ROOM };
 
     /// <summary>
     /// This is the main type for your game
@@ -61,9 +61,10 @@ namespace Cold_Ship
         Level_Generator prototypeLevel2;
         Level_Holding_Cell levelHoldingCell;
         Level_Common_Room levelCommonRoom;
+        Level_Entertainment_Room levelEntertainmentRoom;
 
-        Game_Level gameLevel = Game_Level.LEVEL_HOLDING_CELL;
-        Game_Level prevGameLevel = Game_Level.LEVEL_HOLDING_CELL;
+        Game_Level gameLevel = Game_Level.LEVEL_COMMON_ROOM;
+        Game_Level prevGameLevel = Game_Level.LEVEL_COMMON_ROOM;
 
 
         double bodyTemperature = 36;
@@ -127,6 +128,7 @@ namespace Cold_Ship
             prototypeLevel2 = new Level_Generator(spriteBatch, screenSize);
             levelHoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
             levelCommonRoom = new Level_Common_Room(spriteBatch, screenSize);
+            levelEntertainmentRoom = new Level_Entertainment_Room(spriteBatch, screenSize);
 
 
             // DIALOGUE USED COMPONENT
@@ -145,6 +147,7 @@ namespace Cold_Ship
             prototypeLevel2.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
             levelHoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
             levelCommonRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+            levelEntertainmentRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
         }
 
         /// <summary>
@@ -157,6 +160,7 @@ namespace Cold_Ship
             prototypeLevel2.Unload();
             levelHoldingCell.Unload();
             levelCommonRoom.Unload();
+            levelEntertainmentRoom.Unload();
         }
 
         /// <summary>
@@ -179,7 +183,6 @@ namespace Cold_Ship
                     if (dialogue.IsPlaying())
                     {
                         dialogue.Update(gameTime);
-                        _ListenForChatSpeedThrough(dialogue);
                         break;
                     }
                 }
@@ -201,6 +204,9 @@ namespace Cold_Ship
                         break;
                     case Game_Level.LEVEL_COMMON_ROOM:
                         bodyTemperature = levelCommonRoom.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+                        break;
+                    case Game_Level.LEVEL_ENTERTAINMENT_ROOM:
+                        bodyTemperature = levelEntertainmentRoom.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
                         break;
                 }
 
@@ -263,6 +269,9 @@ namespace Cold_Ship
                     case Game_Level.LEVEL_COMMON_ROOM:
                         levelCommonRoom.Draw(framesPerSecond);
                         break;
+                    case Game_Level.LEVEL_ENTERTAINMENT_ROOM:
+                        levelEntertainmentRoom.Draw(framesPerSecond);
+                        break;
                 }
 
                 // Putting dialogue here cause they need to be appearing on top of everything
@@ -294,12 +303,6 @@ namespace Cold_Ship
             }
 
             base.Draw(gameTime);
-        }
-
-        private void _ListenForChatSpeedThrough(DialogueBubble currentSpeech)
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-                currentSpeech.SetPlayThroughSpeed(1);
         }
     }
 }

@@ -48,6 +48,7 @@
     <Compile Include="GameElements\Interactable.cs" />
     <Compile Include="Dialogue\InvisibleChatTriggerBox.cs" />
     <Compile Include="GameElements\Ladder.cs" />
+    <Compile Include="Levels\Level_Entertainment_Room.cs" />
     <Compile Include="Levels\Level_Holding_Cell.cs" />
     <Compile Include="GameElements\MovingPlatform.cs" />
     <Compile Include="GameElements\PickUpItem.cs" />
