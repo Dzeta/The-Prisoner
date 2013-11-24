@@ -85,6 +85,9 @@
     <Content Include="Content\Backgrounds\engineroom_bg.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Backgrounds\entertainmentroom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Backgrounds\holdingcell_final.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

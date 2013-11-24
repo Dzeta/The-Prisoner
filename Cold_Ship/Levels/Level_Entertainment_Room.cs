@@ -25,7 +25,7 @@ namespace Cold_Ship
         Camera2D camera;
         Character playerNode;
         Filter shadowFilter;
-        GenericSprite2D backgroundNode, backgroundFront, backgroundMiddle, backgroundBack;
+        GenericSprite2D backgroundNode;
 
         List<GenericSprite2D> worldObjects;
 
@@ -46,6 +46,10 @@ namespace Cold_Ship
         int windowAnimationCounter = 0;
         //Bool flag to check wether the player is inside the room
         bool insideRoom = false;
+
+        //List of switches
+        List<Interactable> switchPuzzle;
+
         //declare constructor
         public Level_Entertainment_Room(SpriteBatch spriteBatch, Vector2 screenSize)
         {
@@ -63,10 +67,7 @@ namespace Cold_Ship
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
-            Texture2D backgroundTexture = Content.Load<Texture2D>(/*"Backgrounds\\prisonblock_final"*/ "Backgrounds\\messhall_draft");
-            Texture2D backgroundFrontTexture = Content.Load<Texture2D>(/*"Backgrounds\\prisonblock_final"*/ "Backgrounds\\messhall_frontLayer");
-            Texture2D backgroundMiddleLayer = Content.Load<Texture2D>(/*"Backgrounds\\prisonblock_final"*/ "Backgrounds\\messhall_middleLayer");
-            Texture2D backgroundBackLayer = Content.Load<Texture2D>(/*"Backgrounds\\prisonblock_final"*/ "Backgrounds\\messhall_backLayer");
+            Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\entertainmentroom");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
 
@@ -78,13 +79,11 @@ namespace Cold_Ship
             font = Content.Load<SpriteFont>("Fonts\\Score");
 
             //initialize the needed nodes and camera
-            //load the various layers of background node
             backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
-            backgroundFront = new GenericSprite2D(backgroundFrontTexture, new Vector2(0, 0), Rectangle.Empty);
-            backgroundMiddle = new GenericSprite2D(backgroundMiddleLayer, new Vector2(0, 0), Rectangle.Empty);
-            backgroundBack = new GenericSprite2D(backgroundBackLayer, new Vector2(0, 0), Rectangle.Empty);
-            //worldObjects.Add(backgroundNode);
+            worldObjects.Add(backgroundNode);
+
             shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
+
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
@@ -93,8 +92,8 @@ namespace Cold_Ship
 
             //initialize the platforms and add them to the list
             //Second floor (first floor ceiling)
-            platforms.Add(new Platform(platformTexture, new Vector2(1339, 20), new Vector2(100, worldSize.Y - 280)));
-            platforms.Add(new Platform(platformTexture, new Vector2(573, 20), new Vector2(worldSize.X - 573, worldSize.Y - 280)));
+            platforms.Add(new Platform(platformTexture, new Vector2(111, 20), new Vector2(100, worldSize.Y - 280)));
+            platforms.Add(new Platform(platformTexture, new Vector2(675, 20), new Vector2(worldSize.X - 675 - 100, worldSize.Y - 280)));
             //platforms.Add(new Platform(platformTexture, new Vector2(619, 20), new Vector2(1345, worldSize.Y - 280)));
             //Third floor (second floor ceiling)
             platforms.Add(new Platform(platformTexture, new Vector2(1125, 20), new Vector2(100, worldSize.Y - 510)));
@@ -106,8 +105,8 @@ namespace Cold_Ship
             //platforms.Add(new Platform(platformTexture, new Vector2(250, 20), new Vector2(1742, worldSize.Y - 744)));
 
             //walls
-            walls.Add(new Platform(platformTexture, new Vector2(41, 193), new Vector2(worldSize.X - 693, worldSize.Y - 245)));
-            walls.Add(new Platform(platformTexture, new Vector2(65, 199), new Vector2(worldSize.X - 353, worldSize.Y - 477)));
+            //walls.Add(new Platform(platformTexture, new Vector2(41, 193), new Vector2(worldSize.X - 693, worldSize.Y - 245)));
+            //walls.Add(new Platform(platformTexture, new Vector2(65, 199), new Vector2(worldSize.X - 353, worldSize.Y - 477)));
 
 
 
@@ -116,7 +115,7 @@ namespace Cold_Ship
             Texture2D ladderTexture = Content.Load<Texture2D>("Objects\\ladder");
             //First floor
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(890, worldSize.Y - 282)));
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(worldSize.X - 609, worldSize.Y - 282)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(100 + 111, worldSize.Y - 282)));
             //Second floor
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(worldSize.X - 823, worldSize.Y - 512)));
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1887, worldSize.Y - 512)));
@@ -286,7 +285,7 @@ namespace Cold_Ship
         {
             spriteBatch.Begin();
             ////draw the desired nodes onto screen through the camera
-            camera.DrawNode(backgroundBack);
+            //camera.DrawNode(backgroundBack);
             if (generatorOn && openWindowTimer > 1000 && windowAnimationCounter <= 9)
             {
 
@@ -300,19 +299,19 @@ namespace Cold_Ship
                 camera.DrawNode(playerNode);
             }
 
-            camera.DrawNode(backgroundMiddle);
+            //camera.DrawNode(backgroundMiddle);
 
-            camera.DrawNode(backgroundFront);
+            //camera.DrawNode(backgroundFront);
             foreach (GenericSprite2D element in worldObjects)
             {
                 camera.DrawNode(element);
             }
             camera.DrawNode(roomDoor);
-            if (!generatorOn)
-            {
-                camera.DrawNode(walls[0]);
-                camera.DrawNode(walls[1]);
-            }
+            //if (!generatorOn)
+            //{
+            //    camera.DrawNode(walls[0]);
+            //    camera.DrawNode(walls[1]);
+            //}
             if (!insideRoom)
             {
                 camera.DrawNode(playerNode);
