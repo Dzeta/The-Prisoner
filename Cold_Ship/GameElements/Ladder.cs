@@ -31,8 +31,7 @@ namespace Cold_Ship
         public bool isOnTop(Character player)
         {
             return ((player.position.X >= position.X-8 && player.position.X + 32 <= position.X + size.X+8)
-               && player.position.Y + 64 >= position.Y);
-
+               && player.position.Y + 64 >= position.Y && player.position.Y < position.Y);
         }
 
         //draw method that draws the platform onto the screen

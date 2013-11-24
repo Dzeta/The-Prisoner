@@ -76,26 +76,26 @@ namespace Cold_Ship
             Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
             
             //initialize the platforms and add them to the list
-            platforms.Add(new Platform(platformTexture, new Vector2(890, 20), new Vector2(0, worldSize.Y - 280)));
+            platforms.Add(new Platform(platformTexture, new Vector2(790, 20), new Vector2(100, worldSize.Y - 280)));
             platforms.Add(new Platform(platformTexture, new Vector2(375, 20), new Vector2(925, worldSize.Y - 280)));
-            platforms.Add(new Platform(platformTexture, new Vector2(619, 20), new Vector2(1345, worldSize.Y - 280)));
-            platforms.Add(new Platform(platformTexture, new Vector2(475, 20), new Vector2(0, worldSize.Y - 510)));
-            platforms.Add(new Platform(platformTexture, new Vector2(1367, 20), new Vector2(514, worldSize.Y - 510)));
-            platforms.Add(new Platform(platformTexture, new Vector2(50, 20), new Vector2(1920, worldSize.Y - 510)));
-            platforms.Add(new Platform(platformTexture, new Vector2(133, 20), new Vector2(0, worldSize.Y - 744)));
+            platforms.Add(new Platform(platformTexture, new Vector2(615, 20), new Vector2(1337, worldSize.Y - 280)));
+            platforms.Add(new Platform(platformTexture, new Vector2(375, 20), new Vector2(100, worldSize.Y - 510)));
+            platforms.Add(new Platform(platformTexture, new Vector2(1370, 20), new Vector2(514, worldSize.Y - 510)));
+            platforms.Add(new Platform(platformTexture, new Vector2(30, 20), new Vector2(1920, worldSize.Y - 510)));
+            platforms.Add(new Platform(platformTexture, new Vector2(33, 20), new Vector2(100, worldSize.Y - 744)));
             platforms.Add(new Platform(platformTexture, new Vector2(727, 20), new Vector2(167, worldSize.Y - 744)));
             platforms.Add(new Platform(platformTexture, new Vector2(773, 20), new Vector2(933, worldSize.Y - 744)));
-            platforms.Add(new Platform(platformTexture, new Vector2(250, 20), new Vector2(1742, worldSize.Y - 744)));
+            platforms.Add(new Platform(platformTexture, new Vector2(205, 20), new Vector2(1742, worldSize.Y - 744)));
             //walls
             //platforms.Add(new Platform(platformTexture, new Vector2(130, 270), new Vector2(963, worldSize.Y - 270)));
             //platforms.Add(new Platform(platformTexture, new Vector2(130, 230), new Vector2(1150, worldSize.Y - 508)));
 
             //initialize ladders and add them to the list
             Texture2D ladderTexture = Content.Load<Texture2D>("Objects\\ladder");
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(890, worldSize.Y - 282)));
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1301, worldSize.Y - 282)));
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(478, worldSize.Y - 512)));
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1887, worldSize.Y - 512)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 237), new Vector2(890, worldSize.Y - 284)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 237), new Vector2(1301, worldSize.Y - 284)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 237), new Vector2(478, worldSize.Y - 514)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 237), new Vector2(1887, worldSize.Y - 514)));
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 239), new Vector2(134, worldSize.Y - 749)));
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 239), new Vector2(898, worldSize.Y - 749)));
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 239), new Vector2(1707, worldSize.Y - 749)));

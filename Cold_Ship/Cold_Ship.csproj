@@ -202,6 +202,9 @@
     <Content Include="Content\Textures\alpha_map.fx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Textures\platformTexture.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Textures\radius_of_light_no_alpha.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -263,9 +266,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\statusDisplay.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Textures\platformTexture.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

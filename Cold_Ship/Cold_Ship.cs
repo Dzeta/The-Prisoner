@@ -174,6 +174,8 @@ namespace Cold_Ship
             {
                 if (this.GameStateIs(GameState.PLAYING))
                     ActivateState(GameState.PAUSED);
+                if (DEBUG_MODE)
+                    this.Exit();
             }
 
             if (this.GameStateIs(GameState.DIALOGUING))

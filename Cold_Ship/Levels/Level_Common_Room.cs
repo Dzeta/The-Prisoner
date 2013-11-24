@@ -94,11 +94,11 @@ namespace Cold_Ship
             //initialize the platforms and add them to the list
             //Second floor (first floor ceiling)
             platforms.Add(new Platform(platformTexture, new Vector2(1339, 20), new Vector2(100, worldSize.Y - 280)));
-            platforms.Add(new Platform(platformTexture, new Vector2(573, 20), new Vector2(worldSize.X - 573, worldSize.Y - 280)));
+            platforms.Add(new Platform(platformTexture, new Vector2(473, 20), new Vector2(worldSize.X - 573, worldSize.Y - 280)));
             //platforms.Add(new Platform(platformTexture, new Vector2(619, 20), new Vector2(1345, worldSize.Y - 280)));
             //Third floor (second floor ceiling)
             platforms.Add(new Platform(platformTexture, new Vector2(1125, 20), new Vector2(100, worldSize.Y - 510)));
-            platforms.Add(new Platform(platformTexture, new Vector2(783, 20), new Vector2(worldSize.X - 783, worldSize.Y - 510)));
+            platforms.Add(new Platform(platformTexture, new Vector2(683, 20), new Vector2(worldSize.X - 784, worldSize.Y - 510)));
             //platforms.Add(new Platform(platformTexture, new Vector2(50, 20), new Vector2(1920, worldSize.Y - 510)));
             //platforms.Add(new Platform(platformTexture, new Vector2(133, 20), new Vector2(0, worldSize.Y - 744)));
             //platforms.Add(new Platform(platformTexture, new Vector2(727, 20), new Vector2(167, worldSize.Y - 744)));
