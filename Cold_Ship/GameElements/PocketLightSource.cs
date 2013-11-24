@@ -4,72 +4,108 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Input;
 
 namespace Cold_Ship
 {
-    public class PocketLightSource : GenericSprite2D
+  public class PocketLightSource : GenericSprite2D
+  {
+    public static Cold_Ship GameInstance;
+
+    public const float GLOW_INTERVAL = 200;
+    public const int GLOW_TICK_SCALE = 15;
+    public const float MAX_SCALE_FACTOR = 0.8f; // Empirical measure
+    public const float TICK_INTERVAL = 200;
+
+    private float _tickTimer;
+    private Vector2 _scale = new Vector2(MAX_SCALE_FACTOR, MAX_SCALE_FACTOR);
+    private int _scaleCount;
+    private Vector2 _scaleOffset;
+    private Vector2 _positionOffset;
+    private Vector2 _positionOffsetLeft = new Vector2(-5, -50);    // The offset of left
+    private Vector2 _positionOffsetRight = new Vector2(40, -50);    // The offset of right
+    private Vector2 _actualFacingOffset;
+
+    private enum Facing { LEFT, RIGHT }
+
+    private Facing _facing;
+
+    private Character _owner;
+    private Texture2D _darkCurtain;
+
+    private PocketLightSource(Character owner, Texture2D tex)
+      : base(tex)
     {
-        public static Cold_Ship GameInstance;
-
-        private Vector2 _positionOffset;
-        private Character _owner;
-        private Texture2D _darkCurtain;
-
-        private PocketLightSource(Character owner, Texture2D tex)
-            : base(tex)
-        {
-            this._owner = owner;
-            this._positionOffset = new Vector2(tex.Width / 2, tex.Height / 2);
-            this.position = owner.position - this._positionOffset;
-        }
-
-        public static PocketLightSource GetNewInstance(Cold_Ship instance, Character character)
-        {
-            if (PocketLightSource.GameInstance == null) GameInstance = instance;
-            Texture2D _texture = instance.Content.Load<Texture2D>("Textures/raidus_of_light_with_alpha");
-
-            PocketLightSource _instance = new PocketLightSource(character, _texture);
-            _instance._darkCurtain = _texture;
-            //_instance._darkCurtain = new Texture2D(instance.GraphicsDevice, 1, 1);
-            //_instance._darkCurtain.SetData(new[] { Color.Blue });
-            return _instance;
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            this.position = this._owner.position - this._positionOffset;
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.End();
-
-            RenderTarget2D mask = new RenderTarget2D(GameInstance.graphics.GraphicsDevice,
-                GameInstance.Window.ClientBounds.Width, GameInstance.Window.ClientBounds.Height,
-                false, SurfaceFormat.Color, DepthFormat.None);
-            //GameInstance.graphics.GraphicsDevice.SetRenderTarget(mask);
-            //GameInstance.graphics.GraphicsDevice.Clear(Color.Transparent);
-
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            spriteBatch.Draw(this._darkCurtain, GameInstance.Window.ClientBounds, Color.White);
-            spriteBatch.End();
-
-            //BlendState bs = new BlendState();
-            //bs.ColorSourceBlend = Blend.Zero;
-            //bs.ColorDestinationBlend = Blend.SourceAlpha;
-            //bs.ColorBlendFunction = BlendFunction.Add;
-
-            //bs.AlphaSourceBlend = Blend.Zero;
-            //bs.AlphaDestinationBlend = Blend.SourceAlpha;
-            //bs.AlphaBlendFunction = BlendFunction.Add;
-
-            //spriteBatch.Begin(SpriteSortMode.FrontToBack, bs);
-            //spriteBatch.Draw(this.texture, this.position, Color.White);
-            //spriteBatch.End();
-
-            //GameInstance.graphics.GraphicsDevice.SetRenderTarget(null);
-
-            spriteBatch.Begin();
-        }
+      this._owner = owner;
+      this._facing = Facing.RIGHT;
+      this._positionOffset = new Vector2(tex.Width / 2, tex.Height / 2);
+      this._scaleCount = 0;
+      this._actualFacingOffset = _positionOffsetRight;
+      this.position = owner.position - this._positionOffset;
     }
+
+    public static PocketLightSource GetNewInstance(Cold_Ship instance, Character character)
+    {
+      if (PocketLightSource.GameInstance == null) GameInstance = instance;
+      Texture2D _texture = instance.Content.Load<Texture2D>("Textures/radius_of_light");
+
+      PocketLightSource _instance = new PocketLightSource(character, _texture);
+
+      return _instance;
+    }
+
+    public void Update(GameTime gameTime)
+    {
+      this._tickTimer += gameTime.ElapsedGameTime.Milliseconds;
+
+      if (Keyboard.GetState().IsKeyDown(Keys.D))
+        this._facing = Facing.RIGHT;
+      else if (Keyboard.GetState().IsKeyDown(Keys.A))
+        this._facing = Facing.LEFT;
+
+      if (this._tickTimer >= TICK_INTERVAL)
+      {
+        float _x = (float) (Math.Sin(_scaleCount) / Math.PI) / GLOW_TICK_SCALE;
+        float _y = (float) (Math.Cos(_scaleCount) / Math.PI) / GLOW_TICK_SCALE;
+        this._scale += new Vector2(_x, _y);
+        this._tickTimer = 0;
+        this._scaleCount++;
+        this._scaleOffset = (new Vector2(this.texture.Width * (1 - this._scale.X)
+            , this.texture.Height * (1 - this._scale.Y))) / 2;
+      }
+
+
+      if (this._facing == Facing.RIGHT)
+      {
+        _actualFacingOffset = _positionOffsetRight;
+      }
+      else
+      {
+        _actualFacingOffset = _positionOffsetLeft;
+      }
+
+
+      this.position = this._owner.position - this._positionOffset + _actualFacingOffset + _scaleOffset;
+    }
+
+    public void Draw(SpriteBatch spriteBatch)
+    {
+      spriteBatch.End();
+
+      spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+      if (this._facing == Facing.RIGHT)
+      {
+        spriteBatch.Draw(this.texture, this.position, null, Color.White, 0, Vector2.Zero, _scale,
+          SpriteEffects.FlipHorizontally, 1);
+      }
+      else
+      {
+        spriteBatch.Draw(this.texture, this.position, null, Color.White, 0, Vector2.Zero, _scale,
+          SpriteEffects.None, 1);
+      }
+      spriteBatch.End();
+
+      spriteBatch.Begin();
+    }
+  }
 }
