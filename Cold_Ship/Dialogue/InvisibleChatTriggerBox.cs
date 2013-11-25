@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -27,55 +28,85 @@ namespace Cold_Ship
 
   public class InvisibleChatTriggerBox : InvisibleBox
   {
-    private int _timeOutTime = 1000; // Timer between reappearance of the invisible box in a persisted
+    private int _timeOutInterval = 1000; // Timer between reappearance of the invisible box in a persisted
     private int _timeOutTimer = 0;
     private string _msg;
     private static Rectangle _hitBox = new Rectangle(0, 0, 32, 32);
     private bool _isPersisted;
     private bool _isConsumed;
+    private Func<bool> _condition; 
 
     private IWatchfulConditional _watchee;
 
-    private InvisibleChatTriggerBox(Vector2 position, string msg, bool isPersistant)
+    private InvisibleChatTriggerBox(Vector2 position, string msg)
       : base(_hitBox, position)
     {
       this._msg = msg;
-      this._isPersisted = isPersistant;
       this._isConsumed = false;
-      // this._timeOutTime = this._msg.Length * DialogueBubble.DEFAULT_PLAY_THROUGH_SPEED;
+//      this._timeOutInterval = this._msg.Length * DialogueBubble.DEFAULT_PLAY_THROUGH_SPEED;
+    }
+
+    public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos, string m)
+    {
+      return InvisibleChatTriggerBox.GetNewInstance(pos, m, false);
     }
 
     public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos, string m, bool p)
     {
-      return new InvisibleChatTriggerBox(pos, m, p);
+      InvisibleChatTriggerBox _instance = new InvisibleChatTriggerBox(pos, m);
+      _instance._isPersisted = p;
+      return _instance;
     }
 
-    public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos,
-      string m, IWatchfulConditional w)
+    public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos, string m, Func<bool> cond)
     {
-      InvisibleChatTriggerBox _instance = new InvisibleChatTriggerBox(pos, m, false);
+      InvisibleChatTriggerBox _instance = new InvisibleChatTriggerBox(pos, m);
+      _instance._condition = cond;
+      return _instance;
+    }
+
+    public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos, string m, IWatchfulConditional w)
+    {
+      InvisibleChatTriggerBox _instance = new InvisibleChatTriggerBox(pos, m);
       _instance._watchee = w;
       return _instance;
     }
 
-    public void SetConsumed(bool isConsumed) { this._isConsumed = true; }
-    public bool IsPersisted() { return this._isPersisted; }
     public string GetMessage() { return this._msg; }
+    public void SetConsumed() { this._isConsumed = true; }
+    public bool IsPersisted() { return this._isPersisted; }
+    public bool IsConsumed() { return this._isConsumed; }
     public bool IsWatchful() { return this._watchee != null; }
+    public bool IsConditional() { return this._condition != null; }
 
-    public bool IsConsumed()
+    private bool _Respawn()
     {
-      return (this._isConsumed || this.IsWatchful() && this._watchee.GetCondition());
+      if (this._isPersisted)
+        return true;
+      else
+      {
+        if (this.IsWatchful())
+          return !this._watchee.GetCondition();
+        else if (this.IsConditional())
+          return !this._condition();
+        else
+          return !this._isConsumed;
+      }
     }
 
     public void Update(GameTime gameTime)
     {
-      if (this.IsConsumed() && !this.IsPersisted()) return;
+      if (this.IsConditional() && this._condition())
+        this._isConsumed = true;
 
-      _timeOutTimer += gameTime.ElapsedGameTime.Milliseconds;
-      if (_timeOutTimer >= _timeOutTime)
+      if (this.IsWatchful() && this._watchee.GetCondition())
+        this._isConsumed = true;
+
+      if (this.IsConsumed() && this._Respawn())
       {
-        if (this._isPersisted)
+        _timeOutTimer += gameTime.ElapsedGameTime.Milliseconds;
+
+        if (_timeOutTimer >= _timeOutInterval)
         {
           this._isConsumed = false;
           _timeOutTimer = 0;
@@ -90,8 +121,6 @@ namespace Cold_Ship
 
     public void InteractWith(Vector2 position, Cold_Ship gameLevel)
     {
-      if (this.IsConsumed()) return;
-
       DialogueBubble dialogue = DialogueBubble.GetNewInstance(gameLevel, position,
         new Rectangle(0, 0, (int)gameLevel.screenSize.X, (int)gameLevel.screenSize.Y), this._msg);
       this._isConsumed = true;

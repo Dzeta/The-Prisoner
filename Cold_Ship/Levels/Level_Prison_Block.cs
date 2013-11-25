@@ -120,7 +120,7 @@ namespace Cold_Ship
             {
                 playerNode = new Character(playerTexture, new Vector2(forwardDoor.position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
-
+          
             staminaBooster = new PickUpItem(platformTexture, new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
             lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
             generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(1807, worldSize.Y - 809), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
@@ -172,9 +172,6 @@ namespace Cold_Ship
             staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 
             //update the shadowFilter's position with respect to the playerNode
-            shadowFilter.position = new Vector2((playerNode.position.X /*+ (playerNode.texture.Width / 2))*/) - (shadowFilter.texture.Width / 2),
-                (playerNode.position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.texture.Height / 2)));
-
 
             //update the camera based on the player and world size
             camera.TranslateWithSprite(playerNode, screenSize);
@@ -191,10 +188,6 @@ namespace Cold_Ship
             ////draw the desired nodes onto screen through the camera
             foreach (GenericSprite2D element in worldObjects)
                 camera.DrawNode(element);
-
-            if (filterOn)
-                //shadowFilter.filterScale = 0.5f;
-                camera.DrawNode(shadowFilter);
 
             //draw the fps
             spriteBatch.DrawString(manaspace12, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
