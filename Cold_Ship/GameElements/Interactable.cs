@@ -32,7 +32,7 @@ namespace Cold_Ship
         //Update function (detect collision, etc.)
         public void Update(Character playerNode, ref bool generatorOn, ref bool filterOn, Filter filter, ref bool doorCanOpen)
         {
-            if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
+            if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
             {
                 KeyboardState keyboard = Keyboard.GetState();
                 if (keyboard.IsKeyDown(HelperFunction.KeyUse))
@@ -43,7 +43,7 @@ namespace Cold_Ship
                             generatorOn = true;
                             if (altTexture != null)
                             {
-                                texture = altTexture;
+                                Texture = altTexture;
                             }
                             break;
                         case Type_Of_Interactable.LIGHT_SWITCH:
@@ -52,7 +52,7 @@ namespace Cold_Ship
                                 filterOn = false;
                                 if (altTexture != null)
                                 {
-                                    texture = altTexture;
+                                    Texture = altTexture;
                                 }
                             }
                             break;
@@ -62,7 +62,7 @@ namespace Cold_Ship
                                 doorCanOpen = true;
                                 if (altTexture != null)
                                 {
-                                    texture = altTexture;
+                                    Texture = altTexture;
                                 }
                             }
                             break;
@@ -74,7 +74,7 @@ namespace Cold_Ship
         //draw the item onto screen
         public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
-            spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
+            spriteBatch.Draw(Texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
         }
     }
 }

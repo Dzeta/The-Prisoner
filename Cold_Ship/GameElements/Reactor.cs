@@ -34,7 +34,7 @@ namespace Cold_Ship
                 if (currentTexture > 2)
                     currentTexture = 0;
 
-                this.texture = textures[currentTexture];
+                this.Texture = textures[currentTexture];
             }
         }
     }

@@ -116,7 +116,7 @@ namespace Cold_Ship
 
     public void InteractWith(Character player, Cold_Ship gameLevel)
     {
-      this.InteractWith(player.position, gameLevel);
+      this.InteractWith(player.Position, gameLevel);
     }
 
     public void InteractWith(Vector2 position, Cold_Ship gameLevel)

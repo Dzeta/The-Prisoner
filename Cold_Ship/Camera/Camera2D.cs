@@ -42,26 +42,26 @@ namespace Cold_Ship
         public void TranslateWithSprite(GenericSprite2D node, Vector2 screenSize)
         {
             //horizontal transformations
-            if (ApplyTransformations(node.position).X > screenSize.X / 3 * 1.5f)
+            if (ApplyTransformations(node.Position).X > screenSize.X / 3 * 1.5f)
             {
-                cameraPosition.X = node.position.X - (screenSize.X / 3 * 1.5f);
+                cameraPosition.X = node.Position.X - (screenSize.X / 3 * 1.5f);
             }
-            else if (ApplyTransformations(node.position).X < screenSize.X / 3 * 1.2f)
+            else if (ApplyTransformations(node.Position).X < screenSize.X / 3 * 1.2f)
             {
-                cameraPosition.X = node.position.X - (screenSize.X / 3 * 1.2f);
+                cameraPosition.X = node.Position.X - (screenSize.X / 3 * 1.2f);
             }
             //vertical transformations
-            if (ApplyTransformations(node.position).Y < screenSize.Y / 3 * 1.2f)
+            if (ApplyTransformations(node.Position).Y < screenSize.Y / 3 * 1.2f)
             {
-                cameraPosition.Y = node.position.Y - (screenSize.Y / 3 * 1.2f);
+                cameraPosition.Y = node.Position.Y - (screenSize.Y / 3 * 1.2f);
             }
-            else if (ApplyTransformations(node.position).Y > screenSize.Y / 3 * 1.5f)
+            else if (ApplyTransformations(node.Position).Y > screenSize.Y / 3 * 1.5f)
             {
-                cameraPosition.Y = node.position.Y - (screenSize.Y / 3 * 1.5f);
+                cameraPosition.Y = node.Position.Y - (screenSize.Y / 3 * 1.5f);
             }
         }
 
-        //cap the camera position
+        //cap the camera Position
         public void CapCameraPosition(Vector2 worldSize, Vector2 screenSize)
         {
             if (cameraPosition.X < 0)
@@ -77,7 +77,7 @@ namespace Cold_Ship
         //draw the node on screen with respect to the camera
         public void DrawNode(GenericSprite2D node)
         {
-            Vector2 drawPosition = ApplyTransformations(node.position);
+            Vector2 drawPosition = ApplyTransformations(node.Position);
             node.Draw(spriteBatch, drawPosition);
         }
     }

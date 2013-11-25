@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,18 +29,18 @@ namespace Cold_Ship
             if (position.Y + velocity.Y > startPosition.Y + limits.Y || position.Y + velocity.Y < startPosition.Y)
                 velocity.Y = -velocity.Y;
 
-            position += velocity;
+            Position += velocity;
 
-            collisionUp = new Rectangle((int)(position.X), (int)(position.Y), (int)size.X, (int)size.Y / 6);
-            collisionDown = new Rectangle((int)(position.X + (1 * (size.X / 10))), (int)(position.Y + (5 * (size.Y / 6))), (int)(8 * (size.X / 10)), (int)size.Y / 6);
-            collisionLeft = new Rectangle((int)position.X, (int)(position.Y + (1 * (size.Y / 15))), (int)size.X / 1000, (int)(size.Y));
-            collisionRight = new Rectangle((int)(position.X + (7 * (size.X / 8))), (int)(position.Y + (1 * (size.Y / 15))), (int)size.X / 10, (int)(size.Y));
+            collisionUp = new Rectangle((int)(Position.X), (int)(Position.Y), (int)size.X, (int)size.Y / 6);
+            collisionDown = new Rectangle((int)(Position.X + (1 * (size.X / 10))), (int)(Position.Y + (5 * (size.Y / 6))), (int)(8 * (size.X / 10)), (int)size.Y / 6);
+            collisionLeft = new Rectangle((int)Position.X, (int)(Position.Y + (1 * (size.Y / 15))), (int)size.X / 1000, (int)(size.Y));
+            collisionRight = new Rectangle((int)(Position.X + (7 * (size.X / 8))), (int)(Position.Y + (1 * (size.Y / 15))), (int)size.X / 10, (int)(size.Y));
 
             ret = base.Update(player, prevPosition, jumpTimer, ground, isJumping);
 
             // TODO something to change there to make the player follow the platform smoothly
-            if (new Rectangle((int)player.position.X, (int)player.position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y + 5).Intersects(collisionUp))
-                player.position += velocity;
+            if (new Rectangle((int)player.Position.X, (int)player.Position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y + 5).Intersects(collisionUp))
+                player.Position += velocity;
 
             return ret;
         }

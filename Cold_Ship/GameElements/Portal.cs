@@ -18,7 +18,7 @@ namespace Cold_Ship
         Texture2D doorLightGreen, doorLightRed;
         public bool canOpen;
 
-        //constructor that initialize the texture and position
+        //constructor that initialize the Texture and Position
         public Portal(Vector2 position, Vector2 size, PortalType portalType, ContentManager Content) :
             base(Content.Load<Texture2D>("Objects\\door"), position, Rectangle.Empty)
         {
@@ -34,7 +34,7 @@ namespace Cold_Ship
         //check is the player has interacted with the portal
         public void Update(Character playerNode, ref Game_Level gameLevel)
         {
-            if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y) .Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
+            if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y) .Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
             {
                 if (portalType == PortalType.FOWARD)
                 {
@@ -62,7 +62,7 @@ namespace Cold_Ship
             else
                 spriteBatch.Draw(doorLightRed, drawPosition + new Vector2(14, -13), Color.White);
 
-            spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
+            spriteBatch.Draw(Texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
         }
     }
 }

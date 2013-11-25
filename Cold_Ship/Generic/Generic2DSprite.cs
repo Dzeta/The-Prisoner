@@ -10,8 +10,8 @@ namespace Cold_Ship
     // Generic Sprite 2D class for inheritance
     public class GenericSprite2D
     {
-        public Texture2D texture;
-        public Vector2 position;
+        public Texture2D Texture;
+        public Vector2 Position;
         public Rectangle BoundBox;
 
         public GenericSprite2D(Texture2D texture) : this(texture, Vector2.One, Rectangle.Empty) { }
@@ -19,8 +19,8 @@ namespace Cold_Ship
 
         public GenericSprite2D(Texture2D texture, Vector2 position, Rectangle boundBox)
         {
-            this.texture = texture;
-            this.position = position;
+            this.Texture = texture;
+            this.Position = position;
             this.BoundBox = boundBox;
         }
 
@@ -31,12 +31,12 @@ namespace Cold_Ship
 
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
-            spriteBatch.Draw(texture, drawPosition, Color.White);
+            spriteBatch.Draw(Texture, drawPosition, Color.White);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, this.position, Color.White);
+            spriteBatch.Draw(Texture, this.Position, Color.White);
         }
     }
 }

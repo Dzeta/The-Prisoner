@@ -111,7 +111,7 @@ namespace Cold_Ship
 
 
             //initialize ladders and add them to the list
-            //Load ladder texture
+            //Load ladder Texture
             Texture2D ladderTexture = Content.Load<Texture2D>("Objects\\ladder");
             //First floor
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(890, worldSize.Y - 282)));
@@ -137,11 +137,11 @@ namespace Cold_Ship
             //initialize the playerNode
             if (prevGameLevel <= gameLevel)
             {
-                playerNode = new Character(playerTexture, new Vector2(backwardDoor.position.X - backwardDoor.size.X - 15, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+                playerNode = new Character(playerTexture, new Vector2(backwardDoor.Position.X - backwardDoor.size.X - 15, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
             else if (prevGameLevel >= gameLevel)
             {
-                playerNode = new Character(playerTexture, new Vector2(fowardDoor.position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+                playerNode = new Character(playerTexture, new Vector2(fowardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
 
             //Pickup item
@@ -198,8 +198,8 @@ namespace Cold_Ship
             //Update timer
             openWindowTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            //update the player position with respect to keyboard input and platform collision
-            Vector2 prevPosition = playerNode.position;
+            //update the player Position with respect to keyboard input and platform collision
+            Vector2 prevPosition = playerNode.Position;
             //bool useLighter = filterOn;
 
             //if (!generatorOn)
@@ -214,9 +214,9 @@ namespace Cold_Ship
             playerNode.Update(!generatorOn, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
             //Check the player's collision with the world boundaries
-            if (playerNode.position.X < 100 || playerNode.position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
+            if (playerNode.Position.X < 100 || playerNode.Position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
             {
-                playerNode.position.X = prevPosition.X;
+                playerNode.Position.X = prevPosition.X;
             }
 
             //update portals
@@ -235,10 +235,10 @@ namespace Cold_Ship
                 staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
             }
 
-            //update the shadowFilter's position with respect to the playerNode
+            //update the shadowFilter's Position with respect to the playerNode
             filterOn = !generatorOn;
-            shadowFilter.position = new Vector2((playerNode.position.X /*+ (playerNode.texture.Width / 2))*/) - (shadowFilter.texture.Width / 2),
-                (playerNode.position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.texture.Height / 2)));
+            shadowFilter.Position = new Vector2((playerNode.Position.X /*+ (playerNode.Texture.Width / 2))*/) - (shadowFilter.Texture.Width / 2),
+                (playerNode.Position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.Texture.Height / 2)));
 
 
             //update the camera based on the player and world size
@@ -247,28 +247,28 @@ namespace Cold_Ship
 
 
             //Check if the player is going into/out of the room
-            if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)roomDoor.position.X, (int)roomDoor.position.Y, (int)roomDoor.size.X, (int)roomDoor.size.Y)))
+            if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)roomDoor.Position.X, (int)roomDoor.Position.Y, (int)roomDoor.size.X, (int)roomDoor.size.Y)))
             {
                 if (roomDoor.canOpen)
                 {
                     if (!insideRoom)
                     {
                         insideRoom = true;
-                        playerNode.position.X = roomDoor.position.X - 32;
+                        playerNode.Position.X = roomDoor.Position.X - 32;
                     }
                     else if (insideRoom)
                     {
                         insideRoom = false;
-                        playerNode.position.X = roomDoor.position.X + roomDoor.size.X;
+                        playerNode.Position.X = roomDoor.Position.X + roomDoor.size.X;
                     }
                 }
             }
 
             if (insideRoom)
             {
-                if (playerNode.position.X < (worldSize.X - 1431))
+                if (playerNode.Position.X < (worldSize.X - 1431))
                 {
-                    playerNode.position.X = worldSize.X - 1431;
+                    playerNode.Position.X = worldSize.X - 1431;
                 }
             }
 

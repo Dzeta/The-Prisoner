@@ -77,7 +77,7 @@ namespace Cold_Ship
       this._scroller = scroller;
       this._xPosition = xPos;
       this._yPosition = yPos;
-      // Start texture for bubble
+      // Start Texture for bubble
       this._bubbleTexture = (scroller.Count > 1) ? _bubbleTextureHasMore : _bubbleTextureMono;
       this._gameLevel = game;
 
@@ -85,13 +85,13 @@ namespace Cold_Ship
       {
         if (yPos == YPositionRelativeToCenter.Top)
         {
-          this.position = Vector2.Add(speakerPosition, _bubbleRightBottom);
+          this.Position = Vector2.Add(speakerPosition, _bubbleRightBottom);
           this._sourceRectangle = _bubbleSpriteRightBottom;
           this._textStartPosition = _textWhenBubbleIsBottom;
         }
         else
         {
-          this.position = Vector2.Add(speakerPosition, _bubbleRightTop);
+          this.Position = Vector2.Add(speakerPosition, _bubbleRightTop);
           this._sourceRectangle = _bubbleSpriteRightTop;
           this._textStartPosition = _textWhenBubbleIsTop;
         }
@@ -100,13 +100,13 @@ namespace Cold_Ship
       {
         if (yPos == YPositionRelativeToCenter.Top)
         {
-          this.position = Vector2.Add(speakerPosition, _bubbleLeftBottom);
+          this.Position = Vector2.Add(speakerPosition, _bubbleLeftBottom);
           this._sourceRectangle = _bubbleSpriteLeftBottom;
           this._textStartPosition = _textWhenBubbleIsBottom;
         }
         else
         {
-          this.position = Vector2.Add(speakerPosition, _bubbleLeftTop);
+          this.Position = Vector2.Add(speakerPosition, _bubbleLeftTop);
           this._sourceRectangle = _bubbleSpriteLeftTop;
           this._textStartPosition = _textWhenBubbleIsTop;
         }
@@ -133,7 +133,7 @@ namespace Cold_Ship
         waveBank = new WaveBank(engine, "Content\\Sounds\\SOUND_SPEECH_WAVEBANK.xwb");
       }
 
-      // We gonna place the bubble based on the player's position left or right of the screen middle
+      // We gonna place the bubble based on the player's Position left or right of the screen middle
       XPositionRelativeToCenter xPos = speakerPosition.X - windowBound.Center.X >= 0
         ? XPositionRelativeToCenter.Right
         : XPositionRelativeToCenter.Left;
@@ -234,9 +234,9 @@ namespace Cold_Ship
 
     public void Draw(SpriteBatch spriteBatch)
     {
-      spriteBatch.Draw(_bubbleTexture, this.position, this._sourceRectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+      spriteBatch.Draw(_bubbleTexture, this.Position, this._sourceRectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
       spriteBatch.DrawString(_mono8, this._scroller[this._currentRow].Substring(0, _currentRowCharPosition),
-        Vector2.Add(this.position, _textStartPosition), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+        Vector2.Add(this.Position, _textStartPosition), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
 
     }
 

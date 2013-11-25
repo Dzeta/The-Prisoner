@@ -66,6 +66,9 @@ namespace Cold_Ship
         Game_Level gameLevel = Game_Level.LEVEL_HOLDING_CELL;
         Game_Level prevGameLevel = Game_Level.LEVEL_HOLDING_CELL;
 
+      public SpriteFont MonoSmall;
+      public SpriteFont MonoMedium;
+
 
         double bodyTemperature = 36;
         double stamina = 100;
@@ -107,6 +110,9 @@ namespace Cold_Ship
             DialogueBubble.engine = new AudioEngine("Content\\Sounds\\SOUND_SPEECH_ENGINE.xgs");
             DialogueBubble.soundBank = new SoundBank(DialogueBubble.engine, "Content\\Sounds\\SOUND_SPEECH_SOUNDBANK.xsb");
             DialogueBubble.waveBank = new WaveBank(DialogueBubble.engine, "Content\\Sounds\\SOUND_SPEECH_WAVEBANK.xwb");
+
+          MonoSmall = Content.Load<SpriteFont>("Fonts/Manaspace0");
+          MonoMedium = Content.Load<SpriteFont>("Fonts/Manaspace12");
 
             //initiate the timers
             bodyTempTimer = 0;

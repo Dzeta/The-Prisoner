@@ -13,10 +13,10 @@ namespace Cold_Ship
 {
   public class GameLevel
   {
-    public Cold_Ship PrisonerGame { get; set; }
-    public GameLevel(Cold_Ship game)
+    public Cold_Ship GameInstance { get; set; }
+    public GameLevel(Cold_Ship gameInstance)
     {
-      this.PrisonerGame = game;
+      this.GameInstance = gameInstance;
     }
   }
 
@@ -38,12 +38,13 @@ namespace Cold_Ship
     List<GenericSprite2D> worldObjects;
     bool visited = false;
 
+    HealthBar _healthBar;
     PickUpItem lighter;
 
     //declare constructor
     public List<InvisibleChatTriggerBox> AllChatTriggers;
-    public Level_Holding_Cell(Cold_Ship theGame, SpriteBatch spriteBatch, Vector2 screenSize)
-      : base(theGame)
+    public Level_Holding_Cell(Cold_Ship theGameInstance, SpriteBatch spriteBatch, Vector2 screenSize)
+      : base(theGameInstance)
     {
       this.spriteBatch = spriteBatch;
       platforms = new List<Platform>();
@@ -85,30 +86,31 @@ namespace Cold_Ship
       portals.Add(forwardDoor);
       worldObjects.AddRange(portals);
 
-      playerNode = new Character(playerTexture, new Vector2(forwardDoor.position.X - 32 - 200, worldSize.Y - 200 - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
-      playerNode._pocketLight = PocketLightSource.GetNewInstance(PrisonerGame, playerNode);
+      playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 200, worldSize.Y - 200 - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
+      playerNode._pocketLight = PocketLightSource.GetNewInstance(GameInstance, playerNode);
       playerNode._pocketLight.TurnOn();
 
-      // Load the text with respect to the current player's position
+      // Load the text with respect to the current player's Position
 
       if (!visited)
       {
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Good, you're awake."));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "There isn't much time."));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "The ship is going down."));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You need to fix it up if you want to live."));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "You do want to live, don't you?"));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "I hear space death isn't very pleasant, though."));
-        AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance( new Vector2(forwardDoor.position.X - 200, forwardDoor.position.Y + 30), "Up to you.")); 
-        AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.position.X - 10, forwardDoor.position.Y + 30),
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "Good, you're awake."));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "There isn't much time."));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "The ship is going down."));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "You need to fix it up if you want to live."));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "You do want to live, don't you?"));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "I hear space death isn't very pleasant, though."));
+        AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance( new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "Up to you.")); 
+        AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 10, forwardDoor.Position.Y + 30),
             "You definitely should pick that lighter up before you get out of here.", this.playerNode.HasLighter));
       }
 
+      this._healthBar = HealthBar.GetNewInstance(GameInstance, this.playerNode, playerNode.GetHealthAsRatio); 
 
       Texture2D lighterTexture = Content.Load<Texture2D>("Objects\\lighter");
       if (!visited)
       {
-          lighter = new PickUpItem(lighterTexture, new Vector2(forwardDoor.position.X - 32 - 260, forwardDoor.position.Y + 55), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);
+          lighter = new PickUpItem(lighterTexture, new Vector2(forwardDoor.Position.X - 32 - 260, forwardDoor.Position.Y + 55), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);
           worldObjects.Add(lighter);
       }
       worldObjects.Add(playerNode);
@@ -132,24 +134,26 @@ namespace Cold_Ship
         chatTrigger.Update(gameTime);
         if (!chatTrigger.IsConsumed() 
             && chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
-          chatTrigger.InteractWith(new Vector2(forwardDoor.position.X - 50, forwardDoor.position.Y), PrisonerGame);
+          chatTrigger.InteractWith(new Vector2(forwardDoor.Position.X - 50, forwardDoor.Position.Y), GameInstance);
       }
 
-      //update the player position with respect to keyboard input and platform collision
+      //update the player Position with respect to keyboard input and platform collision
       bool useLighter = false;
+
+      this._healthBar.Update(gameTime);
 
       playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
 
-      if (playerNode.position.X < 250)
+      if (playerNode.Position.X < 250)
       {
-        playerNode.position.X = 250;
+        playerNode.Position.X = 250;
       }
-      else if (playerNode.position.X > worldSize.X - 250 - 31)
+      else if (playerNode.Position.X > worldSize.X - 250 - 31)
       {
-        playerNode.position.X = worldSize.X - 250 - 31;
+        playerNode.Position.X = worldSize.X - 250 - 31;
       }
 
-      if (lighter.position != new Vector2(forwardDoor.position.X - 32 - 260, forwardDoor.position.Y + 55))
+      if (lighter.Position != new Vector2(forwardDoor.Position.X - 32 - 260, forwardDoor.Position.Y + 55))
       {
           foreach (Portal portal in portals)
           {
@@ -174,12 +178,13 @@ namespace Cold_Ship
 
       if (Cold_Ship.DEBUG_MODE)
         foreach (InvisibleChatTriggerBox box in AllChatTriggers)
-          spriteBatch.Draw(this.PrisonerGame.DebugTexture, box.GetHitBox(), Color.Pink);
+          spriteBatch.Draw(this.GameInstance.DebugTexture, box.GetHitBox(), Color.Pink);
 
       //draw the desired nodes onto screen through the camera
       foreach (GenericSprite2D element in worldObjects)
           camera.DrawNode(element);
 
+      this._healthBar.Draw(spriteBatch);
       //draw the fps
       spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
       //draw the status display and the body temperature
@@ -191,7 +196,7 @@ namespace Cold_Ship
       if (Cold_Ship.DEBUG_MODE)
         foreach (InvisibleChatTriggerBox invisibleTrigger in AllChatTriggers)
           if (!invisibleTrigger.IsConsumed())
-            spriteBatch.Draw(PrisonerGame.DebugTexture, invisibleTrigger.GetHitBox(), Color.White);
+            spriteBatch.Draw(GameInstance.DebugTexture, invisibleTrigger.GetHitBox(), Color.White);
 
       spriteBatch.End();
     }

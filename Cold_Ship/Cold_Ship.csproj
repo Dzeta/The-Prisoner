@@ -38,6 +38,7 @@
     <Compile Include="Camera\Camera2D.cs" />
     <Compile Include="GameElements\PocketLightSource.cs" />
     <Compile Include="IWatchfulConditional.cs" />
+    <Compile Include="IWatchfulStatefulElement.cs" />
     <Compile Include="Levels\Level_Common_Room.cs" />
     <Compile Include="Dialogue\DialogueBubble.cs" />
     <Compile Include="Camera\Filter.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Levels\Level_Prison_Block.cs" />
     <Compile Include="Levels\Level_Generator.cs" />
     <Compile Include="GameElements\Character.cs" />
+    <Compile Include="UI2DElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK">
@@ -200,6 +202,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\platformTexture.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\prisoner-energy-bar-highlight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\prisoner-energy-bar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\prisoner-health-bar-highlight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\prisoner-health-bar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\radius_of_light.png">

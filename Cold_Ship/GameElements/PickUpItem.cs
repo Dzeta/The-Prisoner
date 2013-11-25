@@ -33,7 +33,7 @@ namespace Cold_Ship
         //update method
         public void Update(ref Character playerNode, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
-            if (new Rectangle((int)playerNode.position.X, (int)playerNode.position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y)))
+            if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
             {
                 if (itemType == ItemType.STAMINA)
                 {
@@ -57,7 +57,7 @@ namespace Cold_Ship
                 }
 
                 //temporary fix
-                position = new Vector2(2048, 2048);
+                Position = new Vector2(2048, 2048);
             }
         }
 
@@ -65,7 +65,7 @@ namespace Cold_Ship
         //draw the item onto screen
         public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
-            spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
+            spriteBatch.Draw(Texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
         }
     }
 }

@@ -50,8 +50,9 @@ namespace Cold_Ship
       this._positionOffset = new Vector2(tex.Width / 2, tex.Height / 2);
       this._scaleCount = 0;
       this._actualFacingOffset = _positionOffsetRight;
-      this.position = owner.position - this._positionOffset;
-
+      this._scaleOffset = (new Vector2(this.Texture.Width * (1 - this._scale.X)
+          , this.Texture.Height * (1 - this._scale.Y))) / 2;
+      this.Position = this._owner.Position - this._positionOffset + _actualFacingOffset + this._scaleOffset;
 
       this._lightState = LightState.ON;
     }
@@ -86,9 +87,9 @@ namespace Cold_Ship
         this._facing = Facing.LEFT;
 
       if (this._lightState == LightState.ON)
-        this.texture = this._lightOn;
+        this.Texture = this._lightOn;
       else if (this._lightState == LightState.OFF)
-        this.texture = this._lightOff;
+        this.Texture = this._lightOff;
 
       if (this._lightState == LightState.ON)
       {
@@ -100,8 +101,8 @@ namespace Cold_Ship
           this._scale += new Vector2(_x, _y);
           this._tickTimer = 0;
           this._scaleCount++;
-          this._scaleOffset = (new Vector2(this.texture.Width * (1 - this._scale.X)
-              , this.texture.Height * (1 - this._scale.Y))) / 2;
+          this._scaleOffset = (new Vector2(this.Texture.Width * (1 - this._scale.X)
+              , this.Texture.Height * (1 - this._scale.Y))) / 2;
         }
       }
 
@@ -124,7 +125,7 @@ namespace Cold_Ship
       }
 
 
-      this.position = this._owner.position - this._positionOffset + _actualFacingOffset + _scaleOffset;
+      this.Position = this._owner.Position - this._positionOffset + _actualFacingOffset + _scaleOffset;
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -136,12 +137,12 @@ namespace Cold_Ship
       spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
       if (this._facing == Facing.RIGHT)
       {
-        spriteBatch.Draw(this.texture, this.position, null, Color.White, 0, Vector2.Zero, _scale,
+        spriteBatch.Draw(this.Texture, this.Position, null, Color.White, 0, Vector2.Zero, _scale,
           SpriteEffects.FlipHorizontally, 1);
       }
       else
       {
-        spriteBatch.Draw(this.texture, this.position, null, Color.White, 0, Vector2.Zero, _scale,
+        spriteBatch.Draw(this.Texture, this.Position, null, Color.White, 0, Vector2.Zero, _scale,
           SpriteEffects.None, 1);
       }
       spriteBatch.End();

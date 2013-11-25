@@ -24,9 +24,9 @@ namespace Cold_Ship
             {
                 base.Draw(spriteBatch, drawPosition);
             }
-            drawPosition = new Vector2((drawPosition.X) + ((texture.Width - texture.Width * filterScale) / 2),
-            (drawPosition.Y + ((texture.Height - texture.Height * filterScale) / 2)));
-            spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, texture.Width, texture.Height), Color.White, 0f, new Vector2(0, 0), filterScale, SpriteEffects.None, 0);
+            drawPosition = new Vector2((drawPosition.X) + ((Texture.Width - Texture.Width * filterScale) / 2),
+            (drawPosition.Y + ((Texture.Height - Texture.Height * filterScale) / 2)));
+            spriteBatch.Draw(Texture, drawPosition, new Rectangle(0, 0, Texture.Width, Texture.Height), Color.White, 0f, new Vector2(0, 0), filterScale, SpriteEffects.None, 0);
         }
     }
 }

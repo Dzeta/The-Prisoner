@@ -91,11 +91,11 @@ namespace Cold_Ship
             //initialize the playerNode
             if (prevGameLevel <= gameLevel)
             {
-                playerNode = new Character(playerTexture, new Vector2(backwardDoor.position.X + backwardDoor.size.X + 5, 116), bodyTemperature, stamina, staminaLimit, 4, 5);
+                playerNode = new Character(playerTexture, new Vector2(backwardDoor.Position.X + backwardDoor.size.X + 5, 116), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
             else if (prevGameLevel >= gameLevel)
             {
-                playerNode = new Character(playerTexture, new Vector2(forwardDoor.position.X - 32 - 35, 116), bodyTemperature, stamina, staminaLimit, 4, 5);
+                playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 35, 116), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
 
             staminaBooster = new PickUpItem(platformTexture, new Vector2(165, 1750), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
@@ -157,16 +157,16 @@ namespace Cold_Ship
         //update function
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
-            //update the player position with respect to keyboard input and platform collision
-            Vector2 prevPosition = playerNode.position;
+            //update the player Position with respect to keyboard input and platform collision
+            Vector2 prevPosition = playerNode.Position;
             bool useLighter = filterOn;
             playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
             reactor.Update(gameTime);
 
             //Check the player's collision with the world boundaries
-            if (playerNode.position.X < 100 || playerNode.position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
+            if (playerNode.Position.X < 100 || playerNode.Position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
             {
-                playerNode.position.X = prevPosition.X;
+                playerNode.Position.X = prevPosition.X;
             }
 
             lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
@@ -180,9 +180,9 @@ namespace Cold_Ship
                 portal.Update(playerNode, ref gameLevel);
             }
 
-            //update the shadowFilter's position with respect to the playerNode
-            shadowFilter.position = new Vector2((playerNode.position.X /*+ (playerNode.texture.Width / 2))*/) - (shadowFilter.texture.Width / 2),
-                (playerNode.position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.texture.Height / 2)));
+            //update the shadowFilter's Position with respect to the playerNode
+            shadowFilter.Position = new Vector2((playerNode.Position.X /*+ (playerNode.Texture.Width / 2))*/) - (shadowFilter.Texture.Width / 2),
+                (playerNode.Position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.Texture.Height / 2)));
 
 
             //update the camera based on the player and world size

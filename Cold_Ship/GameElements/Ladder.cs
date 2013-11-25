@@ -25,19 +25,19 @@ namespace Cold_Ship
         //update method that handles the collisions
         public bool CanClimb(Character player)
         {
-            return collision.Contains(new Rectangle((int)player.position.X + 8, (int)player.position.Y + (int)player.playerSpriteSize.Y - 5, (int)player.playerSpriteSize.X - 16, 5));
+            return collision.Contains(new Rectangle((int)player.Position.X + 8, (int)player.Position.Y + (int)player.playerSpriteSize.Y - 5, (int)player.playerSpriteSize.X - 16, 5));
         }
 
         public bool isOnTop(Character player)
         {
-            return ((player.position.X >= position.X-8 && player.position.X + 32 <= position.X + size.X+8)
-               && player.position.Y + 64 >= position.Y && player.position.Y < position.Y);
+            return ((player.Position.X >= Position.X-8 && player.Position.X + 32 <= Position.X + size.X+8)
+               && player.Position.Y + 64 >= Position.Y && player.Position.Y < Position.Y);
         }
 
         //draw method that draws the platform onto the screen
         public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
-            spriteBatch.Draw(texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
+            spriteBatch.Draw(Texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
         }
     }
 }
