@@ -11,7 +11,7 @@ namespace Cold_Ship
     public class PickUpItem : GenericSprite2D
     {
         //item type enum
-        public enum ItemType {LIGHT, STAMINA, TEMPERATURE, NONE};
+        public enum ItemType {LIGHT, STAMINA, TEMPERATURE, LIGHTER, NONE};
         public enum ItemEffectDuration { TEMPORARY, PERMANENT, NONE };
 
         //declare member data
@@ -20,14 +20,17 @@ namespace Cold_Ship
         public float effect;
         public Vector2 size;
 
+      public Cold_Ship GameInstance;
+
         //constructor
-        public PickUpItem(Texture2D texture, Vector2 position, Vector2 size, ItemType itemType, float effect, ItemEffectDuration itemEffectDuration) :
+        public PickUpItem(Texture2D texture, Vector2 position, Vector2 size, ItemType itemType, float effect, ItemEffectDuration itemEffectDuration, Cold_Ship gameInstance) :
             base(texture, position, Rectangle.Empty)
         {
             this.itemType = itemType;
             this.effect = effect;
             this.size = size;
             this.itemEffectDuration = itemEffectDuration;
+            this.GameInstance = gameInstance;
         }
 
         //update method
@@ -35,7 +38,9 @@ namespace Cold_Ship
         {
             if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
             {
-                if (itemType == ItemType.STAMINA)
+              if (itemType == ItemType.LIGHTER)
+                playerNode._pocketLight = PocketLightSource.GetNewInstance(GameInstance, playerNode);
+              else if (itemType == ItemType.STAMINA)
                 {
                     if (itemEffectDuration == ItemEffectDuration.PERMANENT)
                     {

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-    public class Level_Generator
+    public class Level_Generator : GameLevel
     {
         //declare member variables
         public SpriteBatch spriteBatch;
@@ -39,7 +39,7 @@ namespace Cold_Ship
         bool filterOn = true, generatorOn = false;
 
         //declare constructor
-        public Level_Generator(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Generator(Cold_Ship gameInstance, SpriteBatch spriteBatch, Vector2 screenSize) : base(gameInstance)
         {
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
@@ -98,7 +98,7 @@ namespace Cold_Ship
                 playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 35, 116), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
 
-            staminaBooster = new PickUpItem(platformTexture, new Vector2(165, 1750), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
+            staminaBooster = new PickUpItem(platformTexture, new Vector2(165, 1750), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY, this.GameInstance);
             lightSwitch = new Interactable(Content.Load<Texture2D>("Objects\\lightswitch_off"), new Vector2(1900, 425), new Vector2(23, 32), Interactable.Type_Of_Interactable.LIGHT_SWITCH, Content.Load<Texture2D>("Objects\\lightswitch_on"));
             generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(worldSize.X - 246, ground - 63), new Vector2(103, 63), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
             doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(1120, 1650), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
