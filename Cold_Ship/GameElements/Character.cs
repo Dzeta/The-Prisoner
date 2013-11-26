@@ -12,12 +12,18 @@ namespace Cold_Ship
     public class Character : GenericSprite2D, IWatchfulConditional
     {
         public static Cold_Ship GameInstance;
+        public const float NORMAL_BODY_TEMPERATURE = 37.5f;
+        public const float MAXIMUM_ENERGY_LEVEL = 100.0f;
+
         //declare member variables
         public Vector2 prevPosition;
         public Vector2 velocity;
         public double bodyTemperature;
         public double stamina;
         public double staminaLimit;
+        public Camera2D _camera;
+
+        private Game_Level _previousLevel;
 
         //animation related variables
         public enum Action_Status { FOWARD = 0, BACKWARD = 1, FORWARD_WITH_LIGHTER = 2, BACKWARD_WITH_LIGHTER = 3, CLIMB = 4 };
@@ -27,9 +33,9 @@ namespace Cold_Ship
         public Vector2 playerSpriteSize; //for collision once the animation is set up
 
         //internal member variables
-        float normalTempDecreaseRate = -0.01f;
-        float exertForceIncreaseRate = 0.002f;
-        float exertForceDecreaseRate = -0.05f;
+        float normalTempDecreaseRate = -0.08f;
+        float exertForceIncreaseRate = 0.008f;
+        float exertForceDecreaseRate = -0.08f;
         bool isExertingForce = false;
         bool stoppedExertingForce = false;
         public bool isjumping = false;
@@ -39,6 +45,7 @@ namespace Cold_Ship
 
         public PocketLightSource _pocketLight;
 
+      public HealthBar EnergyBar;
 
         //declare constructor for inheritance
         public Character(Cold_Ship gameInstance, Texture2D texture, Vector2 position)
@@ -67,12 +74,36 @@ namespace Cold_Ship
             currentFrame = 0;
             actionStatus = Action_Status.FOWARD;
             animationTimer = 0;
-            playerSpriteSize = new Vector2((float)texture.Width / maxFramesX, (float)texture.Height / maxFramesY);
         }
+
+        public Camera2D GetCamera() { return this._camera; }
+
+        public static Character GetNewInstance(Cold_Ship gameInstance)
+        {
+            if (GameInstance == null) GameInstance = gameInstance;
+            Texture2D _playerTexture = GameInstance.Content.Load<Texture2D>("Character/PlayerSpriteSheet");
+            Character _instance = new Character(gameInstance, _playerTexture, Vector2.Zero);
+            _instance.bodyTemperature = NORMAL_BODY_TEMPERATURE;
+            _instance.stamina = MAXIMUM_ENERGY_LEVEL;
+            _instance.maxFramesX = 4;
+            _instance.maxFramesY = 5;
+            _instance.currentFrame = 0;
+            _instance.actionStatus = Action_Status.FOWARD;
+            _instance.animationTimer = 0;
+            _instance.playerSpriteSize = new Vector2((float)_playerTexture.Width / _instance.maxFramesX
+                , (float)_playerTexture.Height / _instance.maxFramesY);
+            _instance.EnergyBar = HealthBar.GetNewInstance(GameInstance, _instance, _instance.GetHealthAsRatio);
+            _instance._camera = GameInstance.Camera;
+
+            return _instance;
+        }
+
+        public Game_Level GetPreviousLevel() { return this._previousLevel; }
+        public void SetPreviousLevel(Game_Level level) { this._previousLevel = level; }
 
       public float GetHealthAsRatio()
       {
-        return (float)(this.stamina / this.staminaLimit);
+          return (float)(this.stamina / MAXIMUM_ENERGY_LEVEL);
       }
         //draws the player sprite onto screen
         public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
@@ -82,6 +113,7 @@ namespace Cold_Ship
             spriteBatch.Draw(Texture, drawPosition, rect, Color.White);
 
             if (_pocketLight != null) _pocketLight.Draw(spriteBatch);
+            if (EnergyBar != null) EnergyBar.Draw(spriteBatch);
         }
 
         //move the sprite
@@ -94,6 +126,7 @@ namespace Cold_Ship
         public void Update(bool lighterAcquired, GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, List<Ladder> ladders, Vector2 worldSize, ref float staminaExhaustionTimer)
         {
             if (_pocketLight != null) _pocketLight.Update(gameTime);
+            if (EnergyBar != null) EnergyBar.Update(gameTime);
 
             //register the Position before updating (prevPosition)
             prevPosition = Position;

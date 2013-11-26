@@ -233,7 +233,7 @@ namespace Cold_Ship
 
             if (insideRoom)
             {
-                staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
+                staminaBooster.Update(playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
             }
 
             //update the shadowFilter's Position with respect to the playerNode

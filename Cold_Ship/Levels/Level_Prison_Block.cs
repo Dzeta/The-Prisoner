@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-  public class Level_Prison_Block
+  public class Level_Prison_Block : GameLevel
   {
     //declare member variables
     public SpriteBatch spriteBatch;
@@ -39,11 +39,13 @@ namespace Cold_Ship
     bool filterOn = true, generatorOn = false;
 
     //declare constructor
-    public Level_Prison_Block(SpriteBatch spriteBatch, Vector2 screenSize)
+    public Level_Prison_Block(Cold_Ship theGameInstance)
+      : base(theGameInstance)
     {
-      this.spriteBatch = spriteBatch;
+      this.spriteBatch = theGameInstance.spriteBatch;
+      this.screenSize = new Vector2(theGameInstance.Window.ClientBounds.Right,
+          theGameInstance.Window.ClientBounds.Bottom);
       platforms = new List<Platform>();
-      this.screenSize = screenSize;
       portals = new List<Portal>();
       ladders = new List<Ladder>();
       worldObjects = new List<GenericSprite2D>();
@@ -51,20 +53,17 @@ namespace Cold_Ship
     }
 
     //load content
-    public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature, double stamina, double staminaLimit)
+    public void LoadContent()
     {
       //load the needed textures
-      Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
-      Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\prisonblock_final");
-      statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
+      Texture2D backgroundTexture = GameInstance.Content.Load<Texture2D>("Backgrounds\\prisonblock_final");
+      statusDisplayTexture = GameInstance.Content.Load<Texture2D>("statusDisplay");
+      playerNode = GameInstance.Player;
 
 
       //initialize the world size and the ground coordinate according to the world size
       worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);
       ground = worldSize.Y - 50;
-
-      //load manaspace12
-      manaspace12 = Content.Load<SpriteFont>("Fonts\\manaspace12");
 
       //initialize the needed nodes and camera
       backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
@@ -73,7 +72,7 @@ namespace Cold_Ship
       camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
       //initialize the needed platforms
-      Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
+      Texture2D platformTexture = GameInstance.Content.Load<Texture2D>("Textures\\platformTexture");
 
       //initialize the platforms and add them to the list
       platforms.Add(new Platform(platformTexture, new Vector2(790, 20), new Vector2(100, worldSize.Y - 280)));
@@ -91,7 +90,7 @@ namespace Cold_Ship
       //platforms.Add(new Platform(platformTexture, new Vector2(130, 230), new Vector2(1150, worldSize.Y - 508)));
 
       //initialize ladders and add them to the list
-      Texture2D ladderTexture = Content.Load<Texture2D>("Objects\\ladder");
+      Texture2D ladderTexture = GameInstance.Content.Load<Texture2D>("Objects\\ladder");
       ladders.Add(new Ladder(ladderTexture, new Vector2(34, 237), new Vector2(890, worldSize.Y - 284)));
       ladders.Add(new Ladder(ladderTexture, new Vector2(34, 237), new Vector2(1301, worldSize.Y - 284)));
       ladders.Add(new Ladder(ladderTexture, new Vector2(34, 237), new Vector2(478, worldSize.Y - 514)));
@@ -104,34 +103,37 @@ namespace Cold_Ship
       worldObjects.AddRange(ladders);
 
       //initialize the needed portals
-      backwardDoor = new Portal(new Vector2(100, worldSize.Y - 72 - 50), new Vector2(51, 72), Portal.PortalType.BACKWARD, Content);
-      forwardDoor = new Portal(new Vector2(worldSize.X - 32 - 75, worldSize.Y - 72 - 50), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
+      backwardDoor = new Portal(new Vector2(100, worldSize.Y - 72 - 50), new Vector2(51, 72), Portal.PortalType.BACKWARD, GameInstance.Content);
+      forwardDoor = new Portal(new Vector2(worldSize.X - 32 - 75, worldSize.Y - 72 - 50), new Vector2(51, 72), Portal.PortalType.FOWARD, GameInstance.Content);
       forwardDoor.canOpen = true;
       portals.Add(backwardDoor);
       portals.Add(forwardDoor);
       worldObjects.AddRange(portals);
 
       //initialize the playerNode
-      if (prevGameLevel <= gameLevel)
+      if (GameInstance.Player.GetPreviousLevel is Level_Holding_Cell)
       {
-        playerNode = new Character(playerTexture, new Vector2(backwardDoor.Position.X + backwardDoor.size.X + 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+        playerNode.Position = new Vector2(backwardDoor.Position.X + backwardDoor.size.X + 5, worldSize.Y - 64 - 50);
       }
-      else if (prevGameLevel >= gameLevel)
+      else if (GameInstance.Player.GetPreviousLevel is Level_Generator)
       {
-        playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+        playerNode.Position = new Vector2(forwardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50);
       }
+
+      playerNode._pocketLight = PocketLightSource.GetNewInstance(GameInstance, playerNode);
 
       staminaBooster = new PickUpItem(platformTexture, new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
       lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
-      generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(1807, worldSize.Y - 809), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
+      generator = new Interactable(GameInstance.Content.Load<Texture2D>("Objects\\generator_off")
+          , new Vector2(1807, worldSize.Y - 809), new Vector2(104, 65)
+          , Interactable.Type_Of_Interactable.GENERATOR
+          , GameInstance.Content.Load<Texture2D>("Objects\\generator_on"));
 
       worldObjects.Add(staminaBooster);
       //worldObjects.Add(lightSwitch);
       worldObjects.Add(generator);
 
       worldObjects.Add(playerNode);
-
-
     }
 
     //unload contents
@@ -171,7 +173,7 @@ namespace Cold_Ship
       lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
       generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
 
-      staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
+      staminaBooster.Update(playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 
       //update the shadowFilter's Position with respect to the playerNode
 
@@ -191,12 +193,9 @@ namespace Cold_Ship
       foreach (GenericSprite2D element in worldObjects)
         camera.DrawNode(element);
 
+      SpriteFont font = GameInstance.MonoMedium;
       //draw the fps
-      spriteBatch.DrawString(manaspace12, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
-      //draw the status display and the body temperature
-      spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
-      spriteBatch.DrawString(manaspace12, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
-      spriteBatch.DrawString(manaspace12, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
+      spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
       spriteBatch.End();
     }
   }

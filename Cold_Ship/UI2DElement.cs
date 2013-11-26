@@ -57,7 +57,7 @@ namespace Cold_Ship
       _instance._barSpriteSource = 
           new Rectangle(0, (int)(_bar.Height / 2), _bar.Width, _bar.Height / 2);
       _instance.Texture = _instance._textureBar;
-      _instance._barFillRectangle = new Rectangle(_instance._barSpriteDestination.X + 3
+      _instance._barFillRectangle = new Rectangle(_instance._barSpriteDestination.X + 2
           , _instance._barSpriteDestination.Y, (int) ((_instance._state()*_bar.Width - (6))/SCALE_FACTOR)
           , (int) (_bar.Height/2/SCALE_FACTOR));
 
@@ -76,7 +76,7 @@ namespace Cold_Ship
       this._barSpriteSource = new Rectangle(0, this._textureBar.Height / 2
         , this._textureBar.Width, this._textureBar.Height / 2);
 
-      this._barFillRectangle = new Rectangle(this._barSpriteDestination.X + 3
+      this._barFillRectangle = new Rectangle(this._barSpriteDestination.X + 2
         , this._barSpriteDestination.Y, (int) ((this._state()*this._textureBar.Width - (6))/SCALE_FACTOR)
         , (int) (this._textureBar.Height/2/SCALE_FACTOR));
     }

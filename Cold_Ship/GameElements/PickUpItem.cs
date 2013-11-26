@@ -31,7 +31,7 @@ namespace Cold_Ship
         }
 
         //update method
-        public void Update(ref Character playerNode, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
+        public void Update(Character playerNode, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
             if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
             {

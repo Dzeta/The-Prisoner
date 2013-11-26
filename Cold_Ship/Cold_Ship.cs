@@ -29,13 +29,15 @@ namespace Cold_Ship
     {
         public const bool DEBUG_MODE = true;
 
+
         //declare needed global variables, commented out variables are no longer used
         public GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public SpriteBatch spriteBatch;
         //Scene2DNode playerNode, backgroundNode;
         public Vector2 screenSize { get; set; }/*, worldSize*/
         public Texture2D DebugTexture { get; set; }
 
+        public Camera2D Camera;
         // Freeze but display the regular screen
         // Used for dialogue
         // A few unique state that the game can be, these states are linear
@@ -52,16 +54,18 @@ namespace Cold_Ship
         float exhaustionTimer, staminaExhaustionTimer;
         float jumpTimer;
 
+        public Character Player;
+
         MainMenu mainMenu;
         PauseMenu pauseMenu;
         KeyBindingMenu keyBindingMenu;
 
         KeyboardState oldKeyboardState;
-        Level_Prison_Block prototypeLevel1;
-        Level_Generator prototypeLevel2;
-        Level_Holding_Cell levelHoldingCell;
-        Level_Common_Room levelCommonRoom;
-        Level_Entertainment_Room levelEntertainmentRoom;
+        Level_Prison_Block level1PrisonBlock;
+        Level_Generator level2GeneratorRoom;
+        Level_Holding_Cell level0HoldingCell;
+        Level_Common_Room level3CommonRoom;
+        Level_Entertainment_Room level4EntertainmentRoom;
 
         Game_Level gameLevel = Game_Level.LEVEL_HOLDING_CELL;
         Game_Level prevGameLevel = Game_Level.LEVEL_HOLDING_CELL;
@@ -130,12 +134,14 @@ namespace Cold_Ship
             pauseMenu = new PauseMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
             keyBindingMenu = new KeyBindingMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
 
-            prototypeLevel1 = new Level_Prison_Block(spriteBatch, screenSize);
-            prototypeLevel2 = new Level_Generator(spriteBatch, screenSize);
-            levelHoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
-            levelCommonRoom = new Level_Common_Room(spriteBatch, screenSize);
-            levelEntertainmentRoom = new Level_Entertainment_Room(spriteBatch, screenSize);
+            Player = Character.GetNewInstance(this);
+            Camera = new Camera2D(spriteBatch);
 
+            level0HoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
+            level1PrisonBlock = new Level_Prison_Block(this);
+            level2GeneratorRoom = new Level_Generator(spriteBatch, screenSize);
+            level3CommonRoom = new Level_Common_Room(spriteBatch, screenSize);
+            level4EntertainmentRoom = new Level_Entertainment_Room(spriteBatch, screenSize);
 
             // DIALOGUE USED COMPONENT
             this.DialogueQueue = new List<DialogueBubble>();
@@ -149,11 +155,11 @@ namespace Cold_Ship
         /// </summary>
         protected override void LoadContent()
         {
-            prototypeLevel1.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-            prototypeLevel2.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-            levelHoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-            levelCommonRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-            levelEntertainmentRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+            level0HoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+            level1PrisonBlock.LoadContent();
+            level2GeneratorRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+            level3CommonRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+            level4EntertainmentRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
         }
 
         /// <summary>
@@ -162,11 +168,11 @@ namespace Cold_Ship
         /// </summary>
         protected override void UnloadContent()
         {
-            prototypeLevel1.Unload();
-            prototypeLevel2.Unload();
-            levelHoldingCell.Unload();
-            levelCommonRoom.Unload();
-            levelEntertainmentRoom.Unload();
+            level1PrisonBlock.Unload();
+            level2GeneratorRoom.Unload();
+            level0HoldingCell.Unload();
+            level3CommonRoom.Unload();
+            level4EntertainmentRoom.Unload();
         }
 
         /// <summary>
@@ -202,19 +208,19 @@ namespace Cold_Ship
                 switch (gameLevel)
                 {
                     case Game_Level.LEVEL_PRISON_BLOCKS:
-                        bodyTemperature = prototypeLevel1.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+                        bodyTemperature = level1PrisonBlock.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
                         break;
                     case Game_Level.LEVEL_GENERATOR:
-                        bodyTemperature = prototypeLevel2.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+                        bodyTemperature = level2GeneratorRoom.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
                         break;
                     case Game_Level.LEVEL_HOLDING_CELL:
-                        bodyTemperature = levelHoldingCell.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+                        bodyTemperature = level0HoldingCell.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
                         break;
                     case Game_Level.LEVEL_COMMON_ROOM:
-                        bodyTemperature = levelCommonRoom.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+                        bodyTemperature = level3CommonRoom.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
                         break;
                     case Game_Level.LEVEL_ENTERTAINMENT_ROOM:
-                        bodyTemperature = levelEntertainmentRoom.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+                        bodyTemperature = level4EntertainmentRoom.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
                         break;
                 }
 
@@ -266,19 +272,19 @@ namespace Cold_Ship
                 switch (gameLevel)
                 {
                     case Game_Level.LEVEL_PRISON_BLOCKS:
-                        prototypeLevel1.Draw(framesPerSecond);
+                        level1PrisonBlock.Draw(framesPerSecond);
                         break;
                     case Game_Level.LEVEL_GENERATOR:
-                        prototypeLevel2.Draw(framesPerSecond);
+                        level2GeneratorRoom.Draw(framesPerSecond);
                         break;
                     case Game_Level.LEVEL_HOLDING_CELL:
-                        levelHoldingCell.Draw(framesPerSecond);
+                        level0HoldingCell.Draw(framesPerSecond);
                         break;
                     case Game_Level.LEVEL_COMMON_ROOM:
-                        levelCommonRoom.Draw(framesPerSecond);
+                        level3CommonRoom.Draw(framesPerSecond);
                         break;
                     case Game_Level.LEVEL_ENTERTAINMENT_ROOM:
-                        levelEntertainmentRoom.Draw(framesPerSecond);
+                        level4EntertainmentRoom.Draw(framesPerSecond);
                         break;
                 }
 

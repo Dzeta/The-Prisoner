@@ -39,6 +39,7 @@
     <Compile Include="GameElements\PocketLightSource.cs" />
     <Compile Include="IWatchfulConditional.cs" />
     <Compile Include="IWatchfulStatefulElement.cs" />
+    <Compile Include="Levels\GameLevel.cs" />
     <Compile Include="Levels\Level_Common_Room.cs" />
     <Compile Include="Dialogue\DialogueBubble.cs" />
     <Compile Include="Camera\Filter.cs" />

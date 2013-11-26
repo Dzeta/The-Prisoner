@@ -172,7 +172,7 @@ namespace Cold_Ship
             lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
             generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
             doorSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
-            staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
+            staminaBooster.Update(playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 
             //update portals
             foreach (Portal portal in portals)
