@@ -24,9 +24,9 @@ namespace Cold_Ship
         public override bool Update(Character player, Vector2 prevPosition, float jumpTimer, float ground, bool isJumping)
         {
             bool ret = false;
-            if (position.X + velocity.X > startPosition.X + limits.X || position.X + velocity.X < startPosition.X)
+            if (Position.X + velocity.X > startPosition.X + limits.X || Position.X + velocity.X < startPosition.X)
                 velocity.X = -velocity.X;
-            if (position.Y + velocity.Y > startPosition.Y + limits.Y || position.Y + velocity.Y < startPosition.Y)
+            if (Position.Y + velocity.Y > startPosition.Y + limits.Y || Position.Y + velocity.Y < startPosition.Y)
                 velocity.Y = -velocity.Y;
 
             Position += velocity;
