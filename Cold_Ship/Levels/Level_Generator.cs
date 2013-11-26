@@ -159,8 +159,7 @@ namespace Cold_Ship
         {
             //update the player Position with respect to keyboard input and platform collision
             Vector2 prevPosition = playerNode.Position;
-            bool useLighter = filterOn;
-            playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
+            playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
             reactor.Update(gameTime);
 
             //Check the player's collision with the world boundaries

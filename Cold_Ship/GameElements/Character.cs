@@ -42,6 +42,9 @@ namespace Cold_Ship
         bool isClimbing = false;
         bool canClimb = false;
         bool gravityIsEnabled = true;
+        bool lighterAcquired;
+
+        public Vector2 CameraRelativePosition;
 
         public PocketLightSource _pocketLight;
 
@@ -123,11 +126,12 @@ namespace Cold_Ship
         }
 
         //update everything about the Scene2DNode object
-        public void Update(bool lighterAcquired, GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, List<Ladder> ladders, Vector2 worldSize, ref float staminaExhaustionTimer)
+        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, List<Ladder> ladders, Vector2 worldSize, ref float staminaExhaustionTimer)
         {
             if (_pocketLight != null) _pocketLight.Update(gameTime);
             if (EnergyBar != null) EnergyBar.Update(gameTime);
 
+          lighterAcquired = (_pocketLight != null);
             //register the Position before updating (prevPosition)
             prevPosition = Position;
             //update timers
@@ -159,7 +163,7 @@ namespace Cold_Ship
             if (!canClimb)
                 isClimbing = false;
 
-            UpdateKeyboard(lighterAcquired, oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
+            UpdateKeyboard(oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
 
             oldKeyboardState = newKeyboardState;
 
@@ -246,7 +250,7 @@ namespace Cold_Ship
         public bool GetCondition() { return this.HasLighter(); }
 
          //update the sprite Position based on the keyboard inputs
-        public void UpdateKeyboard(bool lighterAcquired, KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer, ref float animationTimer)
+        public void UpdateKeyboard(KeyboardState oldKeyboardState, KeyboardState newKeyboardState, ref float jumpTimer, ref float animationTimer)
         {
             Keys[] keys = newKeyboardState.GetPressedKeys();
             foreach (Keys key in keys)

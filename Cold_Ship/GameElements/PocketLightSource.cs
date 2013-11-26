@@ -13,8 +13,8 @@ namespace Cold_Ship
     public static Cold_Ship GameInstance;
 
     public const float GLOW_INTERVAL = 200;
-    public const int GLOW_TICK_SCALE = 10;
-    public const float MAX_SCALE_FACTOR = 0.8f; // Empirical measure
+    public const int GLOW_TICK_SCALE = 5;
+    public const float MAX_SCALE_FACTOR = 0.7f; // Empirical measure
     public const float TICK_INTERVAL = 200;
     public const float SNAPSHOT_TICK = 400;
 
@@ -23,8 +23,8 @@ namespace Cold_Ship
     private int _scaleCount;
     private Vector2 _scaleOffset;
     private Vector2 _positionOffset;
-    private Vector2 _positionOffsetLeft = new Vector2(-5, -50); // The offset of left
-    private Vector2 _positionOffsetRight = new Vector2(40, -50); // The offset of right
+    private Vector2 _positionOffsetLeft = new Vector2(0, -10); // The offset of left
+    private Vector2 _positionOffsetRight = new Vector2(35, -10); // The offset of right
     private Vector2 _actualFacingOffset;
 
     private enum LightState { ON, OFF, NOLIGHTING }
@@ -150,8 +150,10 @@ namespace Cold_Ship
         this._lightSwitchTimer = 0;
       }
 
+      Vector2 cameraToPlayer = new Vector2(this._owner.Position.X - GameInstance.Camera.cameraPosition.X,
+        this._owner.Position.Y - GameInstance.Camera.cameraPosition.Y);
 
-      this.Position = this._owner.Position - this._positionOffset + _actualFacingOffset + _scaleOffset;
+      this.Position = cameraToPlayer - this._positionOffset + _actualFacingOffset + _scaleOffset;
     }
 
     public void Draw(SpriteBatch spriteBatch)

@@ -127,9 +127,7 @@ namespace Cold_Ship
       }
 
       //update the player Position with respect to keyboard input and platform collision
-      bool useLighter = false;
-
-      this.PlayerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
+      this.PlayerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
 
       if (this.PlayerNode.Position.X < 250)
       {

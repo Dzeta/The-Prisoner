@@ -22,7 +22,6 @@ namespace Cold_Ship
 
     Texture2D statusDisplayTexture;
 
-    Camera2D camera;
     Character playerNode;
     Filter shadowFilter;
     GenericSprite2D backgroundNode;
@@ -68,8 +67,7 @@ namespace Cold_Ship
       //initialize the needed nodes and camera
       backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
       worldObjects.Add(backgroundNode);
-      camera = new Camera2D(spriteBatch);
-      camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
+      GameInstance.Camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
       //initialize the needed platforms
       Texture2D platformTexture = GameInstance.Content.Load<Texture2D>("Textures\\platformTexture");
@@ -120,8 +118,6 @@ namespace Cold_Ship
         playerNode.Position = new Vector2(forwardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50);
       }
 
-      playerNode._pocketLight = PocketLightSource.GetNewInstance(GameInstance, playerNode);
-
       staminaBooster = new PickUpItem(platformTexture, new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
       lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
       generator = new Interactable(GameInstance.Content.Load<Texture2D>("Objects\\generator_off")
@@ -155,8 +151,7 @@ namespace Cold_Ship
     {
       //update the player Position with respect to keyboard input and platform collision
       Vector2 prevPosition = playerNode.Position;
-      bool useLighter = filterOn;
-      playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
+      playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
       //Check the player's collision with the world boundaries
       if (playerNode.Position.X < 100 || playerNode.Position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
@@ -178,8 +173,8 @@ namespace Cold_Ship
       //update the shadowFilter's Position with respect to the playerNode
 
       //update the camera based on the player and world size
-      camera.TranslateWithSprite(playerNode, screenSize);
-      camera.CapCameraPosition(worldSize, screenSize);
+      this.Camera.TranslateWithSprite(playerNode, screenSize);
+      this.Camera.CapCameraPosition(worldSize, screenSize);
 
       //return the body temperature
       return playerNode.bodyTemperature;
@@ -191,7 +186,7 @@ namespace Cold_Ship
       spriteBatch.Begin();
       ////draw the desired nodes onto screen through the camera
       foreach (GenericSprite2D element in worldObjects)
-        camera.DrawNode(element);
+        this.Camera.DrawNode(element);
 
       SpriteFont font = GameInstance.MonoMedium;
       //draw the fps

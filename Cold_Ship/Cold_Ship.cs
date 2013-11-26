@@ -134,8 +134,8 @@ namespace Cold_Ship
             pauseMenu = new PauseMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
             keyBindingMenu = new KeyBindingMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
 
-            Player = Character.GetNewInstance(this);
             Camera = new Camera2D(spriteBatch);
+            Player = Character.GetNewInstance(this);
 
             level0HoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
             level1PrisonBlock = new Level_Prison_Block(this);

@@ -61,7 +61,6 @@ namespace Cold_Ship
             }
         }
 
-
         //draw the item onto screen
         public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {

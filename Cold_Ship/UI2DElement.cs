@@ -69,9 +69,14 @@ namespace Cold_Ship
 
     public override void Update(GameTime gameTime)
     {
+      Vector2 cameraToPlayer = new Vector2(this._player.Position.X - GameInstance.Camera.cameraPosition.X,
+        this._player.Position.Y - GameInstance.Camera.cameraPosition.Y);
+
       this._barSpriteDestination = 
-          new Rectangle((int)(this._player.Position.X - this._offsetFromPlayer.X), (int)(this._player.Position.Y - this._offsetFromPlayer.Y)
-          , (int)(this._textureBar.Width / SCALE_FACTOR), (int)(this._textureBar.Height / 2 / SCALE_FACTOR));
+          new Rectangle((int)(cameraToPlayer.X - this._offsetFromPlayer.X)
+            , (int)(cameraToPlayer.Y - this._offsetFromPlayer.Y)
+            , (int)(this._textureBar.Width / SCALE_FACTOR)
+            , (int)(this._textureBar.Height / 2 / SCALE_FACTOR));
 
       this._barSpriteSource = new Rectangle(0, this._textureBar.Height / 2
         , this._textureBar.Width, this._textureBar.Height / 2);
