@@ -64,6 +64,9 @@ namespace Cold_Ship
       this._lightState = LightState.ON;
     }
 
+    public bool IsTurnedOff() { return this._lightState == LightState.OFF; }
+    public bool IsTurnedOn() { return this._lightState == LightState.ON; }
+    public bool IsDisabled() { return this._lightState == LightState.NOLIGHTING; } 
     public void TurnOff() { this._lightState = LightState.OFF; }
     public void TurnOn() { this._lightState = LightState.ON; }
     public void TurnDisable() { this._lightState = LightState.NOLIGHTING; }

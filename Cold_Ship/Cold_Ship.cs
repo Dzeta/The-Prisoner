@@ -136,6 +136,7 @@ namespace Cold_Ship
 
             Camera = new Camera2D(spriteBatch);
             Player = Character.GetNewInstance(this);
+          Player._pocketLight = PocketLightSource.GetNewInstance(this, Player);
 
             level0HoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
             level1PrisonBlock = new Level_Prison_Block(this);

@@ -51,6 +51,7 @@ namespace Cold_Ship
       Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
       Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\holdingcell_final");
       statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
+      PlayerNode._pocketLight.TurnDisable();
 
 
       //initialize the world size and the ground coordinate according to the world size

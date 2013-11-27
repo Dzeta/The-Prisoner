@@ -58,7 +58,7 @@ namespace Cold_Ship
       Texture2D backgroundTexture = GameInstance.Content.Load<Texture2D>("Backgrounds\\prisonblock_final");
       statusDisplayTexture = GameInstance.Content.Load<Texture2D>("statusDisplay");
       playerNode = GameInstance.Player;
-
+      playerNode._pocketLight.TurnOff();
 
       //initialize the world size and the ground coordinate according to the world size
       worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);

@@ -246,7 +246,10 @@ namespace Cold_Ship
             }
         }
 
-        public bool HasLighter() { return this._pocketLight != null; }
+        public bool HasLighter()
+        {
+          return this._pocketLight != null && !this._pocketLight.IsDisabled();
+        }
         public bool GetCondition() { return this.HasLighter(); }
 
          //update the sprite Position based on the keyboard inputs
