@@ -63,10 +63,10 @@ namespace Cold_Ship
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
-            Texture2D backgroundTexture = Content.Load<Texture2D>(/*"Backgrounds\\prisonblock_final"*/ "Backgrounds\\messhall_draft");
-            Texture2D backgroundFrontTexture = Content.Load<Texture2D>(/*"Backgrounds\\prisonblock_final"*/ "Backgrounds\\messhall_frontLayer");
-            Texture2D backgroundMiddleLayer = Content.Load<Texture2D>(/*"Backgrounds\\prisonblock_final"*/ "Backgrounds\\messhall_middleLayer");
-            Texture2D backgroundBackLayer = Content.Load<Texture2D>(/*"Backgrounds\\prisonblock_final"*/ "Backgrounds\\messhall_backLayer");
+            Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\messhall_draft");
+            Texture2D backgroundFrontTexture = Content.Load<Texture2D>("Backgrounds\\messhall_frontLayer");
+            Texture2D backgroundMiddleLayer = Content.Load<Texture2D>("Backgrounds\\messhall_middleLayer");
+            Texture2D backgroundBackLayer = Content.Load<Texture2D>("Backgrounds\\messhall_backLayer");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
 
@@ -272,11 +272,9 @@ namespace Cold_Ship
                     playerNode.Position.X = worldSize.X - 1431;
                 }
             }
-            
-            
+
             //return the body temperature
             return playerNode.bodyTemperature;
-
             
         }
 
