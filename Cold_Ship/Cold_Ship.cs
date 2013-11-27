@@ -20,7 +20,7 @@ using KeyboardState = Microsoft.Xna.Framework.Input.KeyboardState;
 namespace Cold_Ship
 {
     //declare the enum for game levels
-    public enum Game_Level { LEVEL_HOLDING_CELL, LEVEL_PRISON_BLOCKS, LEVEL_GENERATOR, LEVEL_COMMON_ROOM, LEVEL_ENTERTAINMENT_ROOM };
+    public enum Game_Level { LEVEL_HOLDING_CELL, LEVEL_PRISON_BLOCKS, LEVEL_GENERATOR, LEVEL_COMMON_ROOM, LEVEL_ENTERTAINMENT_ROOM, LEVEL_BRIDGE, LEVEL_CONTROL_ROOM };
 
     /// <summary>
     /// This is the main type for your game
@@ -62,8 +62,10 @@ namespace Cold_Ship
         Level_Holding_Cell levelHoldingCell;
         Level_Common_Room levelCommonRoom;
         Level_Entertainment_Room levelEntertainmentRoom;
+        Level_Bridge levelBridge;
+        Level_Control_Room levelControlRoom;
 
-        Game_Level gameLevel = Game_Level.LEVEL_HOLDING_CELL;
+        Game_Level gameLevel = Game_Level.LEVEL_BRIDGE;
         Game_Level prevGameLevel = Game_Level.LEVEL_HOLDING_CELL;
 
       public SpriteFont MonoSmall;
@@ -135,6 +137,8 @@ namespace Cold_Ship
             levelHoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
             levelCommonRoom = new Level_Common_Room(spriteBatch, screenSize);
             levelEntertainmentRoom = new Level_Entertainment_Room(spriteBatch, screenSize);
+            levelBridge = new Level_Bridge(spriteBatch, screenSize);
+            levelControlRoom = new Level_Control_Room(spriteBatch, screenSize);
 
 
             // DIALOGUE USED COMPONENT
@@ -154,6 +158,8 @@ namespace Cold_Ship
             levelHoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
             levelCommonRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
             levelEntertainmentRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+            levelBridge.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+            levelControlRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
         }
 
         /// <summary>
@@ -167,6 +173,8 @@ namespace Cold_Ship
             levelHoldingCell.Unload();
             levelCommonRoom.Unload();
             levelEntertainmentRoom.Unload();
+            levelBridge.Unload();
+            levelControlRoom.Unload();
         }
 
         /// <summary>
@@ -215,6 +223,12 @@ namespace Cold_Ship
                         break;
                     case Game_Level.LEVEL_ENTERTAINMENT_ROOM:
                         bodyTemperature = levelEntertainmentRoom.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+                        break;
+                    case Game_Level.LEVEL_BRIDGE:
+                        bodyTemperature = levelBridge.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
+                        break;
+                    case Game_Level.LEVEL_CONTROL_ROOM:
+                        bodyTemperature = levelControlRoom.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ref gameLevel, ref staminaExhaustionTimer, ref bodyTemperature, ref stamina, ref staminaLimit);
                         break;
                 }
 
@@ -279,6 +293,12 @@ namespace Cold_Ship
                         break;
                     case Game_Level.LEVEL_ENTERTAINMENT_ROOM:
                         levelEntertainmentRoom.Draw(framesPerSecond);
+                        break;
+                    case Game_Level.LEVEL_BRIDGE:
+                        levelBridge.Draw(framesPerSecond);
+                        break;
+                    case Game_Level.LEVEL_CONTROL_ROOM:
+                        levelControlRoom.Draw(framesPerSecond);
                         break;
                 }
 

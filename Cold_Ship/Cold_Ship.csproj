@@ -39,6 +39,7 @@
     <Compile Include="GameElements\PocketLightSource.cs" />
     <Compile Include="IWatchfulConditional.cs" />
     <Compile Include="IWatchfulStatefulElement.cs" />
+    <Compile Include="Levels\Level_Bridge.cs" />
     <Compile Include="Levels\Level_Common_Room.cs" />
     <Compile Include="Dialogue\DialogueBubble.cs" />
     <Compile Include="Camera\Filter.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="GameElements\Interactable.cs" />
     <Compile Include="Dialogue\InvisibleChatTriggerBox.cs" />
     <Compile Include="GameElements\Ladder.cs" />
+    <Compile Include="Levels\Level_Control_Room.cs" />
     <Compile Include="Levels\Level_Entertainment_Room.cs" />
     <Compile Include="Levels\Level_Holding_Cell.cs" />
     <Compile Include="GameElements\MovingPlatform.cs" />
@@ -84,10 +86,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Backgrounds\bridge.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Backgrounds\engineroom_bg.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Backgrounds\entertainmentroom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Backgrounds\entertainmentroom_background.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Backgrounds\holdingcell_final.png">

@@ -12,12 +12,14 @@ namespace Cold_Ship
     public class Interactable : GenericSprite2D
     {
         //declare enum for type of interactable
-        public enum Type_Of_Interactable {GENERATOR, LIGHT_SWITCH, DOOR_SWITCH};
+        public enum Type_Of_Interactable {GENERATOR, LIGHT_SWITCH, DOOR_SWITCH, PUZZLE_SWITCH};
+        public bool puzzleSwitchOn;
+        public int timeCounter;
 
         //declare member variables
         public Vector2 size;
         public Type_Of_Interactable typeOfInteractable;
-        public Texture2D altTexture;
+        public Texture2D altTexture, tempTexture;
 
         //Constructor
         public Interactable(Texture2D texture, Vector2 position, Vector2 size, Type_Of_Interactable type, Texture2D altTexture = null) :
@@ -26,6 +28,9 @@ namespace Cold_Ship
             this.size = size;
             this.typeOfInteractable = type;
             this.altTexture = altTexture;
+            puzzleSwitchOn = false;
+            tempTexture = texture;
+            timeCounter = 200;
         }
 
 
@@ -64,6 +69,20 @@ namespace Cold_Ship
                                 {
                                     Texture = altTexture;
                                 }
+                            }
+                            break;
+                        case Type_Of_Interactable.PUZZLE_SWITCH:
+                            if ((altTexture != null) && (puzzleSwitchOn == false) && timeCounter > 200)
+                            {
+                                Texture = altTexture;
+                                puzzleSwitchOn = true;
+                                timeCounter = 0;
+                            }
+                            else if (puzzleSwitchOn == true && timeCounter > 200)
+                            {
+                                Texture = tempTexture;
+                                puzzleSwitchOn = false;
+                                timeCounter = 0;
                             }
                             break;
                     }

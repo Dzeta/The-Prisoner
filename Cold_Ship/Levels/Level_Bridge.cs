@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-    public class Level_Entertainment_Room
+    public class Level_Bridge
     {
         //declare member variables
         public SpriteBatch spriteBatch;
@@ -52,7 +52,7 @@ namespace Cold_Ship
         List<Interactable> switchPuzzle;
 
         //declare constructor
-        public Level_Entertainment_Room(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Bridge(SpriteBatch spriteBatch, Vector2 screenSize)
         {
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
@@ -69,7 +69,7 @@ namespace Cold_Ship
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
-            Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\entertainmentroom_background");
+            Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\bridge");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
 
@@ -150,7 +150,7 @@ namespace Cold_Ship
             staminaBooster = new PickUpItem(platformTexture, new Vector2(worldSize.X - 1413, worldSize.Y - 111), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
             //Light switch
             lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
-            
+
             //initiate the switchPuzzle
             puzzleSwitch5 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(760, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
             puzzleSwitch4 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(700, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
@@ -162,7 +162,7 @@ namespace Cold_Ship
             switchPuzzle.Add(puzzleSwitch3);
             switchPuzzle.Add(puzzleSwitch4);
             switchPuzzle.Add(puzzleSwitch5);
-            
+
             //Generator
             generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(worldSize.X - 638, worldSize.Y - 814), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
             //Door switch
