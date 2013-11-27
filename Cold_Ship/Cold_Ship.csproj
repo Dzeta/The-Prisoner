@@ -101,6 +101,9 @@
     <Content Include="Content\Backgrounds\holdingcell_final.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Backgrounds\menuscreen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Backgrounds\messhall_backLayer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

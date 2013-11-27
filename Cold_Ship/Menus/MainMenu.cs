@@ -19,7 +19,7 @@ namespace Cold_Ship
             : base(background, cursorTexture, font, 4, menuClick)
         {
             this.optionMenu = new String[4] { "Start Playing ", "Key Binding", "HighScore (do we need highscores ?)", "Exit" };
-            this.optionPosition = new Vector2[4] { new Vector2(350, 260), new Vector2(350, 290), new Vector2(350, 320), new Vector2(350, 350) };
+            this.optionPosition = new Vector2[4] { new Vector2(350, 300), new Vector2(350, 330), new Vector2(350, 360), new Vector2(350, 390) };
             this.game = game;
             previousKeyboardState = Keyboard.GetState();
         }
