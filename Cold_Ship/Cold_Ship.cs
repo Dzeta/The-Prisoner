@@ -126,9 +126,9 @@ namespace Cold_Ship
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            mainMenu = new MainMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
-            pauseMenu = new PauseMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
-            keyBindingMenu = new KeyBindingMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
+            mainMenu = new MainMenu(this, Content.Load<Texture2D>("Backgrounds\\menuscreen"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
+            pauseMenu = new PauseMenu(this, Content.Load<Texture2D>("Backgrounds\\menuscreen"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
+            keyBindingMenu = new KeyBindingMenu(this, Content.Load<Texture2D>("Backgrounds\\menuscreen"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
 
             prototypeLevel1 = new Level_Prison_Block(spriteBatch, screenSize);
             prototypeLevel2 = new Level_Generator(spriteBatch, screenSize);

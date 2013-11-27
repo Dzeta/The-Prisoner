@@ -16,7 +16,7 @@ namespace Cold_Ship
         //declare member variables
         public SpriteBatch spriteBatch;
         SpriteFont font;
-        
+
         Vector2 worldSize, screenSize;
         float ground;
 
@@ -25,7 +25,7 @@ namespace Cold_Ship
         Camera2D camera;
         Character playerNode;
         Filter shadowFilter;
-        GenericSprite2D backgroundNode; 
+        GenericSprite2D backgroundNode;
 
         List<GenericSprite2D> worldObjects;
 
@@ -35,7 +35,7 @@ namespace Cold_Ship
         Interactable lightSwitch, generator, doorSwitch;
         PickUpItem staminaBooster;
         Reactor reactor;
-        
+
         bool filterOn = true, generatorOn = false;
 
         //declare constructor
@@ -49,7 +49,8 @@ namespace Cold_Ship
         }
 
         //load content
-        public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature, double stamina, double staminaLimit)
+        public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel,
+                                double bodyTemperature, double stamina, double staminaLimit)
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
@@ -98,10 +99,10 @@ namespace Cold_Ship
                 playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 35, 116), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
 
-            staminaBooster = new PickUpItem(platformTexture, new Vector2(165, 1750), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
-            lightSwitch = new Interactable(Content.Load<Texture2D>("Objects\\lightswitch_off"), new Vector2(1900, 425), new Vector2(23, 32), Interactable.Type_Of_Interactable.LIGHT_SWITCH, Content.Load<Texture2D>("Objects\\lightswitch_on"));
+            staminaBooster = new PickUpItem(platformTexture, new Vector2(1165, 165), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
+            lightSwitch = new Interactable(Content.Load<Texture2D>("Objects\\lightswitch_off"), new Vector2(130, 1330), new Vector2(23, 32), Interactable.Type_Of_Interactable.LIGHT_SWITCH, Content.Load<Texture2D>("Objects\\lightswitch_on"));
             generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(worldSize.X - 246, ground - 63), new Vector2(103, 63), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
-            doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(1120, 1650), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
+            doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(1920, 910), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
 
             worldObjects.Add(staminaBooster);
             worldObjects.Add(lightSwitch);
@@ -114,6 +115,7 @@ namespace Cold_Ship
         private void createPlatforms(Texture2D platformTexture)
         {
             Vector2 sizeBasePlatform = new Vector2(120, 20);
+            Vector2 sizeSmallPlatform = new Vector2(50, 20);
             platforms.Add(new Platform(platformTexture, new Vector2(420, 20), new Vector2(100, 180)));
             platforms.Add(new Platform(platformTexture, new Vector2(420, 20), new Vector2(1520, 180)));
 
@@ -123,9 +125,9 @@ namespace Cold_Ship
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(300, 665)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(430, 755)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(300, 855)));
-            platforms.Add(new Platform(platformTexture, new Vector2(50, 20), new Vector2(200, 880)));
+            platforms.Add(new Platform(platformTexture, sizeSmallPlatform, new Vector2(200, 880)));
             platforms.Add(new Platform(platformTexture, new Vector2(30, 20), new Vector2(100, 980)));
-            platforms.Add(new Platform(platformTexture, new Vector2(50, 20), new Vector2(100, 1020)));
+            platforms.Add(new Platform(platformTexture, sizeSmallPlatform, new Vector2(100, 1020)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(300, 1040)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(160, 1140)));
             platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(320, 1225)));
@@ -140,6 +142,29 @@ namespace Cold_Ship
             platforms.Add(new MovingPlatform(platformTexture, sizeBasePlatform, new Vector2(450, 1850), new Vector2(0.65f, 0), new Vector2(600, 0)));
             platforms.Add(new MovingPlatform(platformTexture, sizeBasePlatform, new Vector2(1225, 1850), new Vector2(0.65f, 0), new Vector2(300, 0)));
 
+            platforms.Add(new MovingPlatform(platformTexture, new Vector2(30, 20), new Vector2(1915, 1830), new Vector2(0, 0.5f), new Vector2(0, 80)));
+            platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(1750, 1780)));
+            platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(1600, 1710)));
+            platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(1510, 1610)));
+            platforms.Add(new MovingPlatform(platformTexture, sizeBasePlatform, new Vector2(1630, 1550), new Vector2(0.5f, 0), new Vector2(150, 0)));
+            platforms.Add(new MovingPlatform(platformTexture, new Vector2(30, 20), new Vector2(1915, 1355), new Vector2(0, 0.5f), new Vector2(0, 150)));
+            platforms.Add(new MovingPlatform(platformTexture, sizeBasePlatform, new Vector2(1720, 1320), new Vector2(0, 0.5f), new Vector2(0, 50)));
+            platforms.Add(new Platform(platformTexture, new Vector2(60, 20), new Vector2(1885, 1225)));
+            platforms.Add(new MovingPlatform(platformTexture, new Vector2(30, 20), new Vector2(1915, 950), new Vector2(0, 0.5f), new Vector2(0, 200)));
+            platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(1570, 1280)));
+            platforms.Add(new MovingPlatform(platformTexture, sizeSmallPlatform, new Vector2(1480, 1150), new Vector2(0, 0.5f), new Vector2(0, 100)));
+            platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(1560, 1100)));
+            platforms.Add(new MovingPlatform(platformTexture, sizeSmallPlatform, new Vector2(1480, 950), new Vector2(0, 0.5f), new Vector2(0, 100)));
+            platforms.Add(new Platform(platformTexture, sizeSmallPlatform, new Vector2(1560, 900)));
+            platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(1700, 840)));
+            platforms.Add(new Platform(platformTexture, sizeSmallPlatform, new Vector2(1850, 750)));
+            platforms.Add(new MovingPlatform(platformTexture, sizeSmallPlatform, new Vector2(1680, 680), new Vector2(0.5f, 0), new Vector2(100, 0)));
+            platforms.Add(new MovingPlatform(platformTexture, sizeSmallPlatform, new Vector2(1600, 420), new Vector2(0, 0.5f), new Vector2(0, 200)));
+            platforms.Add(new Platform(platformTexture, sizeBasePlatform, new Vector2(1450, 440)));
+            platforms.Add(new Platform(platformTexture, sizeSmallPlatform, new Vector2(1380, 380)));
+            platforms.Add(new MovingPlatform(platformTexture, sizeSmallPlatform, new Vector2(1450, 180), new Vector2(0, 0.5f), new Vector2(0, 150)));
+            platforms.Add(new Platform(platformTexture, sizeSmallPlatform, new Vector2(1230, 180)));
+            platforms.Add(new Platform(platformTexture, sizeSmallPlatform, new Vector2(1170, 220)));
         }
 
         //unload contents
@@ -155,7 +180,10 @@ namespace Cold_Ship
         }
 
         //update function
-        public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
+        public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer,
+                             ref KeyboardState oldKeyboardState, ref float jumpTimer,
+                             ref Game_Level gameLevel, ref float staminaExhaustionTimer,
+                             ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
             //update the player Position with respect to keyboard input and platform collision
             Vector2 prevPosition = playerNode.Position;

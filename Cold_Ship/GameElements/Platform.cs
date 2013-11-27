@@ -33,41 +33,24 @@ namespace Cold_Ship
         public virtual bool Update(Character player, Vector2 prevPosition, float jumpTimer, float ground, bool isJumping)
         {
             bool canJump = true;
-            if (new Rectangle((int)player.Position.X, (int)player.Position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionUp))
+            if (new Rectangle((int)player.Position.X /*+ 8*/, (int)player.Position.Y /*+ (int)player.playerSpriteSize.Y - 5*/, (int)player.playerSpriteSize.X /*- 16*/, (int)player.playerSpriteSize.Y/*5*/).Intersects(collisionUp))
             {
-
                 player.Position = prevPosition;
-
-                //if (player.Position.X + player.playerSpriteSize.X > collisionUp.X + collisionUp.Width / 5 && player.Position.X < collisionUp.X + collisionUp.Width / 5 * 4)
-                //{
-                    canJump = false;
-                //}
+                canJump = false;
             }
-            if (new Rectangle((int)player.Position.X, (int)player.Position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionLeft))
+            if (new Rectangle((int)player.Position.X /*+ 7*/, (int)player.Position.Y, (int)player.playerSpriteSize.X /*- 7*/, (int)player.playerSpriteSize.Y).Intersects(collisionLeft))
             {
-
                 player.Position.X = prevPosition.X;
-                //player.ApplyGravity(jumpTimer, ground);
             }
-            if (new Rectangle((int)player.Position.X, (int)player.Position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionRight))
+            if (new Rectangle((int)player.Position.X/* + 7*/, (int)player.Position.Y, (int)player.playerSpriteSize.X /*- 7*/, (int)player.playerSpriteSize.Y).Intersects(collisionRight))
             {
                 player.Position = prevPosition;
-                //player.ApplyGravity(jumpTimer, ground);
             }
-            // if (new Rectangle((int)player.Position.X, (int)player.Position.Y, (int)player.Texture.Width, (int)player.Texture.Height).Intersects(collisionUp))
-            //{
-            //    player.Position.Y = prevPosition.Y;
-            //    return false;
-            //}
-            else if (new Rectangle((int)player.Position.X, (int)player.Position.Y, (int)player.playerSpriteSize.X, (int)player.playerSpriteSize.Y).Intersects(collisionDown))
+            else if (new Rectangle((int)player.Position.X /*+ 7*/, (int)player.Position.Y, (int)player.playerSpriteSize.X /*- 7*/, (int)player.playerSpriteSize.Y).Intersects(collisionDown))
             {
                 player.Position = prevPosition;
             }
             return canJump;
-            //if (new Rectangle((int)player.Position.X, (int)player.Position.Y, (int)player.Texture.Width, (int)player.Texture.Height).Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
-            //{
-            //    player.Position = prevPosition;
-            //}
         }
 
         //draw method that draws the platform onto the screen
