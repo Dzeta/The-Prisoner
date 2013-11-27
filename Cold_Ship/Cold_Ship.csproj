@@ -225,6 +225,12 @@
     <Content Include="Content\Textures\radius_of_light_off.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Textures\radius_of_light_trail_01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\radius_of_light_trail_02.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Textures\reactor_01.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
