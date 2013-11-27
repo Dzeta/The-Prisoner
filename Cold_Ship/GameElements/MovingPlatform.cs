@@ -31,10 +31,32 @@ namespace Cold_Ship
 
             Position += velocity;
 
-            collisionUp = new Rectangle((int)(Position.X), (int)(Position.Y), (int)size.X, (int)size.Y / 6);
-            collisionDown = new Rectangle((int)(Position.X + (1 * (size.X / 10))), (int)(Position.Y + (5 * (size.Y / 6))), (int)(8 * (size.X / 10)), (int)size.Y / 6);
-            collisionLeft = new Rectangle((int)Position.X, (int)(Position.Y + (1 * (size.Y / 15))), (int)size.X / 1000, (int)(size.Y));
-            collisionRight = new Rectangle((int)(Position.X + (7 * (size.X / 8))), (int)(Position.Y + (1 * (size.Y / 15))), (int)size.X / 10, (int)(size.Y));
+            //update2
+            collisionUp = new Rectangle((int)(Position.X + 5), (int)(Position.Y), (int)(size.X - 10), (int)(size.Y / 10));
+            collisionDown = new Rectangle((int)(Position.X + 5), (int)(Position.Y + (9 * (size.Y / 10))), (int)(size.X - 10), (int)size.Y / 10);
+            collisionLeft = new Rectangle((int)(Position.X), (int)(Position.Y + 5), (int)(size.X * 3 / 10), (int)(size.Y - 10));
+            collisionRight = new Rectangle((int)(Position.X + (size.X * 7 / 10)), (int)(Position.Y + 5), (int)(size.X * 3 / 10), (int)(size.Y - 10));
+
+            collisionUpLeft = new Rectangle((int)(Position.X), (int)(Position.Y), (int)(5), (int)(5));
+            collisionUpRight = new Rectangle((int)(Position.X + size.X - 5), (int)(Position.Y), (int)(5), (int)(5));
+            collisionDownLeft = new Rectangle((int)(Position.X), (int)(Position.Y + size.Y - 5), (int)(5), (int)(5));
+            collisionDownRight = new Rectangle((int)(Position.X + size.X - 5), (int)(Position.Y + size.Y - 5), (int)(5), (int)(5));
+
+            //collisionUp = new Rectangle((int)(Position.X + (size.X * 1 / 10)), (int)(Position.Y), (int)(size.X * 8 / 10), (int)(size.Y / 10));
+            //collisionDown = new Rectangle((int)(Position.X + (size.X * 1 / 10)), (int)(Position.Y + (9 * (size.Y / 10))), (int)(size.X * 8 / 10), (int)size.Y / 10);
+            //collisionLeft = new Rectangle((int)(Position.X), (int)(Position.Y + (size.Y / 10)), (int)(size.X * 3 / 10), (int)(size.Y * 8 / 10));
+            //collisionRight = new Rectangle((int)(Position.X + (size.X * 7 / 10)), (int)(Position.Y + (size.Y / 10)), (int)(size.X * 3 / 10), (int)(size.Y * 8 / 10));
+
+            //collisionUpLeft = new Rectangle((int)(Position.X), (int)(Position.Y), (int)(size.X / 10), (int)(size.Y / 10));
+            //collisionUpRight = new Rectangle((int)(Position.X + (size.X * 9 / 10)), (int)(Position.Y), (int)(size.X / 10), (int)(size.Y / 10));
+            //collisionDownLeft = new Rectangle((int)(Position.X), (int)(Position.Y + (size.Y * 9 / 10)), (int)(size.X / 10), (int)(size.Y / 10));
+            //collisionDownRight = new Rectangle((int)(Position.X + (size.X * 9 / 10)), (int)(Position.Y + (size.Y * 9 / 10)), (int)(size.X / 10), (int)(size.Y / 10));
+
+
+            //collisionUp = new Rectangle((int)(Position.X), (int)(Position.Y), (int)size.X, (int)size.Y / 6);
+            //collisionDown = new Rectangle((int)(Position.X + (1 * (size.X / 10))), (int)(Position.Y + (5 * (size.Y / 6))), (int)(8 * (size.X / 10)), (int)size.Y / 6);
+            //collisionLeft = new Rectangle((int)Position.X, (int)(Position.Y + (1 * (size.Y / 15))), (int)size.X / 1000, (int)(size.Y));
+            //collisionRight = new Rectangle((int)(Position.X + (7 * (size.X / 8))), (int)(Position.Y + (1 * (size.Y / 15))), (int)size.X / 10, (int)(size.Y));
 
             ret = base.Update(player, prevPosition, jumpTimer, ground, isJumping);
 

@@ -218,6 +218,10 @@ namespace Cold_Ship
             Keys[] keys = newKeyboardState.GetPressedKeys();
             foreach (Keys key in keys)
             {
+                if (key == Keys.T)
+                {
+                    stamina += 20;
+                }
                 if (key == HelperFunction.KeyLeft)
                 {
                     if (isClimbing) 
