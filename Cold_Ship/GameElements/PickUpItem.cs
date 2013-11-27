@@ -20,53 +20,57 @@ namespace Cold_Ship
         public float effect;
         public Vector2 size;
 
-      public Cold_Ship GameInstance;
 
         //constructor
-        public PickUpItem(Texture2D texture, Vector2 position, Vector2 size, ItemType itemType, float effect, ItemEffectDuration itemEffectDuration, Cold_Ship gameInstance) :
-            base(texture, position, Rectangle.Empty)
+        public PickUpItem(GameLevel instance, Texture2D texture
+            , Vector2 position, ItemType itemType) 
+                : base(instance, texture, position, Rectangle.Empty)
         {
             this.itemType = itemType;
             this.effect = effect;
             this.size = size;
             this.itemEffectDuration = itemEffectDuration;
-            this.GameInstance = gameInstance;
         }
 
-        //update method
-        public void Update(Character playerNode, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
-        {
-            if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
-            {
+      public static PickUpItem GetNewInstance(GameLevel instance, Vector2 positian)
+      {
+
+
+        
+      }
+
+      public void PickUpBy(Character player)
+      {
               if (itemType == ItemType.LIGHTER)
               {
-                playerNode._pocketLight = PocketLightSource.GetNewInstance(GameInstance, playerNode);
-                playerNode._pocketLight.TurnDisable();
+                player._pocketLight = PocketLightSource.GetNewInstance(CurrentGameLevel.GameInstance, player);
+                player._pocketLight.TurnDisable();
               }
               else if (itemType == ItemType.STAMINA)
                 {
                     if (itemEffectDuration == ItemEffectDuration.PERMANENT)
                     {
-                        playerNode.staminaLimit += effect;
-                        playerNode.stamina = playerNode.staminaLimit;
-                        staminaLimit = stamina = playerNode.staminaLimit;
+                        player.Energy = Character.MAXIMUM_ENERGY_LEVEL;
                     }
                     else if (itemEffectDuration == ItemEffectDuration.TEMPORARY)
                     {
-                        //playerNode.staminaLimit += effect;
-                        //playerNode.stamina = playerNode.staminaLimit;
-                        playerNode.stamina += effect;
+                        player.Energy += effect;
                     }
                 }
 
                 else if (itemType == ItemType.TEMPERATURE)
                 {
-                    playerNode.bodyTemperature += effect;
+                    player.BodyTemperature += effect;
                 }
 
                 //temporary fix
                 Position = new Vector2(2048, 2048);
-            }
+        
+      }
+
+        //update method
+        public void Update()
+        {
         }
 
         //draw the item onto screen

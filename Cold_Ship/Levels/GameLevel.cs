@@ -17,7 +17,7 @@ namespace Cold_Ship
 
     protected List<Portal> LeveLPortals { get; set; } 
     protected List<PickUpItem> LevelPickUpItems { get; set; } 
-    protected List<Platform> LevelPlatforms { get; set; } 
+//    protected List<Platform> LevelPlatforms { get; set; } 
     protected List<Ladder> LevelLadders { get; set; } 
     protected List<InvisibleChatTriggerBox> LevelChatTriggerBoxes { get; set; } 
     protected List<DialogueBubble> LevelDialogueBubbles { get; set; }
@@ -41,7 +41,7 @@ namespace Cold_Ship
 
       LeveLPortals = new List<Portal>();
       LevelPickUpItems = new List<PickUpItem>();
-      LevelPlatforms = new List<Platform>(); 
+//      LevelPlatforms = new List<Platform>(); 
       LevelLadders = new List<Ladder>();
       LevelChatTriggerBoxes = new List<InvisibleChatTriggerBox>();
       LevelDialogueBubbles = new List<DialogueBubble>();
@@ -57,17 +57,17 @@ namespace Cold_Ship
     {
       Camera.Update(gameTime);
 
-      foreach (Portal portal in LeveLPortals)
-        portal.Update(gameTime);
-
-      foreach (PickUpItem item in LevelPickUpItems)
-        item.Update(gameTime);
-
-      foreach (Platform platform in LevelPlatforms)
-        platform.Update(gameTime);
-
-      foreach (Ladder ladder in LevelLadders)
-        ladder.Update(gameTime);
+//      foreach (Portal portal in LeveLPortals)
+//        portal.Update(gameTime);
+//
+//      foreach (PickUpItem item in LevelPickUpItems)
+//        item.Update(gameTime);
+//
+//      foreach (Platform platform in LevelPlatforms)
+//        platform.Update(gameTime);
+//
+//      foreach (Ladder ladder in LevelLadders)
+//        ladder.Update(gameTime);
     }
   }
 }

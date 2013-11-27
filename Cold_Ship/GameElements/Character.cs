@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using OpenTK.Audio.OpenAL;
 
 namespace Cold_Ship
 {
@@ -85,8 +86,8 @@ namespace Cold_Ship
             return _instance;
         }
 
-        public Game_Level GetPreviousLevel() { return this._previousLevel; }
-        public void SetPreviousLevel(Game_Level level) { this._previousLevel = level; }
+        public GameLevel GetPreviousLevel() { return this.PreviousGameLevel; }
+        public void SetPreviousLevel(GameLevel level) { this.PreviousGameLevel = level; }
 
       public float GetEnergyAsRatio()
       {
@@ -113,6 +114,7 @@ namespace Cold_Ship
         //update everything about the Scene2DNode object
         public void Update(GameTime gameTime)
         {
+          Vector2 worldSize = this.CurrentGameLevel.GetAbsoluteWorldSize();
             if (_pocketLight != null) _pocketLight.Update(gameTime);
             if (EnergyBar != null) EnergyBar.Update(gameTime);
 
@@ -128,18 +130,15 @@ namespace Cold_Ship
 
             //register keyboard inputs
             KeyboardState newKeyboardState = Keyboard.GetState();
-            UpdateKeyboard(oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
+//            UpdateKeyboard(oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
 
-            oldKeyboardState = newKeyboardState;
-
-            //detect platform collision
-            foreach (Platform platform in platforms)
-            {
-                if (!platform.Update(this, prevPosition, jumpTimer, ground, isjumping))
-                {
-                    isjumping = false;
-                }
-            }
+//            foreach (Platform platform in platforms)
+//            {
+//                if (!platform.Update(this, prevPosition, jumpTimer, ground, isjumping))
+//                {
+//                    isjumping = false;
+//                }
+//            }
 
             //detect world boundary collision
             if (Position.X < 0 || Position.X + playerSpriteSize.X > worldSize.X)
@@ -153,62 +152,55 @@ namespace Cold_Ship
             //recover Energy
             if (staminaExhaustionTimer > 1500)
             {
-                if (stamina < staminaLimit)
+                if (Energy < MAXIMUM_ENERGY_LEVEL)
                 {
-                    stamina += 0.0005;
+                    Energy += 0.0005;
                 }
             }
-            if (stamina < 0)
+            if (Energy < 0)
             {
-                stamina = 0;
+                Energy = 0;
 
                 staminaExhaustionTimer = 700;
             }
-            else if (stamina > staminaLimit + 5)
+            else if (Energy > MAXIMUM_ENERGY_LEVEL + 5)
             {
                 //staminaLimit = Energy;
             }
-            else if (stamina > staminaLimit && stamina < staminaLimit + 5)
+            else if (Energy > MAXIMUM_ENERGY_LEVEL && Energy < MAXIMUM_ENERGY_LEVEL + 5)
             {
-                staminaExhaustionTimer = 0;
+               staminaExhaustionTimer = 0;
             }
-            else if (stamina > staminaLimit)
+            else if (Energy > MAXIMUM_ENERGY_LEVEL)
             {
-                stamina = staminaLimit;
+                Energy = MAXIMUM_ENERGY_LEVEL;
             }
 
             //apply gravity
             prevPosition = Position;
-            if (!isClimbing && (gravityIsEnabled || newKeyboardState.IsKeyDown(HelperFunction.KeyDown)))
-            {
-                Move();
-                if (Position.Y < ground - playerSpriteSize.Y && jumpTimer > 200)
-                {
-                    velocity = new Vector2(0, 5);
-
-                }
-                else if (Position.Y > ground - playerSpriteSize.Y)
-                {
-                    isjumping = false;
-                    Position.Y = ground - playerSpriteSize.Y;
-                }
-
-            }
-            else
-            {
-                if (Position.Y > ground - playerSpriteSize.Y)
-                {
-                    isClimbing = false;
-                    Position.Y = ground - playerSpriteSize.Y;
-                }
-            }
-            foreach (Platform platform in platforms)
-            {
-                if (!platform.Update(this, prevPosition, jumpTimer, ground, isjumping))
-                {
-                    isjumping = false;
-                }
-            }
+//            if (!isClimbing && (gravityIsEnabled || newKeyboardState.IsKeyDown(HelperFunction.KeyDown)))
+//            {
+//                Move();
+//                if (Position.Y < ground - playerSpriteSize.Y && jumpTimer > 200)
+//                {
+//                    velocity = new Vector2(0, 5);
+//
+//                }
+//                else if (Position.Y > ground - playerSpriteSize.Y)
+//                {
+//                    isjumping = false;
+//                    Position.Y = ground - playerSpriteSize.Y;
+//                }
+//
+//            }
+//            else
+//            {
+//                if (Position.Y > ground - playerSpriteSize.Y)
+//                {
+//                    isClimbing = false;
+//                    Position.Y = ground - playerSpriteSize.Y;
+//                }
+//            }
         }
 
         public bool HasLighter()
@@ -231,14 +223,14 @@ namespace Cold_Ship
                     }
                     else
                     {
-                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
+                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && Energy != 0)
                         {
                             isExertingForce = true;
                             stoppedExertingForce = false;
                             Position += new Vector2(-5, 0);
-                            stamina -= 0.2;
+                            Energy -= 0.2;
 
-                            if (!lighterAcquired)
+                            if (!this.HasLighter())
                             {
                                 if (actionStatus != Action_Status.BACKWARD)
                                 {
@@ -255,7 +247,7 @@ namespace Cold_Ship
                                     animationTimer = 0;
                                 }
                             }
-                            else if (lighterAcquired)
+                            else if (this.HasLighter())
                             {
                                 if (actionStatus != Action_Status.BACKWARD_WITH_LIGHTER)
                                 {
@@ -279,16 +271,16 @@ namespace Cold_Ship
                             isExertingForce = false;
                             stoppedExertingForce = true;
                             Position += new Vector2(-3, 0);
-                            stamina -= 0.03;
+                            Energy -= 0.03;
                         }
                         else
                         {
                             isExertingForce = false;
                             //stoppedExertingForce = false;
                             Position += new Vector2(-3, 0);
-                            stamina -= 0.03;
+                            Energy -= 0.03;
 
-                            if (!lighterAcquired)
+                            if (!this.HasLighter())
                             {
                                 if (actionStatus != Action_Status.BACKWARD)
                                 {
@@ -305,7 +297,7 @@ namespace Cold_Ship
                                     animationTimer = 0;
                                 }
                             }
-                            else if (lighterAcquired)
+                            else if (this.HasLighter())
                             {
                                 if (actionStatus != Action_Status.BACKWARD_WITH_LIGHTER)
                                 {
@@ -334,14 +326,14 @@ namespace Cold_Ship
                     }
                     else
                     {
-                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
+                        if (/*oldKeyboardState.IsKeyDown(Keys.LeftShift) &&*/ newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && Energy != 0)
                         {
                             isExertingForce = true;
                             stoppedExertingForce = false;
                             Position += new Vector2(5, 0);
-                            stamina -= 0.2;
+                            Energy -= 0.2;
 
-                            if (!lighterAcquired)
+                            if (!this.HasLighter())
                             {
                                 if (actionStatus != Action_Status.FORWARD)
                                 {
@@ -358,7 +350,7 @@ namespace Cold_Ship
                                     animationTimer = 0;
                                 }
                             }
-                            else if (lighterAcquired)
+                            else if (this.HasLighter())
                             {
                                 if (actionStatus != Action_Status.FORWARD_WITH_LIGHTER)
                                 {
@@ -382,16 +374,16 @@ namespace Cold_Ship
                             isExertingForce = false;
                             stoppedExertingForce = true;
                             Position += new Vector2(3, 0);
-                            stamina -= 0.03;
+                            Energy -= 0.03;
                         }
                         else
                         {
                             isExertingForce = false;
                             //stoppedExertingForce = false;
                             Position += new Vector2(3, 0);
-                            stamina -= 0.03;
+                            Energy -= 0.03;
 
-                            if (!lighterAcquired)
+                            if (!this.HasLighter())
                             {
                                 if (actionStatus != Action_Status.FORWARD)
                                 {
@@ -408,7 +400,7 @@ namespace Cold_Ship
                                     animationTimer = 0;
                                 }
                             }
-                            else if (lighterAcquired)
+                            else if (this.HasLighter())
                             {
                                 if (actionStatus != Action_Status.FORWARD_WITH_LIGHTER)
                                 {
@@ -434,26 +426,26 @@ namespace Cold_Ship
                     {
                         isClimbing = true;
                         isjumping = false;
-                        if (newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
+                        if (newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && Energy != 0)
                         {
                             isExertingForce = true;
                             stoppedExertingForce = false;
                             Position += new Vector2(0, -5);
-                            stamina -= 1;
+                            Energy -= 1;
                         }
                         else if (oldKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && newKeyboardState.IsKeyUp(HelperFunction.KeySpeed))
                         {
                             isExertingForce = false;
                             stoppedExertingForce = true;
                             Position += new Vector2(0, -3);
-                            stamina -= 0.03;
+                            Energy -= 0.03;
                         }
                         else
                         {
                             isExertingForce = false;
                             //stoppedExertingForce = false;
                             Position += new Vector2(0, -3);
-                            stamina -= 0.03;
+                            Energy -= 0.03;
 
                             if (actionStatus != Action_Status.CLIMB)
                             {
@@ -479,26 +471,26 @@ namespace Cold_Ship
                     {
                         isClimbing = true;
                         isjumping = false;
-                        if (newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && stamina != 0)
+                        if (newKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && Energy != 0)
                         {
                             isExertingForce = true;
                             stoppedExertingForce = false;
                             Position += new Vector2(0, 5);
-                            stamina -= 1;
+                            Energy -= 1;
                         }
                         else if (oldKeyboardState.IsKeyDown(HelperFunction.KeySpeed) && newKeyboardState.IsKeyUp(HelperFunction.KeySpeed))
                         {
                             isExertingForce = false;
                             stoppedExertingForce = true;
                             Position += new Vector2(0, 3);
-                            stamina -= 0.03;
+                            Energy -= 0.03;
                         }
                         else
                         {
                             isExertingForce = false;
                             //stoppedExertingForce = false;
                             Position += new Vector2(0, 3);
-                            stamina -= 0.03;
+                            Energy -= 0.03;
 
                             if (actionStatus != Action_Status.CLIMB)
                             {
@@ -520,14 +512,14 @@ namespace Cold_Ship
                 }
                 else if (key == HelperFunction.KeyJump)
                 {
-                    if (!isjumping && oldKeyboardState.IsKeyUp(Keys.Space) && stamina != 0)
+                    if (!isjumping && oldKeyboardState.IsKeyUp(Keys.Space) && Energy != 0)
                     {
                         Position += new Vector2(0, -40);
                         velocity = new Vector2(0, -5);
                         isjumping = true;
                         jumpTimer = 0;
-                        bodyTemperature -= 0.01;
-                        stamina -= 0.5;
+                        BodyTemperature -= 0.01;
+                        Energy -= 0.5;
                         isClimbing = false;
                     }
                 }
@@ -545,16 +537,16 @@ namespace Cold_Ship
             {
                 if (isExertingForce && !stoppedExertingForce)
                 {
-                    bodyTemperature += exertForceIncreaseRate;
+                    BodyTemperature += exertForceIncreaseRate;
                     refexhaustionTimer = 0;
                 }
                 else if (!isExertingForce && stoppedExertingForce && refexhaustionTimer < 3000)
                 {
-                    bodyTemperature += exertForceDecreaseRate;
+                    BodyTemperature += exertForceDecreaseRate;
                 }
                 else
                 {
-                    bodyTemperature += normalTempDecreaseRate;
+                    BodyTemperature += normalTempDecreaseRate;
                     //refexhaustionTimer = 0;
                 }
                 refbodyTempTimer = 0;

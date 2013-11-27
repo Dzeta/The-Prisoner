@@ -32,7 +32,9 @@ namespace Cold_Ship
 
 
         this.TranslateWithSprite(this.Focus, this.ScreenSize);
-        this.CapCameraPosition(this.Focus.CurrentLevel.Size, screenSize);
+        this.CapCameraPosition(
+            this.Focus.CurrentGameLevel.GetAbsoluteWorldSize()
+            , this.ScreenSize);
       }
 
         //transform the node's coordinates with respect to the camera
@@ -91,7 +93,7 @@ namespace Cold_Ship
         public void DrawNode(GenericSprite2D node)
         {
             Vector2 drawPosition = ApplyTransformations(node.Position);
-            node.Draw(spriteBatch, drawPosition);
+            node.Draw(GameInstance.SpriteBatch, drawPosition);
         }
     }
 }

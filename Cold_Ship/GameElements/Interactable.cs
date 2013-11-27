@@ -20,8 +20,8 @@ namespace Cold_Ship
         public Texture2D altTexture;
 
         //Constructor
-        public Interactable(Texture2D texture, Vector2 position, Vector2 size, Type_Of_Interactable type, Texture2D altTexture = null) :
-            base(texture, position, Rectangle.Empty)
+        public Interactable(GameLevel instance, Texture2D texture, Vector2 position, Vector2 size, Type_Of_Interactable type, Texture2D altTexture = null) :
+            base(instance, texture, position, Rectangle.Empty)
         {
             this.size = size;
             this.typeOfInteractable = type;
@@ -30,7 +30,7 @@ namespace Cold_Ship
 
 
         //Update function (detect collision, etc.)
-        public void Update(Character playerNode, ref bool generatorOn, ref bool filterOn, Filter filter, ref bool doorCanOpen)
+        public void Update(Character playerNode, ref bool generatorOn, ref bool doorCanOpen)
         {
             if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
             {
@@ -49,7 +49,6 @@ namespace Cold_Ship
                         case Type_Of_Interactable.LIGHT_SWITCH:
                             if (generatorOn)
                             {
-                                filterOn = false;
                                 if (altTexture != null)
                                 {
                                     Texture = altTexture;

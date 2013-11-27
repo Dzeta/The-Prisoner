@@ -10,11 +10,25 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Cold_Ship
 {
-  public abstract class UI2DElement : GenericSprite2D
+  public abstract class UI2DElement 
   {
     protected Cold_Ship GameInstance;
-    protected UI2DElement(Texture2D texture, Vector2 position) 
-      : base(texture, position) {}
+
+  public Texture2D Texture;
+        public Vector2 Position;
+        public Rectangle BoundBox;
+
+        protected UI2DElement(Texture2D texture) 
+            : this(texture, Vector2.One, Rectangle.Empty) { }
+        public UI2DElement(Texture2D texture, Vector2 position) 
+            : this(texture, position, Rectangle.Empty) { }
+        protected UI2DElement(Texture2D texture
+            , Vector2 position, Rectangle boundBox)
+        {
+            this.Texture = texture;
+            this.Position = position;
+            this.BoundBox = boundBox;
+        }
 
     public abstract void Update(GameTime gameTime);
     public abstract void Draw(SpriteBatch spriteBatch);

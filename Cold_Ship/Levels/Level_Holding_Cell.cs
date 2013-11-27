@@ -31,7 +31,7 @@ namespace Cold_Ship
       Portal _forwardPortal = new Portal(
           this.GetAbsoluteWorldSize() - new Vector2(251, 288)
           , new Vector2(51, 72), Portal.PortalType.FORWARD
-          , GameInstance.Content));
+          , GameInstance.Content);
 
       LeveLPortals.Add(_forwardPortal);
       this.PlayerNode.Position = _forwardPortal.Position - new Vector2(200, 200);
@@ -75,7 +75,7 @@ namespace Cold_Ship
         , this.PlayerNode.HasLighter));
 
     Texture2D lighterTexture = this.Content.Load<Texture2D>("Objects/lighter");
-       PickUpItem lighter = new PickUpItem(
+       PickUpItem lighter = new PickUpItem(this, 
            lighterTexture, _forwardPortal.Position + new Vector2(-288, 50)
            , new Vector2(lighterTexture.Width, lighterTexture.Height)
            , PickUpItem.ItemType.LIGHTER, 100, PickUpItem.ItemEffectDuration.NONE, GameInstance);

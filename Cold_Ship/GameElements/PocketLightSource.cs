@@ -49,7 +49,7 @@ namespace Cold_Ship
     private Texture2D _darkCurtain;
 
     private PocketLightSource(Character owner, Texture2D tex)
-      : base(tex)
+      : base(owner.CurrentGameLevel, tex)
     {
       this._owner = owner;
       this._facing = Facing.RIGHT;
