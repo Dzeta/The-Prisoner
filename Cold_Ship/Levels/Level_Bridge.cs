@@ -94,12 +94,12 @@ namespace Cold_Ship
 
             //initialize the platforms and add them to the list
             //Second floor (first floor ceiling)
-            platforms.Add(new Platform(platformTexture, new Vector2(110, 20), new Vector2(100, worldSize.Y - 280)));
-            platforms.Add(new Platform(platformTexture, new Vector2(675, 20), new Vector2(worldSize.X - 676 - 100, worldSize.Y - 280)));
+            platforms.Add(new Platform(platformTexture, new Vector2(117, 24), new Vector2(worldSize.X - 317, worldSize.Y - 280)));
+            platforms.Add(new Platform(platformTexture, new Vector2(63, 24), new Vector2(worldSize.X - 161, worldSize.Y - 280)));
             //platforms.Add(new Platform(platformTexture, new Vector2(619, 20), new Vector2(1345, worldSize.Y - 280)));
             //Third floor (second floor ceiling)
-            platforms.Add(new Platform(platformTexture, new Vector2(680, 23), new Vector2(worldSize.X - 923, worldSize.Y - 748)));
-            platforms.Add(new Platform(platformTexture, new Vector2(110, 25), new Vector2(worldSize.X - 204, worldSize.Y - 749)));
+            platforms.Add(new Platform(platformTexture, new Vector2(205, 21), new Vector2(worldSize.X - 208, worldSize.Y - 773)));
+            platforms.Add(new Platform(platformTexture, new Vector2(101, 598), new Vector2(worldSize.X - 104, worldSize.Y - 751)));
             //platforms.Add(new Platform(platformTexture, new Vector2(50, 20), new Vector2(1920, worldSize.Y - 510)));
             //platforms.Add(new Platform(platformTexture, new Vector2(133, 20), new Vector2(0, worldSize.Y - 744)));
             //platforms.Add(new Platform(platformTexture, new Vector2(727, 20), new Vector2(167, worldSize.Y - 744)));
@@ -117,9 +117,9 @@ namespace Cold_Ship
             Texture2D ladderTexture = Content.Load<Texture2D>("Objects\\ladder");
             //First floor
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(890, worldSize.Y - 282)));
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(100 + 113, worldSize.Y - 285)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(worldSize.X - 199, worldSize.Y - 284)));
             //Second floor
-            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 500), new Vector2(worldSize.X - 243, worldSize.Y - 753)));
+            ladders.Add(new Ladder(ladderTexture, new Vector2(34, 500), new Vector2(worldSize.X - 245, worldSize.Y - 800)));
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1887, worldSize.Y - 512)));
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(134, worldSize.Y - 747)));
             //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(898, worldSize.Y - 749)));
@@ -130,7 +130,7 @@ namespace Cold_Ship
 
             //initialize the needed portals
             backwardDoor = new Portal(new Vector2(worldSize.X - 40 - 64, worldSize.Y - 50 - 72), new Vector2(51, 72), Portal.PortalType.BACKWARD, Content);
-            fowardDoor = new Portal(new Vector2(worldSize.X - 845, worldSize.Y - 822), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
+            fowardDoor = new Portal(new Vector2(worldSize.X - 120, worldSize.Y - 850), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
             roomDoor = new Portal(new Vector2(1185, worldSize.Y - 50 - 72), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
             portals.Add(backwardDoor);
             portals.Add(fowardDoor);
