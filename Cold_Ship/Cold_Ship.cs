@@ -32,7 +32,7 @@ namespace Cold_Ship
 
         //declare needed global variables, commented out variables are no longer used
         public GraphicsDeviceManager graphics;
-        public SpriteBatch spriteBatch;
+        public SpriteBatch SpriteBatch;
         //Scene2DNode playerNode, backgroundNode;
         public Vector2 screenSize { get; set; }/*, worldSize*/
         public Texture2D DebugTexture { get; set; }
@@ -128,21 +128,19 @@ namespace Cold_Ship
             oldKeyboardState = Keyboard.GetState();
 
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             mainMenu = new MainMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
             pauseMenu = new PauseMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
             keyBindingMenu = new KeyBindingMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
 
-            Camera = new Camera2D(spriteBatch);
-            Player = Character.GetNewInstance(this);
-          Player._pocketLight = PocketLightSource.GetNewInstance(this, Player);
-
-            level0HoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
+          Camera = new Camera2D(this);
+          Player = Character.GetNewInstance(this);
+          level0HoldingCell = new Level_Holding_Cell(this);
             level1PrisonBlock = new Level_Prison_Block(this);
-//            level2GeneratorRoom = new Level_Generator(spriteBatch, screenSize);
-//            level3CommonRoom = new Level_Common_Room(spriteBatch, screenSize);
-//            level4EntertainmentRoom = new Level_Entertainment_Room(spriteBatch, screenSize);
+//            level2GeneratorRoom = new Level_Generator(SpriteBatch, screenSize);
+//            level3CommonRoom = new Level_Common_Room(SpriteBatch, screenSize);
+//            level4EntertainmentRoom = new Level_Entertainment_Room(SpriteBatch, screenSize);
 
             // DIALOGUE USED COMPONENT
             this.DialogueQueue = new List<DialogueBubble>();
@@ -292,29 +290,29 @@ namespace Cold_Ship
                 // Putting dialogue here cause they need to be appearing on top of everything
                 if (this.GameStateIs(GameState.DIALOGUING))
                 {
-                    spriteBatch.Begin();
+                    SpriteBatch.Begin();
                     foreach (DialogueBubble dialogue in this.DialogueQueue)
                     {
                         if (dialogue.IsPlaying())
                         {
-                            dialogue.Draw(spriteBatch);
+                            dialogue.Draw(SpriteBatch);
                             break;
                         }
                     }
-                    spriteBatch.End();
+                    SpriteBatch.End();
                 }
             }
             else if (this.GameStateIs(GameState.MENU))
             {
-                mainMenu.Draw(spriteBatch);
+                mainMenu.Draw(SpriteBatch);
             }
             else if (this.GameStateIs(GameState.PAUSED))
             {
-                pauseMenu.Draw(spriteBatch);
+                pauseMenu.Draw(SpriteBatch);
             }
             else if (this.GameStateIs(GameState.KEY_BINDING))
             {
-                keyBindingMenu.Draw(spriteBatch);
+                keyBindingMenu.Draw(SpriteBatch);
             }
 
             base.Draw(gameTime);

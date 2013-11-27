@@ -41,7 +41,7 @@ namespace Cold_Ship
     public Level_Prison_Block(Cold_Ship theGameInstance)
       : base(theGameInstance)
     {
-      this.spriteBatch = theGameInstance.spriteBatch;
+      this.spriteBatch = theGameInstance.SpriteBatch;
       this.screenSize = new Vector2(theGameInstance.Window.ClientBounds.Right,
           theGameInstance.Window.ClientBounds.Bottom);
       platforms = new List<Platform>();
@@ -67,7 +67,7 @@ namespace Cold_Ship
       //initialize the needed nodes and camera
       backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
       worldObjects.Add(backgroundNode);
-      GameInstance.Camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
+      GameInstance.Camera.CameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
       //initialize the needed platforms
       Texture2D platformTexture = GameInstance.Content.Load<Texture2D>("Textures\\platformTexture");
@@ -102,7 +102,7 @@ namespace Cold_Ship
 
       //initialize the needed portals
       backwardDoor = new Portal(new Vector2(100, worldSize.Y - 72 - 50), new Vector2(51, 72), Portal.PortalType.BACKWARD, GameInstance.Content);
-      forwardDoor = new Portal(new Vector2(worldSize.X - 32 - 75, worldSize.Y - 72 - 50), new Vector2(51, 72), Portal.PortalType.FOWARD, GameInstance.Content);
+      forwardDoor = new Portal(new Vector2(worldSize.X - 32 - 75, worldSize.Y - 72 - 50), new Vector2(51, 72), Portal.PortalType.FORWARD, GameInstance.Content);
       forwardDoor.canOpen = true;
       portals.Add(backwardDoor);
       portals.Add(forwardDoor);
@@ -121,7 +121,9 @@ namespace Cold_Ship
       staminaBooster = new PickUpItem(platformTexture
           , new Vector2(280, worldSize.Y - 772), new Vector2(28, 28)
           , PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY, GameInstance);
-      lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
+      lightSwitch = new Interactable(platformTexture
+          , new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43)
+          , Interactable.Type_Of_Interactable.LIGHT_SWITCH);
       generator = new Interactable(GameInstance.Content.Load<Texture2D>("Objects\\generator_off")
           , new Vector2(1807, worldSize.Y - 809), new Vector2(104, 65)
           , Interactable.Type_Of_Interactable.GENERATOR
@@ -142,18 +144,12 @@ namespace Cold_Ship
       ladders.Clear();
       worldObjects.Clear();
 
-      platforms = new List<Platform>();
-      portals = new List<Portal>();
-      ladders = new List<Ladder>();
       worldObjects = new List<GenericSprite2D>();
     }
 
-    //update function
-    public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
+    public void Update(GameTime gameTime)
     {
-      //update the player Position with respect to keyboard input and platform collision
-      Vector2 prevPosition = playerNode.Position;
-      playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
+      playerNode.Update(gameTime);
 
       //Check the player's collision with the world boundaries
       if (playerNode.Position.X < 100 || playerNode.Position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
@@ -161,38 +157,20 @@ namespace Cold_Ship
         playerNode.Position.X = prevPosition.X;
       }
 
-      //update portals
-      foreach (Portal portal in portals)
-      {
-        portal.Update(playerNode, ref gameLevel);
-      }
-
       lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
       generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
 
-      staminaBooster.Update(playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
-
-      //update the shadowFilter's Position with respect to the playerNode
+      staminaBooster.Update(playerNode);
 
       //update the camera based on the player and world size
-      this.Camera.TranslateWithSprite(playerNode, screenSize);
-      this.Camera.CapCameraPosition(worldSize, screenSize);
-
-      //return the body temperature
-      return playerNode.bodyTemperature;
     }
 
     //draw funtion
-    public void Draw(int framesPerSecond)
+    public void Draw()
     {
       spriteBatch.Begin();
-      ////draw the desired nodes onto screen through the camera
       foreach (GenericSprite2D element in worldObjects)
         this.Camera.DrawNode(element);
-
-      SpriteFont font = GameInstance.MonoMedium;
-      //draw the fps
-      spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
       spriteBatch.End();
     }
   }

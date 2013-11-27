@@ -69,7 +69,7 @@ namespace Cold_Ship
             worldObjects.Add(backgroundNode);
             shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
-            camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
+            camera.CameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
             reactor = new Reactor(Content, new Vector2(578, 472));
             worldObjects.Add(reactor);
@@ -83,7 +83,7 @@ namespace Cold_Ship
 
             //initialize the needed portals
             backwardDoor = new Portal(new Vector2(150, 108), new Vector2(51, 72), Portal.PortalType.BACKWARD, Content);
-            forwardDoor = new Portal(new Vector2(worldSize.X - 201, 108), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
+            forwardDoor = new Portal(new Vector2(worldSize.X - 201, 108), new Vector2(51, 72), Portal.PortalType.FORWARD, Content);
             portals.Add(backwardDoor);
             portals.Add(forwardDoor);
             worldObjects.AddRange(portals);

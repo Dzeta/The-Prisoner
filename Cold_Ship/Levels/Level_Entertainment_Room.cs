@@ -53,7 +53,7 @@ namespace Cold_Ship
         //declare constructor
         public Level_Entertainment_Room(Cold_Ship gameInstance) : base(gameInstance)
         {
-            this.spriteBatch = GameInstance.spriteBatch;
+            this.spriteBatch = GameInstance.SpriteBatch;
             this.platforms = new List<Platform>();
             this.screenSize = screenSize;
             this.portals = new List<Portal>();
@@ -85,7 +85,7 @@ namespace Cold_Ship
             shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
 
             camera = new Camera2D(spriteBatch);
-            camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
+            camera.CameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
@@ -128,8 +128,8 @@ namespace Cold_Ship
 
             //initialize the needed portals
             backwardDoor = new Portal(new Vector2(worldSize.X - 40 - 64, worldSize.Y - 50 - 72), new Vector2(51, 72), Portal.PortalType.BACKWARD, Content);
-            fowardDoor = new Portal(new Vector2(120, worldSize.Y - 280 - 72), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
-            roomDoor = new Portal(new Vector2(1185, worldSize.Y - 50 - 72), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
+            fowardDoor = new Portal(new Vector2(120, worldSize.Y - 280 - 72), new Vector2(51, 72), Portal.PortalType.FORWARD, Content);
+            roomDoor = new Portal(new Vector2(1185, worldSize.Y - 50 - 72), new Vector2(51, 72), Portal.PortalType.FORWARD, Content);
             portals.Add(backwardDoor);
             portals.Add(fowardDoor);
             worldObjects.AddRange(portals);

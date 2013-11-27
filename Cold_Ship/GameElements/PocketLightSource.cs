@@ -153,8 +153,8 @@ namespace Cold_Ship
         this._lightSwitchTimer = 0;
       }
 
-      Vector2 cameraToPlayer = new Vector2(this._owner.Position.X - GameInstance.Camera.cameraPosition.X,
-        this._owner.Position.Y - GameInstance.Camera.cameraPosition.Y);
+      Vector2 cameraToPlayer = new Vector2(this._owner.Position.X - GameInstance.Camera.CameraPosition.X,
+        this._owner.Position.Y - GameInstance.Camera.CameraPosition.Y);
 
       this.Position = cameraToPlayer - this._positionOffset + _actualFacingOffset + _scaleOffset;
     }
@@ -178,10 +178,10 @@ namespace Cold_Ship
       }
 
       //if (this._positionBuffer[0] != null)
-      //  spriteBatch.Draw(this._trail1, this._positionBuffer[0], null, Color.White, 0, Vector2.Zero, _scale,
+      //  SpriteBatch.Draw(this._trail1, this._positionBuffer[0], null, Color.White, 0, Vector2.Zero, _scale,
       //    SpriteEffects.None, 1);
       //if (this._positionBuffer[1] != null)
-      //  spriteBatch.Draw(this._trail2, this._positionBuffer[1], null, Color.White, 0, Vector2.Zero, _scale,
+      //  SpriteBatch.Draw(this._trail2, this._positionBuffer[1], null, Color.White, 0, Vector2.Zero, _scale,
       //    SpriteEffects.None, 1);
 
 

@@ -102,15 +102,15 @@
 //            base.UpdateFont(3);
 //        }
 
-//        public override void Draw(SpriteBatch spriteBatch)
+//        public override void Draw(SpriteBatch SpriteBatch)
 //        {
-//            base.Draw(spriteBatch);
+//            base.Draw(SpriteBatch);
 //            for (int i = 0; i < nScores; i++)
 //            {
 //                if(i==9)
-//                    spriteBatch.DrawString(scoreFont, (i+1).ToString() + ". " + scores[i].ToString(), new Vector2(330, 250 + 15*i), Color.White);
+//                    SpriteBatch.DrawString(scoreFont, (i+1).ToString() + ". " + scores[i].ToString(), new Vector2(330, 250 + 15*i), Color.White);
 //                else
-//                    spriteBatch.DrawString(scoreFont, (i + 1).ToString() + ".  " + scores[i].ToString(), new Vector2(330, 250 + 15 * i), Color.White);
+//                    SpriteBatch.DrawString(scoreFont, (i + 1).ToString() + ".  " + scores[i].ToString(), new Vector2(330, 250 + 15 * i), Color.White);
 //            }
 //        }
 //    }

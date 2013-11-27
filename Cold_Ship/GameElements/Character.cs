@@ -18,18 +18,17 @@ namespace Cold_Ship
         //declare member variables
         public Vector2 prevPosition;
         public Vector2 velocity;
-        public double bodyTemperature;
-        public double stamina;
-        public double staminaLimit;
+        public double BodyTemperature;
+        public double Energy;
         public Camera2D _camera;
 
-        private Game_Level _previousLevel;
+        public GameLevel CurrentGameLevel;
+        public GameLevel PreviousGameLevel;
 
         //animation related variables
-        public enum Action_Status { FOWARD = 0, BACKWARD = 1, FORWARD_WITH_LIGHTER = 2, BACKWARD_WITH_LIGHTER = 3, CLIMB = 4 };
+        public enum Action_Status { FORWARD = 0, BACKWARD = 1, FORWARD_WITH_LIGHTER = 2, BACKWARD_WITH_LIGHTER = 3, CLIMB = 4 };
         public Action_Status actionStatus;
         public int maxFramesX, maxFramesY, currentFrame;
-        public float animationTimer = 150;
         public Vector2 playerSpriteSize; //for collision once the animation is set up
 
         //internal member variables
@@ -42,7 +41,6 @@ namespace Cold_Ship
         bool isClimbing = false;
         bool canClimb = false;
         bool gravityIsEnabled = true;
-        bool lighterAcquired;
 
         public Vector2 CameraRelativePosition;
 
@@ -50,33 +48,19 @@ namespace Cold_Ship
 
       public HealthBar EnergyBar;
 
+      public float bodyTemperatureTimer,
+        bodyTempTimer,
+        exhaustionTimer,
+        jumpTimer,
+        staminaExhaustionTimer,
+        animationTimer = 150;
+
         //declare constructor for inheritance
         public Character(Cold_Ship gameInstance, Texture2D texture, Vector2 position)
             : base(texture, position, Rectangle.Empty)
         {
             if (GameInstance == null) GameInstance = gameInstance;
             velocity = new Vector2(0, 0);
-            this.bodyTemperature = 36;
-
-//            this._pocketLight = PocketLightSource.GetNewInstance(gameInstance, this);
-        }
-
-        //declare constructor for player sprite
-        public Character(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit, int maxFramesX, int maxFramesY)
-            : base(texture, position, Rectangle.Empty)
-        {
-            this.Texture = texture;
-            this.Position = position;
-            velocity = new Vector2(0, 0);
-            this.bodyTemperature = bodyTemperature;
-            this.stamina = stamina;
-            this.staminaLimit = staminaLimit;
-
-            this.maxFramesX = maxFramesX;
-            this.maxFramesY = maxFramesY;
-            currentFrame = 0;
-            actionStatus = Action_Status.FOWARD;
-            animationTimer = 0;
         }
 
         public Camera2D GetCamera() { return this._camera; }
@@ -86,16 +70,16 @@ namespace Cold_Ship
             if (GameInstance == null) GameInstance = gameInstance;
             Texture2D _playerTexture = GameInstance.Content.Load<Texture2D>("Character/PlayerSpriteSheet");
             Character _instance = new Character(gameInstance, _playerTexture, Vector2.Zero);
-            _instance.bodyTemperature = NORMAL_BODY_TEMPERATURE;
-            _instance.stamina = MAXIMUM_ENERGY_LEVEL;
+            _instance.BodyTemperature = NORMAL_BODY_TEMPERATURE;
+            _instance.Energy = MAXIMUM_ENERGY_LEVEL;
             _instance.maxFramesX = 4;
             _instance.maxFramesY = 5;
             _instance.currentFrame = 0;
-            _instance.actionStatus = Action_Status.FOWARD;
+            _instance.actionStatus = Action_Status.FORWARD;
             _instance.animationTimer = 0;
             _instance.playerSpriteSize = new Vector2((float)_playerTexture.Width / _instance.maxFramesX
                 , (float)_playerTexture.Height / _instance.maxFramesY);
-            _instance.EnergyBar = HealthBar.GetNewInstance(GameInstance, _instance, _instance.GetHealthAsRatio);
+            _instance.EnergyBar = HealthBar.GetNewInstance(GameInstance, _instance, _instance.GetEnergyAsRatio);
             _instance._camera = GameInstance.Camera;
 
             return _instance;
@@ -104,15 +88,16 @@ namespace Cold_Ship
         public Game_Level GetPreviousLevel() { return this._previousLevel; }
         public void SetPreviousLevel(Game_Level level) { this._previousLevel = level; }
 
-      public float GetHealthAsRatio()
+      public float GetEnergyAsRatio()
       {
-          return (float)(this.stamina / MAXIMUM_ENERGY_LEVEL);
+          return (float)(this.Energy / MAXIMUM_ENERGY_LEVEL);
       }
         //draws the player sprite onto screen
         public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
             int line = (int)actionStatus;
-            Rectangle rect = new Rectangle(currentFrame * (int)playerSpriteSize.X, line * (int)playerSpriteSize.Y, (int)playerSpriteSize.X, (int)playerSpriteSize.Y);
+            Rectangle rect = new Rectangle(currentFrame 
+                * (int)playerSpriteSize.X, line * (int)playerSpriteSize.Y, (int)playerSpriteSize.X, (int)playerSpriteSize.Y);
             spriteBatch.Draw(Texture, drawPosition, rect, Color.White);
 
             if (_pocketLight != null) _pocketLight.Draw(spriteBatch);
@@ -126,12 +111,11 @@ namespace Cold_Ship
         }
 
         //update everything about the Scene2DNode object
-        public void Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, float ground, List<Platform> platforms, List<Ladder> ladders, Vector2 worldSize, ref float staminaExhaustionTimer)
+        public void Update(GameTime gameTime)
         {
             if (_pocketLight != null) _pocketLight.Update(gameTime);
             if (EnergyBar != null) EnergyBar.Update(gameTime);
 
-          lighterAcquired = (_pocketLight != null);
             //register the Position before updating (prevPosition)
             prevPosition = Position;
             //update timers
@@ -144,25 +128,6 @@ namespace Cold_Ship
 
             //register keyboard inputs
             KeyboardState newKeyboardState = Keyboard.GetState();
-
-            canClimb = false;
-            gravityIsEnabled = true;
-            if (ladders != null)
-            {
-                foreach (Ladder ladder in ladders)
-                {
-                    if (ladder.CanClimb(this))
-                        canClimb = true;
-                    if (ladder.isOnTop(this))
-                    {
-                        isjumping = false;
-                        gravityIsEnabled = false;
-                    }
-                }
-            }
-            if (!canClimb)
-                isClimbing = false;
-
             UpdateKeyboard(oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
 
             oldKeyboardState = newKeyboardState;
@@ -185,7 +150,7 @@ namespace Cold_Ship
             //update body temperature
             updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);
 
-            //recover stamina
+            //recover Energy
             if (staminaExhaustionTimer > 1500)
             {
                 if (stamina < staminaLimit)
@@ -201,7 +166,7 @@ namespace Cold_Ship
             }
             else if (stamina > staminaLimit + 5)
             {
-                //staminaLimit = stamina;
+                //staminaLimit = Energy;
             }
             else if (stamina > staminaLimit && stamina < staminaLimit + 5)
             {
@@ -378,9 +343,9 @@ namespace Cold_Ship
 
                             if (!lighterAcquired)
                             {
-                                if (actionStatus != Action_Status.FOWARD)
+                                if (actionStatus != Action_Status.FORWARD)
                                 {
-                                    actionStatus = Action_Status.FOWARD;
+                                    actionStatus = Action_Status.FORWARD;
                                     currentFrame = 0;
                                 }
                                 else if (animationTimer > 75 && !isjumping)
@@ -428,9 +393,9 @@ namespace Cold_Ship
 
                             if (!lighterAcquired)
                             {
-                                if (actionStatus != Action_Status.FOWARD)
+                                if (actionStatus != Action_Status.FORWARD)
                                 {
-                                    actionStatus = Action_Status.FOWARD;
+                                    actionStatus = Action_Status.FORWARD;
                                     currentFrame = 0;
                                 }
                                 else if (animationTimer > 150 && !isjumping)

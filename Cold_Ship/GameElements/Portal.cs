@@ -13,7 +13,7 @@ namespace Cold_Ship
     {
         //declare member data
         public Vector2 size;
-        public enum PortalType { FOWARD, BACKWARD };
+        public enum PortalType { FORWARD, BACKWARD };
         PortalType portalType;
         Texture2D doorLightGreen, doorLightRed;
         public bool canOpen;
@@ -36,7 +36,7 @@ namespace Cold_Ship
         {
             if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y) .Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
             {
-                if (portalType == PortalType.FOWARD)
+                if (portalType == PortalType.FORWARD)
                 {
                     if(canOpen)
                         gameLevel += 1;

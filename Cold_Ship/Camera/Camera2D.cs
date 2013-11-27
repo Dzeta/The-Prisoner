@@ -10,22 +10,35 @@ namespace Cold_Ship
 {
     public class Camera2D
     {
-        //declare member variables
-        public SpriteBatch spriteBatch;
-        //top left corner of the camera
-        public Vector2 cameraPosition;
+      public static Cold_Ship GameInstance;
+      public GenericSprite2D Focus;
+      public Vector2 ScreenSize;
+        public Vector2 CameraPosition;
         
         //declare constructor
-        public Camera2D(SpriteBatch spriteBatch)
+        public Camera2D(Cold_Ship gameInstance)
         {
-            this.spriteBatch = spriteBatch;
-            cameraPosition = new Vector2(0, 0);
+            CameraPosition = new Vector2(0, 0);
+          Focus = GameInstance.Player;
+          ScreenSize = new Vector2(
+              gameInstance.Window.ClientBounds.X
+              , gameInstance.Window.ClientBounds.Y);
+
         }
+
+      public void Update(GameTime gameTime)
+      {
+
+
+
+        this.TranslateWithSprite(this.Focus, this.ScreenSize);
+        this.CapCameraPosition(this.Focus.CurrentLevel.Size, screenSize);
+      }
 
         //transform the node's coordinates with respect to the camera
         public Vector2 ApplyTransformations(Vector2 nodePosition)
         {
-            Vector2 finalPosition = nodePosition - cameraPosition;
+            Vector2 finalPosition = nodePosition - CameraPosition;
             //you can apply transformation here
             //.....................
             //..................
@@ -35,7 +48,7 @@ namespace Cold_Ship
         //move the camera
         public void Translate(Vector2 moveVector)
         {
-            cameraPosition += moveVector;
+            CameraPosition += moveVector;
         }
 
         //move the camera with respect to a sprite
@@ -44,34 +57,34 @@ namespace Cold_Ship
             //horizontal transformations
             if (ApplyTransformations(node.Position).X > screenSize.X / 3 * 1.5f)
             {
-                cameraPosition.X = node.Position.X - (screenSize.X / 3 * 1.5f);
+                CameraPosition.X = node.Position.X - (screenSize.X / 3 * 1.5f);
             }
             else if (ApplyTransformations(node.Position).X < screenSize.X / 3 * 1.2f)
             {
-                cameraPosition.X = node.Position.X - (screenSize.X / 3 * 1.2f);
+                CameraPosition.X = node.Position.X - (screenSize.X / 3 * 1.2f);
             }
             //vertical transformations
             if (ApplyTransformations(node.Position).Y < screenSize.Y / 3 * 1.2f)
             {
-                cameraPosition.Y = node.Position.Y - (screenSize.Y / 3 * 1.2f);
+                CameraPosition.Y = node.Position.Y - (screenSize.Y / 3 * 1.2f);
             }
             else if (ApplyTransformations(node.Position).Y > screenSize.Y / 3 * 1.5f)
             {
-                cameraPosition.Y = node.Position.Y - (screenSize.Y / 3 * 1.5f);
+                CameraPosition.Y = node.Position.Y - (screenSize.Y / 3 * 1.5f);
             }
         }
 
         //cap the camera Position
         public void CapCameraPosition(Vector2 worldSize, Vector2 screenSize)
         {
-            if (cameraPosition.X < 0)
-                cameraPosition.X = 0;
-            if (cameraPosition.X + screenSize.X > worldSize.X)
-                cameraPosition.X = worldSize.X - screenSize.X;
-            if (cameraPosition.Y + screenSize.Y > worldSize.Y)
-                cameraPosition.Y = worldSize.Y - screenSize.Y;
-            if (cameraPosition.Y < 0)
-                cameraPosition.Y = 0;
+            if (CameraPosition.X < 0)
+                CameraPosition.X = 0;
+            if (CameraPosition.X + screenSize.X > worldSize.X)
+                CameraPosition.X = worldSize.X - screenSize.X;
+            if (CameraPosition.Y + screenSize.Y > worldSize.Y)
+                CameraPosition.Y = worldSize.Y - screenSize.Y;
+            if (CameraPosition.Y < 0)
+                CameraPosition.Y = 0;
         }
 
         //draw the node on screen with respect to the camera
