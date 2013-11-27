@@ -25,7 +25,7 @@ namespace Cold_Ship
         Camera2D camera;
         Character playerNode;
         Filter shadowFilter;
-        GenericSprite2D backgroundNode;
+        GenericSprite2D backgroundNode, backgroundbackNode, backgroundFrontNode;
 
         List<GenericSprite2D> worldObjects;
 
@@ -69,7 +69,9 @@ namespace Cold_Ship
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
-            Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\entertainmentroom_background");
+            Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\controlroom_middle");
+            Texture2D backgroundTexture_back = Content.Load<Texture2D>("Backgrounds\\controlroom_back");
+            Texture2D backgroundTexture_front = Content.Load<Texture2D>("Backgrounds\\controlroom_front");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
 
@@ -82,7 +84,9 @@ namespace Cold_Ship
 
             //initialize the needed nodes and camera
             backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
-            worldObjects.Add(backgroundNode);
+            backgroundbackNode = new GenericSprite2D(backgroundTexture_back, new Vector2(0, 0), Rectangle.Empty);
+            backgroundFrontNode = new GenericSprite2D(backgroundTexture_front, new Vector2(0, 0), Rectangle.Empty);
+            //worldObjects.Add(backgroundNode);
 
             shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
 
@@ -179,17 +183,17 @@ namespace Cold_Ship
 
 
             //Window opening animation
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_01"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_02"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_03"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_04"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_05"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_06"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_07"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_08"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_09"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_10"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
-            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_11"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
+            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_01"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
+            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_02"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
+            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_03"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
+            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_04"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
+            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_05"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
+            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_06"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
+            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_07"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
+            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_08"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
+            openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_09"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
+            //openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_10"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
+            //openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_11"), new Vector2(worldSize.X - 884, worldSize.Y - 446), Rectangle.Empty));
 
         }
 
@@ -315,8 +319,10 @@ namespace Cold_Ship
         {
             spriteBatch.Begin();
             ////draw the desired nodes onto screen through the camera
-            //camera.DrawNode(backgroundBack);
-            if (generatorOn && openWindowTimer > 1000 && windowAnimationCounter <= 9)
+            camera.DrawNode(backgroundbackNode);
+            camera.DrawNode(backgroundNode);
+            camera.DrawNode(backgroundFrontNode);
+            if (openWindowTimer > 1000 && windowAnimationCounter < 8)
             {
 
                 windowAnimationCounter++;
@@ -329,9 +335,9 @@ namespace Cold_Ship
                 camera.DrawNode(playerNode);
             }
 
-            //camera.DrawNode(backgroundMiddle);
+            //camera.DrawNode(backgroundNode);
 
-            //camera.DrawNode(backgroundFront);
+            //camera.DrawNode(backgroundFrontNode);
             foreach (GenericSprite2D element in worldObjects)
             {
                 camera.DrawNode(element);
