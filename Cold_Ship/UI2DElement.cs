@@ -43,9 +43,9 @@ namespace Cold_Ship
       , Character player, Func<float> state)
     {
       Texture2D _highlight = gameInstance
-        .Content.Load<Texture2D>("Textures/prisoner-health-bar-highlight");
+        .Content.Load<Texture2D>("Textures/prisoner-energy-bar-highlight");
       Texture2D _bar = gameInstance
-        .Content.Load<Texture2D>("Textures/prisoner-health-bar");
+        .Content.Load<Texture2D>("Textures/prisoner-energy-bar");
       HealthBar _instance = new HealthBar(_bar, player.Position - (new Vector2(0, 40)));
       _instance._player = player;
       _instance._textureBar = _bar;

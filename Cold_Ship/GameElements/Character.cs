@@ -58,7 +58,7 @@ namespace Cold_Ship
             velocity = new Vector2(0, 0);
             this.bodyTemperature = 36;
 
-            this._pocketLight = PocketLightSource.GetNewInstance(gameInstance, this);
+//            this._pocketLight = PocketLightSource.GetNewInstance(gameInstance, this);
         }
 
         //declare constructor for player sprite

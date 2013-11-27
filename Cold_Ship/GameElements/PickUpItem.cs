@@ -39,7 +39,10 @@ namespace Cold_Ship
             if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
             {
               if (itemType == ItemType.LIGHTER)
+              {
                 playerNode._pocketLight = PocketLightSource.GetNewInstance(GameInstance, playerNode);
+                playerNode._pocketLight.TurnDisable();
+              }
               else if (itemType == ItemType.STAMINA)
                 {
                     if (itemEffectDuration == ItemEffectDuration.PERMANENT)

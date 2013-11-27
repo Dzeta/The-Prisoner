@@ -139,9 +139,9 @@ namespace Cold_Ship
 
             level0HoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
             level1PrisonBlock = new Level_Prison_Block(this);
-            level2GeneratorRoom = new Level_Generator(spriteBatch, screenSize);
-            level3CommonRoom = new Level_Common_Room(spriteBatch, screenSize);
-            level4EntertainmentRoom = new Level_Entertainment_Room(spriteBatch, screenSize);
+//            level2GeneratorRoom = new Level_Generator(spriteBatch, screenSize);
+//            level3CommonRoom = new Level_Common_Room(spriteBatch, screenSize);
+//            level4EntertainmentRoom = new Level_Entertainment_Room(spriteBatch, screenSize);
 
             // DIALOGUE USED COMPONENT
             this.DialogueQueue = new List<DialogueBubble>();
@@ -157,9 +157,9 @@ namespace Cold_Ship
         {
             level0HoldingCell.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
             level1PrisonBlock.LoadContent();
-            level2GeneratorRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-            level3CommonRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
-            level4EntertainmentRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+//            level2GeneratorRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+//            level3CommonRoom.LoadContent(Content, gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
+//            level4EntertainmentRoom.LoadContent(gameLevel, prevGameLevel, bodyTemperature, stamina, staminaLimit);
         }
 
         /// <summary>

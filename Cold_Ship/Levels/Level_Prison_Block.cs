@@ -118,7 +118,9 @@ namespace Cold_Ship
         playerNode.Position = new Vector2(forwardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50);
       }
 
-      staminaBooster = new PickUpItem(platformTexture, new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
+      staminaBooster = new PickUpItem(platformTexture
+          , new Vector2(280, worldSize.Y - 772), new Vector2(28, 28)
+          , PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY, GameInstance);
       lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
       generator = new Interactable(GameInstance.Content.Load<Texture2D>("Objects\\generator_off")
           , new Vector2(1807, worldSize.Y - 809), new Vector2(104, 65)

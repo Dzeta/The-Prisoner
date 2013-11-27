@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Cold_Ship
 {
-    public class Level_Entertainment_Room
+    public class Level_Entertainment_Room : GameLevel
     {
         //declare member variables
         public SpriteBatch spriteBatch;
@@ -51,20 +51,20 @@ namespace Cold_Ship
         List<Interactable> switchPuzzle;
 
         //declare constructor
-        public Level_Entertainment_Room(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Entertainment_Room(Cold_Ship gameInstance) : base(gameInstance)
         {
-            this.spriteBatch = spriteBatch;
-            platforms = new List<Platform>();
+            this.spriteBatch = GameInstance.spriteBatch;
+            this.platforms = new List<Platform>();
             this.screenSize = screenSize;
-            portals = new List<Portal>();
-            ladders = new List<Ladder>();
-            worldObjects = new List<GenericSprite2D>();
-
+            this.portals = new List<Portal>();
+            this.ladders = new List<Ladder>();
+            this.worldObjects = new List<GenericSprite2D>();
         }
 
         //load content
-        public void LoadContent(ContentManager Content, Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature, double stamina, double staminaLimit)
+        public void LoadContent(Game_Level gameLevel, Game_Level prevGameLevel, double bodyTemperature, double stamina, double staminaLimit)
         {
+          ContentManager Content = GameInstance.Content;
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
             Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\entertainmentroom");
@@ -145,7 +145,9 @@ namespace Cold_Ship
             }
 
             //Pickup item
-            staminaBooster = new PickUpItem(platformTexture, new Vector2(worldSize.X - 1413, worldSize.Y - 111), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
+            staminaBooster = new PickUpItem(platformTexture
+                , new Vector2(worldSize.X - 1413, worldSize.Y - 111), new Vector2(28, 28)
+                , PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY, GameInstance);
             //Light switch
             lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
             //Generator
@@ -211,7 +213,9 @@ namespace Cold_Ship
                 platforms.RemoveRange(platforms.Count - 2, 2);
                 wallsRetracted = true;
             }
-            playerNode.Update(!generatorOn, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
+//            playerNode.Update(!generatorOn, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
+          playerNode.Update(gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer,
+            ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
             //Check the player's collision with the world boundaries
             if (playerNode.Position.X < 100 || playerNode.Position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)

@@ -77,8 +77,6 @@ namespace Cold_Ship
 
       Vector2 originalSpawnLocation = new Vector2(forwardDoor.Position.X - 32 - 200, worldSize.Y - 200 - 64);
       this.PlayerNode.Position = originalSpawnLocation;
-      this.PlayerNode._pocketLight = PocketLightSource.GetNewInstance(GameInstance, this.PlayerNode);
-      this.PlayerNode._pocketLight.TurnOn();
 
       // Load the text with respect to the current player's Position
 
@@ -99,7 +97,10 @@ namespace Cold_Ship
       Texture2D lighterTexture = Content.Load<Texture2D>("Objects\\lighter");
       if (!visited)
       {
-          lighter = new PickUpItem(lighterTexture, new Vector2(forwardDoor.Position.X - 32 - 260, forwardDoor.Position.Y + 55), new Vector2(lighterTexture.Width, lighterTexture.Height), PickUpItem.ItemType.NONE, 100, PickUpItem.ItemEffectDuration.NONE);
+          lighter = new PickUpItem(lighterTexture
+              , new Vector2(forwardDoor.Position.X - 32 - 260, forwardDoor.Position.Y + 55)
+              , new Vector2(lighterTexture.Width, lighterTexture.Height)
+              , PickUpItem.ItemType.LIGHTER, 100, PickUpItem.ItemEffectDuration.NONE, GameInstance);
           worldObjects.Add(lighter);
       }
       worldObjects.Add(this.PlayerNode);
