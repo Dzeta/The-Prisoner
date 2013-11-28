@@ -62,7 +62,7 @@ namespace Cold_Ship
     {
       //load the needed textures
       Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
-      Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\prisonblock_final");
+      Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\prisonblock_bg_02");
       statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
 
@@ -94,8 +94,9 @@ namespace Cold_Ship
       platforms.Add(new Platform(platformTexture, new Vector2(773, 20), new Vector2(933, worldSize.Y - 744)));
       platforms.Add(new Platform(platformTexture, new Vector2(205, 20), new Vector2(1742, worldSize.Y - 744)));
       //walls
-      //platforms.Add(new Platform(platformTexture, new Vector2(130, 270), new Vector2(963, worldSize.Y - 270)));
-      //platforms.Add(new Platform(platformTexture, new Vector2(130, 230), new Vector2(1150, worldSize.Y - 508)));
+      Texture2D barrierTexture = Content.Load<Texture2D>("Objects\\barrier");
+      platforms.Add(new Platform(barrierTexture, new Vector2(64, 196), new Vector2(963, worldSize.Y - 50 - 196)));
+      platforms.Add(new Platform(barrierTexture, new Vector2(64, 196), new Vector2(1150, worldSize.Y - 508 + 31)));
 
       //initialize ladders and add them to the list
       Texture2D ladderTexture = Content.Load<Texture2D>("Objects\\ladder");
@@ -128,8 +129,8 @@ namespace Cold_Ship
         playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 6);
       }
 
-      staminaBooster = new PickUpItem(platformTexture, new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
-      lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
+      staminaBooster = new PickUpItem(Content.Load<Texture2D>("Objects\\lunchbox"), new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
+      lightSwitch = new Interactable(Content.Load<Texture2D>("Objects\\lightswitch_off"), new Vector2(1643, worldSize.Y - 357), new Vector2(23, 32), Interactable.Type_Of_Interactable.LIGHT_SWITCH, Content.Load<Texture2D>("Objects\\lightswitch_on"));
       generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(1807, worldSize.Y - 809), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
 
       if (!visited)
@@ -138,10 +139,13 @@ namespace Cold_Ship
       }
 
       worldObjects.Add(staminaBooster);
-      //worldObjects.Add(lightSwitch);
+      worldObjects.Add(lightSwitch);
       worldObjects.Add(generator);
 
       worldObjects.Add(playerNode);
+
+      //Initiate the shadow filter
+      shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
 
     }
 
@@ -219,6 +223,8 @@ namespace Cold_Ship
       staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 
       //update the shadowFilter's Position with respect to the playerNode
+      shadowFilter.Position = new Vector2((playerNode.Position.X /*+ (playerNode.Texture.Width / 2))*/) - (shadowFilter.Texture.Width / 2),
+          (playerNode.Position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.Texture.Height / 2)));
 
       //update the camera based on the player and world size
       camera.TranslateWithSprite(playerNode, screenSize);
@@ -235,6 +241,12 @@ namespace Cold_Ship
       ////draw the desired nodes onto screen through the camera
       foreach (GenericSprite2D element in worldObjects)
         camera.DrawNode(element);
+
+       //Draw the showdow filter
+      if (filterOn)
+      {
+          camera.DrawNode(shadowFilter);
+      }
 
       //draw the fps
       spriteBatch.DrawString(manaspace12, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);

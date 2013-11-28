@@ -316,6 +316,8 @@ namespace Cold_Ship
                 }
                 if (puzzleSwitch3.isActivated() && puzzleSwitch5.isActivated())
                     forwardDoor.canOpen = true;
+                else
+                    forwardDoor.canOpen = false;
             }
 
             //update the shadowFilter's Position with respect to the playerNode

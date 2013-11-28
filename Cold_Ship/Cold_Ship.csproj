@@ -125,10 +125,13 @@
     <Content Include="Content\Backgrounds\messhall_middleLayer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Backgrounds\prisonblock_final.png">
+    <Content Include="Content\Backgrounds\prisonblock_bg_02.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Character\PlayerSpriteSheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\barrier.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\computer.png">

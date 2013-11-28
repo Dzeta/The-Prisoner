@@ -77,13 +77,13 @@ namespace Cold_Ship
                             }
                             break;
                         case Type_Of_Interactable.PUZZLE_SWITCH:
-                            if ((altTexture != null) && (activated == false) && timeCounter > 200)
+                            if ((altTexture != null) && (activated == false) && timeCounter > 25)
                             {
                                 Texture = altTexture;
                                 activated = true;
                                 timeCounter = 0;
                             }
-                            else if (activated == true && timeCounter > 200)
+                            else if (activated == true && timeCounter > 25)
                             {
                                 Texture = tempTexture;
                                 activated = false;

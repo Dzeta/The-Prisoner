@@ -27,7 +27,7 @@ namespace Cold_Ship
     /// </summary>
     public class Cold_Ship : Game
     {
-        public const bool DEBUG_MODE = true;
+        public const bool DEBUG_MODE = false;
 
         //declare needed global variables, commented out variables are no longer used
         public GraphicsDeviceManager graphics;
