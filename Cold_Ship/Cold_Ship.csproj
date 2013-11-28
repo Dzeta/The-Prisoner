@@ -106,9 +106,6 @@
     <Content Include="Content\Backgrounds\engineroom_bg.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Backgrounds\entertainmentroom.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Backgrounds\entertainmentroom_background.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -119,9 +116,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Backgrounds\messhall_backLayer.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Backgrounds\messhall_draft.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Backgrounds\messhall_frontLayer.png">
@@ -206,6 +200,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\lighter.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\lighter_large.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\lightswitch.png">

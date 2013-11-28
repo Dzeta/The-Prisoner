@@ -13,7 +13,7 @@ namespace Cold_Ship
     {
         private Texture2D backgroundTexture;
         private Texture2D cursorTexture;
-        private Vector2 cursorPositionDiff = new Vector2(40, 0);
+        private Vector2 cursorPositionDiff = new Vector2(20, 10);
 
         protected int selectedOption = 0;
         private int nOptions;

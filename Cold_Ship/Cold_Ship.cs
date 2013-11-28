@@ -129,9 +129,11 @@ namespace Cold_Ship
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            mainMenu = new MainMenu(this, Content.Load<Texture2D>("Backgrounds\\menuscreen"), Content.Load<Texture2D>("Objects\\lighter"), menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
-            pauseMenu = new PauseMenu(this, Content.Load<Texture2D>("Backgrounds\\menuscreen"), Content.Load<Texture2D>("Objects\\lighter"), menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
-            keyBindingMenu = new KeyBindingMenu(this, Content.Load<Texture2D>("Backgrounds\\menuscreen"), Content.Load<Texture2D>("Objects\\lighter"), menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
+            Texture2D cursor = Content.Load<Texture2D>("Objects\\lighter_large");
+            Texture2D menuBackground = Content.Load<Texture2D>("Backgrounds\\menuscreen");
+            mainMenu = new MainMenu(this, menuBackground, cursor, menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
+            pauseMenu = new PauseMenu(this, menuBackground, cursor, menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
+            keyBindingMenu = new KeyBindingMenu(this, menuBackground, cursor, menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
 
             prototypeLevel1 = new Level_Prison_Block(spriteBatch, screenSize);
             prototypeLevel2 = new Level_Generator(spriteBatch, screenSize);

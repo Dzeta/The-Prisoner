@@ -63,7 +63,6 @@ namespace Cold_Ship
         {
             //load the needed textures
             Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
-            Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\messhall_draft");
             Texture2D backgroundFrontTexture = Content.Load<Texture2D>("Backgrounds\\messhall_frontLayer");
             Texture2D backgroundMiddleLayer = Content.Load<Texture2D>("Backgrounds\\messhall_middleLayer");
             Texture2D backgroundBackLayer = Content.Load<Texture2D>("Backgrounds\\messhall_backLayer");
@@ -71,7 +70,7 @@ namespace Cold_Ship
 
 
             //initialize the world size and the ground coordinate according to the world size
-            worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);
+            worldSize = new Vector2(backgroundFrontTexture.Width, backgroundFrontTexture.Height);
             ground = worldSize.Y - 50;
 
             //load font
@@ -79,7 +78,6 @@ namespace Cold_Ship
 
             //initialize the needed nodes and camera
             //load the various layers of background node
-            backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
             backgroundFront = new GenericSprite2D(backgroundFrontTexture, new Vector2(0, 0), Rectangle.Empty);
             backgroundMiddle = new GenericSprite2D(backgroundMiddleLayer, new Vector2(0, 0), Rectangle.Empty);
             backgroundBack = new GenericSprite2D(backgroundBackLayer, new Vector2(0, 0), Rectangle.Empty);
