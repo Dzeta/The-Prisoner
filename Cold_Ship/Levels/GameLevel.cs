@@ -24,6 +24,7 @@ namespace Cold_Ship
     public List<GenericSprite2D> LevelStaticWorldObjects { get; set; } 
 
     protected Texture2D LevelBackgroundTexture;
+    protected Sprite2D LevelBackgroundNode;
     protected Rectangle WorldBoundingRectangle; // Generally, rectangle width and height replace the old _worldSize variable
 
     public Portal EntrancePortal;
@@ -67,7 +68,7 @@ namespace Cold_Ship
           , WorldBoundingRectangle.Height);
     }
 
-    public virtual void SpawnPlayer(Character player)
+    public virtual void LoadLevelContentIfHasNotForPlayer(Character player)
     {
       if (!player.HasVisited(this.GetType()))
         this.LoadContent();
@@ -77,9 +78,16 @@ namespace Cold_Ship
     public virtual void Update(GameTime gameTime)
     {
       Camera.Update(gameTime);
+      Camera.TranslateWithSprite(PlayerNode, GameInstance.WindowBound);
+      Camera.CapCameraPosition(this.GetAbsoluteWorldSize()
+          , GameInstance.WindowBound);
 
       foreach (Portal portal in LevelPortals)
+      {
         portal.Update(gameTime);
+        if (this.PlayerNode.WantToTakePortal(portal) && portal.IsUnlocked())
+          this.PlayerNode.TakePortal(portal);
+      }
 
       foreach (PickUpItem item in LevelPickUpItems)
       {
@@ -91,37 +99,39 @@ namespace Cold_Ship
 //      foreach (Platform platform in LevelPlatforms)
 //        platform.Update(gameTime);
 //
-//      foreach (Ladder ladder in LevelLadders)
-//        ladder.Update(gameTime);
-      // Update Dialogues
+      foreach (Ladder ladder in LevelLadders)
+        ladder.Update(gameTime);
+
       foreach (InvisibleChatTriggerBox chatTrigger in LevelChatTriggerBoxes)
       {
         chatTrigger.Update(gameTime);
         if (!chatTrigger.IsConsumed() 
-            && chatTrigger.GetHitBox().Intersects(this.PlayerNode.GetPlayerHitBox()))
+            && this.PlayerNode.CheckCollision(chatTrigger.GetHitBox()))
           chatTrigger.InteractWith(new Vector2(400, 400), this);
       }
     }
 
     public virtual void Draw()
     {
-      SpriteBatch.Begin();
-      SpriteBatch.Draw(LevelBackgroundTexture, Vector2.Zero, Color.White);
-      SpriteBatch.End();
-
+      Camera.DrawNode(this.LevelBackgroundNode);
 
       foreach (Portal portal in LevelPortals)
-        portal.Draw(SpriteBatch);
+        Camera.DrawNode(portal);
 
       foreach (PickUpItem item in LevelPickUpItems)
         if (!item.IsPickedUp())
-          item.Draw(SpriteBatch);
+          Camera.DrawNode(item);
+////          item.Draw(SpriteBatch);
+////
+////      foreach (Platform platform in LevelPlatforms)
+////        platform.Update(gameTime);
 //
-//      foreach (Platform platform in LevelPlatforms)
-//        platform.Update(gameTime);
+      foreach (Ladder ladder in LevelLadders)
+        Camera.DrawNode(ladder);
+////        ladder.Draw(SpriteBatch);
 //
-//      foreach (Ladder ladder in LevelLadders)
-//        ladder.Update(gameTime);
+      Camera.DrawNode(this.PlayerNode);
+
     }
   }
 }

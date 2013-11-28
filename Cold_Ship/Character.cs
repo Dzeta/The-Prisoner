@@ -19,7 +19,7 @@ namespace Cold_Ship
     public static Texture2D NORMAL_PLAYER_TEXTURE;
     public const float NORMAL_BODY_TEMPERATURE = 37.5f;
     public const float NORMAL_ENERGY_LEVEL = 100.0f;
-    public const float NORMAL_PLAYER_MOVEMENT = 1.0f;
+    public const float NORMAL_PLAYER_MOVEMENT = 5.0f;
     public const float NORMAL_FRAME_SPEED = 350;
     public const float NORMAL_TEMPERATURE_DECREASE_RATE = 5.0f;
     public const float NORMAL_ENERGY_DECREASE_RATE = 5.0f;
@@ -161,7 +161,7 @@ namespace Cold_Ship
 
     public Camera2D GetCamera() { return this._camera; }
 
-    public static Character GetNewInstance(Cold_Ship gameInstance)
+    public static Character GetNewInstance(Cold_Ship gameInstance, Camera2D camera)
     {
       Texture2D _playerTexture = gameInstance.Content.Load<Texture2D>("Character/PlayerSpriteSheet");
       Character _instance = new Character(_playerTexture, PLAYER_BOUND_BOX);
@@ -176,7 +176,8 @@ namespace Cold_Ship
       _instance.playerSpriteSize = new Vector2((float)_playerTexture.Width / _instance.maxFramesX
           , (float)_playerTexture.Height / _instance.maxFramesY);
       _instance.EnergyBar = HealthBar.GetNewInstance(gameInstance, _instance, _instance.GetEnergyAsRatio);
-      _instance._camera = gameInstance.Camera;
+      _instance._camera = camera;
+      camera.PlayerFocus = _instance;
 
       return _instance;
     }
@@ -200,12 +201,16 @@ namespace Cold_Ship
     {
       return (float)(this.Energy / NORMAL_ENERGY_LEVEL);
     }
-    //draws the player sprite onto screen
-    public void Draw(SpriteBatch spriteBatch)
+
+    public void DrawEnvironment(SpriteBatch spriteBatch)
     {
       // Draw the world
       this.CurrentGameLevel.Draw();
+    }
 
+    //draws the player sprite onto screen
+    public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
+    {
       int line = (int)CurrentActionStatus;
       Rectangle rect = new Rectangle(currentFrame
           * (int)playerSpriteSize.X, line 
@@ -213,12 +218,18 @@ namespace Cold_Ship
           , (int)playerSpriteSize.X, (int)playerSpriteSize.Y);
 
       spriteBatch.Begin();
-      spriteBatch.Draw(Texture, this.Position, rect, Color.White);
+      spriteBatch.Draw(Texture, drawPosition, rect, Color.White);
       spriteBatch.End();
+//      GameInstance.Camera.DrawNode(this);
 
-      if (PocketLight != null) PocketLight.Draw(spriteBatch);
+      if (PocketLight != null) PocketLight.Draw(spriteBatch, drawPosition);
       if (EnergyBar != null) EnergyBar.Draw(spriteBatch);
 
+    }
+
+    public void TakePortal(Portal portal)
+    {
+      portal.WalkThroughPortal(this);
     }
 
     public void PickUp(PickUpItem item)
@@ -231,7 +242,7 @@ namespace Cold_Ship
     {
       this.SetPreviousGameLevel(this.CurrentGameLevel);
       this.CurrentGameLevel = level;
-      this.CurrentGameLevel.SpawnPlayer(this);
+      this.CurrentGameLevel.LoadLevelContentIfHasNotForPlayer(this);
     }
 
     //move the sprite
@@ -266,6 +277,12 @@ namespace Cold_Ship
 
         }
       }
+    }
+
+    public bool WantToTakePortal(Portal portal)
+    {
+      return (this.CheckCollision(portal)
+          && Keyboard.GetState().IsKeyDown(HelperFunction.KeyUp));
     }
 
     //update everything about the Scene2DNode object
@@ -673,11 +690,6 @@ namespace Cold_Ship
       }
     }
 
-    public Rectangle GetPlayerHitBox()
-    {
-      return new Rectangle((int)Position.X, (int)Position.Y, (int)playerSpriteSize.X, (int)playerSpriteSize.Y);
-    }
-
     public Vector2 GetSize()
     {
       Vector2 _size = new Vector2(this.BoundBox.Width, this.BoundBox.Height);
@@ -689,16 +701,6 @@ namespace Cold_Ship
     {
       Rectangle _box = new Rectangle((int)this.Position.X, (int)this.Position.Y, this.Texture.Width, this.Texture.Height);
       return _box;
-    }
-
-    public Rectangle GetBoundingBox()
-    {
-      return this.BoundBox;
-    }
-
-    public bool CheckCollision(GenericSprite2D sprite)
-    {
-      return this.BoundBox.Intersects(sprite.BoundBox);
     }
   }
 }

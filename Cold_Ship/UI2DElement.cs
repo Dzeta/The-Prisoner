@@ -10,28 +10,21 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Cold_Ship
 {
-  public abstract class UI2DElement 
+  public abstract class UI2DElement : Sprite2D
   {
     protected Cold_Ship GameInstance;
 
-  public Texture2D Texture;
-        public Vector2 Position;
-        public Rectangle BoundBox;
+    public Texture2D Texture;
+    public Vector2 Position;
+    public Rectangle BoundBox;
 
-        protected UI2DElement(Texture2D texture) 
-            : this(texture, Vector2.One, Rectangle.Empty) { }
-        public UI2DElement(Texture2D texture, Vector2 position) 
-            : this(texture, position, Rectangle.Empty) { }
-        protected UI2DElement(Texture2D texture
-            , Vector2 position, Rectangle boundBox)
-        {
-            this.Texture = texture;
-            this.Position = position;
-            this.BoundBox = boundBox;
-        }
-
-    public abstract void Update(GameTime gameTime);
-    public abstract void Draw(SpriteBatch spriteBatch);
+    protected UI2DElement(Texture2D texture)
+      : this(texture, Vector2.One, Rectangle.Empty) { }
+    public UI2DElement(Texture2D texture, Vector2 position)
+      : this(texture, position, Rectangle.Empty) { }
+    protected UI2DElement(Texture2D texture
+      , Vector2 position, Rectangle boundBox)
+      : base(texture, position, boundBox) { }
   }
 
   public class HealthBar : UI2DElement
@@ -50,7 +43,7 @@ namespace Cold_Ship
 
     private Vector2 _offsetFromPlayer = new Vector2(10, 20);
 
-    private HealthBar(Texture2D texture, Vector2 position) 
+    private HealthBar(Texture2D texture, Vector2 position)
       : base(texture, position) { }
 
     public static HealthBar GetNewInstance(Cold_Ship gameInstance
@@ -65,17 +58,17 @@ namespace Cold_Ship
       _instance._textureBar = _bar;
       _instance._textureBarFill = _highlight;
       _instance._state = state;
-      _instance._barSpriteDestination = 
+      _instance._barSpriteDestination =
           new Rectangle((int)_instance._player.Position.X, (int)_instance._player.Position.Y
           , (int)(_bar.Width / SCALE_FACTOR), (int)(_bar.Height / 2 / SCALE_FACTOR));
-      _instance._barSpriteSource = 
+      _instance._barSpriteSource =
           new Rectangle(0, (int)(_bar.Height / 2), _bar.Width, _bar.Height / 2);
       _instance.Texture = _instance._textureBar;
       _instance._barFillRectangle = new Rectangle(_instance._barSpriteDestination.X + 2
-          , _instance._barSpriteDestination.Y, (int) ((_instance._state()*_bar.Width - (6))/SCALE_FACTOR)
-          , (int) (_bar.Height/2/SCALE_FACTOR));
+          , _instance._barSpriteDestination.Y, (int)((_instance._state() * _bar.Width - (6)) / SCALE_FACTOR)
+          , (int)(_bar.Height / 2 / SCALE_FACTOR));
 
-      if (_instance.GameInstance == null) 
+      if (_instance.GameInstance == null)
         _instance.GameInstance = gameInstance;
 
       return _instance;
@@ -83,11 +76,10 @@ namespace Cold_Ship
 
     public override void Update(GameTime gameTime)
     {
-//      Vector2 cameraToPlayer = new Vector2(this._player.Position.X - GameInstance.Camera.CameraPosition.X,
-//        this._player.Position.Y - GameInstance.Camera.CameraPosition.Y);
+      Vector2 cameraToPlayer = new Vector2(this._player.Position.X - GameInstance.Camera.CameraPosition.X
+          , this._player.Position.Y - GameInstance.Camera.CameraPosition.Y);
 
-      Vector2 cameraToPlayer = GameInstance.Camera.CameraPosition;
-      this._barSpriteDestination = 
+      this._barSpriteDestination =
           new Rectangle((int)(cameraToPlayer.X - this._offsetFromPlayer.X)
             , (int)(cameraToPlayer.Y - this._offsetFromPlayer.Y)
             , (int)(this._textureBar.Width / SCALE_FACTOR)
@@ -97,8 +89,8 @@ namespace Cold_Ship
         , this._textureBar.Width, this._textureBar.Height / 2);
 
       this._barFillRectangle = new Rectangle(this._barSpriteDestination.X + 2
-        , this._barSpriteDestination.Y, (int) ((this._state()*this._textureBar.Width - (6))/SCALE_FACTOR)
-        , (int) (this._textureBar.Height/2/SCALE_FACTOR));
+        , this._barSpriteDestination.Y, (int)((this._state() * this._textureBar.Width - (6)) / SCALE_FACTOR)
+        , (int)(this._textureBar.Height / 2 / SCALE_FACTOR));
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -110,9 +102,11 @@ namespace Cold_Ship
 
       float _healthPercent = this._state() * 100;
       spriteBatch.DrawString(GameInstance.MonoMedium
-        , _healthPercent.ToString().Substring(0, (int)MathHelper.Min(_healthPercent.ToString().Length, 4)) + " %"
-        , new Vector2(this._barSpriteDestination.X - 35, this._barSpriteDestination.Y - 4), Color.White
-        , 0, Vector2.Zero, 0.5f, SpriteEffects.None, 1);
+          , _healthPercent.ToString().Substring(0
+              , (int)MathHelper.Min(_healthPercent.ToString().Length, 4)) + " %"
+          , new Vector2(this._barSpriteDestination.X - 35
+              , this._barSpriteDestination.Y - 4), Color.White
+          , 0, Vector2.Zero, 0.5f, SpriteEffects.None, 1);
 
       spriteBatch.Draw(this._textureBarFill, this._barFillRectangle, null, Color.White);
       spriteBatch.End();

@@ -146,9 +146,10 @@ namespace Cold_Ship
         this._lightSwitchTimer = 0;
       }
 
-//      Vector2 cameraToPlayer = new Vector2(this._owner.Position.X - CurrentGameLevel.Camera.CameraPosition.X,
-//        this._owner.Position.Y - CurrentGameLevel.Camera.CameraPosition.Y);
-      Vector2 cameraToPlayer = CurrentGameLevel.Camera.CameraPosition;
+      Vector2 cameraToPlayer = new Vector2(
+          this._owner.Position.X - CurrentGameLevel.Camera.CameraPosition.X,
+          this._owner.Position.Y - CurrentGameLevel.Camera.CameraPosition.Y);
+//      Vector2 cameraToPlayer = CurrentGameLevel.Camera.CameraPosition;
 
       this.Position = cameraToPlayer - this._positionOffset + _actualFacingOffset + _scaleOffset;
     }
@@ -160,13 +161,13 @@ namespace Cold_Ship
       base.PickUpBy(player);
     }
 
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 position)
     {
       if (this._lightState == LightState.NOLIGHTING) return;
 
       if (!this.IsConsumed())
       {
-        base.Draw(spriteBatch);
+        base.Draw(spriteBatch, position);
         return;
       }
 

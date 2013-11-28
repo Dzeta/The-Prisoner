@@ -31,23 +31,18 @@ namespace Cold_Ship
     {
       spriteBatch.Begin();
       spriteBatch.Draw(Texture, position, Color.White);
-      if (Cold_Ship.DEBUG_MODE)
-        spriteBatch.Draw(Cold_Ship.DEBUG_TEXTURE
-            , this.GetBoundingBox(), null, Color.White
-            , 0, Vector2.Zero, SpriteEffects.None, 1);
-      spriteBatch.End();
+      spriteBatch.End(); 
+      if (Cold_Ship.DEBUG_MODE && this.GetBoundingBox().Width < 600)
+        DebugSprite.GetNewInstance(this).Draw(spriteBatch, position);
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
       spriteBatch.Begin();
       spriteBatch.Draw(Texture, this.Position, Color.White);
-      if (Cold_Ship.DEBUG_MODE)
-        spriteBatch.Draw(Cold_Ship.DEBUG_TEXTURE
-            , this.GetBoundingBox(), null, Color.White
-            , 0, Vector2.Zero, SpriteEffects.None, 1);
       spriteBatch.End();
-
+      if (Cold_Ship.DEBUG_MODE && this.GetBoundingBox().Width < 600)
+        DebugSprite.GetNewInstance(this).Draw(spriteBatch);
     }
 
     public Vector2 GetSize()
@@ -74,25 +69,64 @@ namespace Cold_Ship
 
     public bool CheckCollision(Sprite2D sprite)
     {
-      return this.GetBoundingBox()
-          .Intersects(sprite.GetBoundingBox());
+      return this.GetBoundingBox().Intersects(sprite.GetBoundingBox());
+    }
+
+    public bool CheckCollision(Rectangle boundBox)
+    {
+      return this.GetBoundingBox().Intersects(boundBox);
+    }
+  }
+
+  public class GenericSprite2D : Sprite2D
+  {
+    public GameLevel CurrentGameLevel; // A reference to this object/sprite exists in which level
+
+    protected GenericSprite2D(GameLevel instance, Texture2D texture)
+      : this(instance, texture, Vector2.One, Rectangle.Empty) { }
+    public GenericSprite2D(GameLevel instance, Texture2D texture, Vector2 position)
+      : this(instance, texture, position, Rectangle.Empty) { }
+
+    protected GenericSprite2D(GameLevel instance, Texture2D texture, Vector2 position, Rectangle boundBox)
+      : base(texture, position, boundBox)
+    {
+      this.CurrentGameLevel = instance;
     }
   }
 
 
-}
-public class GenericSprite2D : Sprite2D
-{
-  public GameLevel CurrentGameLevel; // A reference to this object/sprite exists in which level
-
-  protected GenericSprite2D(GameLevel instance, Texture2D texture)
-    : this(instance, texture, Vector2.One, Rectangle.Empty) { }
-  public GenericSprite2D(GameLevel instance, Texture2D texture, Vector2 position)
-    : this(instance, texture, position, Rectangle.Empty) { }
-
-  protected GenericSprite2D(GameLevel instance, Texture2D texture, Vector2 position, Rectangle boundBox)
-    : base(texture, position, boundBox)
+  public class DebugSprite : Sprite2D
   {
-    this.CurrentGameLevel = instance;
+    public static Texture2D DEBUG_TEXTURE;
+
+    public Sprite2D _owner;
+    public DebugSprite(Cold_Ship gameInstance)
+      : base(DEBUG_TEXTURE, Vector2.Zero, Rectangle.Empty)
+    {
+      if (DEBUG_TEXTURE == null)
+        DEBUG_TEXTURE = gameInstance.Content.Load<Texture2D>("Textures/debug_textures");
+    }
+
+    protected DebugSprite(Sprite2D owner)
+      : base(DEBUG_TEXTURE, owner.Position, owner.BoundBox)
+    {
+      this._owner = owner;
+    }
+
+    public static DebugSprite GetNewInstance(Sprite2D owner)
+    {
+      return new DebugSprite(owner);
+    }
+
+    public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+    {
+      Rectangle _dest = new Rectangle((int)position.X, (int)position.Y, this.GetDefaultBoundingBox().Width, this.GetDefaultBoundingBox().Height);
+      spriteBatch.Begin();
+      spriteBatch.Draw(DEBUG_TEXTURE
+          , _dest, null, Color.White
+          , 0, Vector2.Zero, SpriteEffects.None, 1);
+      spriteBatch.End();
+    }
   }
 }
+

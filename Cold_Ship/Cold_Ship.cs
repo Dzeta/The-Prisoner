@@ -1,6 +1,7 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -28,13 +29,13 @@ namespace Cold_Ship
   public class Cold_Ship : Game
   {
     public const bool DEBUG_MODE = true;
-    public static Texture2D DEBUG_TEXTURE;
+    public static DebugSprite DEBUG_TEXTURE;
 
     //declare needed global variables, commented out variables are no longer used
     public GraphicsDeviceManager graphics;
     public SpriteBatch SpriteBatch;
     //Scene2DNode playerNode, backgroundNode;
-    public Vector2 screenSize { get; set; }/*, worldSize*/
+    public Vector2 WindowBound { get; set; }/*, worldSize*/
     public Texture2D DebugTexture { get; set; }
 
     public Camera2D Camera;
@@ -76,6 +77,8 @@ namespace Cold_Ship
       this._gameState = new Stack<GameState>();
       this._gameState.Push(GameState.INTIALIZED);
       this._gameState.Push(GameState.MENU);
+
+      DEBUG_TEXTURE = new DebugSprite(this);
     }
 
     // Bunch of helper methods to deal with the state of the game at any moment
@@ -96,9 +99,9 @@ namespace Cold_Ship
     {
       // TODO: Add your initialization logic here
       //initiate screen size
-      screenSize = new Vector2(800, 600);
-      graphics.PreferredBackBufferWidth = (int)screenSize.X;
-      graphics.PreferredBackBufferHeight = (int)screenSize.Y;
+      WindowBound = new Vector2(800, 600);
+      graphics.PreferredBackBufferWidth = (int)WindowBound.X;
+      graphics.PreferredBackBufferHeight = (int)WindowBound.Y;
       //graphics.IsFullScreen = true;
 
       DialogueBubble.engine = new AudioEngine("Content\\Sounds\\SOUND_SPEECH_ENGINE.xgs");
@@ -111,20 +114,23 @@ namespace Cold_Ship
       // Create a new SpriteBatch, which can be used to draw textures.
       SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-      mainMenu = new MainMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
-      pauseMenu = new PauseMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
-      keyBindingMenu = new KeyBindingMenu(this, Content.Load<Texture2D>("Textures\\platformTexture"), Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12"), DialogueBubble.soundBank.GetCue("sound-next-char"));
-      this.Player = Character.GetNewInstance(this);
-      Camera = new Camera2D(this);
-      //            level1PrisonBlock = new Level_Prison_Block(this);
-      //            level2GeneratorRoom = new Level_Generator(SpriteBatch, screenSize);
-      //            level3CommonRoom = new Level_Common_Room(SpriteBatch, screenSize);
-      //            level4EntertainmentRoom = new Level_Entertainment_Room(SpriteBatch, screenSize);
+      mainMenu = new MainMenu(this, Content.Load<Texture2D>("Textures\\platformTexture")
+          , Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12")
+          , DialogueBubble.soundBank.GetCue("sound-next-char"));
+      pauseMenu = new PauseMenu(this, Content.Load<Texture2D>("Textures\\platformTexture")
+          , Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12")
+          , DialogueBubble.soundBank.GetCue("sound-next-char"));
+      keyBindingMenu = new KeyBindingMenu(this, Content.Load<Texture2D>("Textures\\platformTexture")
+          , Content.Load<Texture2D>("Objects\\lighter"), Content.Load<SpriteFont>("Fonts\\manaspace12")
+          , DialogueBubble.soundBank.GetCue("sound-next-char"));
+
+      this.Camera = new Camera2D(this);
+      this.Player = Character.GetNewInstance(this, Camera);
 
       // DIALOGUE USED COMPONENT
       this.DialogueQueue = new List<DialogueBubble>();
-      DEBUG_TEXTURE = Content.Load<Texture2D>("Textures/debug_textures");
       GameLevel _startingLevel = new Level_Holding_Cell(this, null, null);
+      _startingLevel.NextGameLevel = new Level_Prison_Block(this, _startingLevel, null);
       this.Player.SpawnIn(_startingLevel);
       base.Initialize();
     }
@@ -225,7 +231,8 @@ namespace Cold_Ship
 
       if (this.GameStateIs(GameState.PLAYING) || this.GameStateIs(GameState.DIALOGUING))
       {
-        this.Player.Draw(SpriteBatch);
+        //        Camera.DrawNode(this.Player);
+        this.Player.DrawEnvironment(SpriteBatch);
         //                switch (gameLevel)
         //                {
         //                    case Game_Level.LEVEL_HOLDING_CELL:

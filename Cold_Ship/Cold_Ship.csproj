@@ -52,6 +52,7 @@
     <Compile Include="Levels\Level_Holding_Cell.cs" />
     <Compile Include="GameElements\PickUpItem.cs" />
     <Compile Include="GameElements\Portal.cs" />
+    <Compile Include="Levels\Level_Prison_Block.cs" />
     <Compile Include="Menus\HighscoreMenu.cs" />
     <Compile Include="Menus\KeyBindingMenu.cs" />
     <Compile Include="Menus\MainMenu.cs" />

@@ -22,9 +22,11 @@ namespace Cold_Ship
       LevelBackgroundTexture = Content.Load<Texture2D>("Backgrounds/holdingcell_final");
       this.WorldBoundingRectangle = new Rectangle(0, 0
           , LevelBackgroundTexture.Width, LevelBackgroundTexture.Height);
+      LevelBackgroundNode = new GenericSprite2D(this, LevelBackgroundTexture, Vector2.Zero);
+      WorldBoundingRectangle = new Rectangle(0, 0, 800, 600);
 
       Vector2 _portalPosition = this.GetAbsoluteWorldSize() - new Vector2(251, 273);
-      this.ExitPortal = Portal.GetNewInstance(this, _portalPosition, true);
+      this.ExitPortal = Portal.GetNewInstance(this, NextGameLevel, _portalPosition, false);
       LevelPortals.Add(this.ExitPortal);
 
 //        LevelChatTriggerBoxes.Add(
@@ -64,9 +66,10 @@ namespace Cold_Ship
       LevelPickUpItems.Add(PocketLightSource.GetNewInstance(this, _portalPosition + new Vector2(-288, 50)));
     }
 
-    public override void SpawnPlayer(Character player)
+    // This is an override of the spawn player method only for level one
+    public override void LoadLevelContentIfHasNotForPlayer(Character player)
     {
-      base.SpawnPlayer(player);
+      base.LoadLevelContentIfHasNotForPlayer(player);
 
       player.Position = new Vector2(300, 337);
     }
@@ -87,32 +90,6 @@ namespace Cold_Ship
 //          > this.GetAbsoluteWorldSize().X - 250 - 31)
 //      {
 //        this.PlayerNode.Position.X = this.GetAbsoluteWorldSize().Y - 250 - 31;
-//      }
-    }
-
-
-    //draw funtion
-    public override void Draw()
-    {
-      SpriteBatch.Begin();
-
-      if (Cold_Ship.DEBUG_MODE)
-        foreach (InvisibleChatTriggerBox box in LevelChatTriggerBoxes)
-          SpriteBatch.Draw(this.GameInstance.DebugTexture, box.GetHitBox(), Color.Pink);
-
-      //draw the desired nodes onto screen through the camera
-//      foreach (GenericSprite2D element in LevelStaticWorldObjects)
-//          this.Camera.DrawNode(element);
-
-      // Draw all invisible chat trigger
-      if (Cold_Ship.DEBUG_MODE)
-        foreach (InvisibleChatTriggerBox invisibleTrigger in LevelChatTriggerBoxes)
-          if (!invisibleTrigger.IsConsumed())
-            SpriteBatch.Draw(GameInstance.DebugTexture, invisibleTrigger.GetHitBox(), Color.White);
-
-      SpriteBatch.End();
-
-      base.Draw();
     }
   }
 }

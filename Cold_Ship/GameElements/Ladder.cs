@@ -51,7 +51,7 @@ namespace Cold_Ship
         //draw method that draws the platform onto the screen
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, this.Position, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
+          base.Draw(spriteBatch);
         }
     }
 }

@@ -88,7 +88,7 @@ namespace Cold_Ship
     }
 
     //draw the node on screen with respect to the camera
-    public void DrawNode(GenericSprite2D node)
+    public void DrawNode(Sprite2D node)
     {
       Vector2 drawPosition = ApplyTransformations(node.Position);
       node.Draw(GameInstance.SpriteBatch, drawPosition);
