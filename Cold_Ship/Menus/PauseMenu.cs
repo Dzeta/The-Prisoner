@@ -32,7 +32,7 @@ namespace Cold_Ship
                 switch (selectedOption)
                 {
                     case 0:
-                        game.ActivateState(Cold_Ship.GameState.PLAYING);
+                        game.RestoreLastState();
                         selectedOption = 0;
                         break;
                     case 1:
