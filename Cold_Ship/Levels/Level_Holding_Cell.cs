@@ -155,10 +155,11 @@ namespace Cold_Ship
 
       if (lighter.Position != new Vector2(forwardDoor.Position.X - 32 - 260, forwardDoor.Position.Y + 55))
       {
-          foreach (Portal portal in portals)
-          {
-              portal.Update(playerNode, ref gameLevel);
-          }
+          //foreach (Portal portal in portals)
+          //{
+          //    portal.Update(playerNode, ref gameLevel);
+          //}
+          forwardDoor.Update(playerNode, ref gameLevel);
       }
 
       lighter.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);

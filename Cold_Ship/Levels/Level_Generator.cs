@@ -212,10 +212,12 @@ namespace Cold_Ship
             staminaBooster.Update(ref playerNode, ref bodyTemperature, ref stamina, ref staminaLimit);
 
             //update portals
-            foreach (Portal portal in portals)
-            {
-                portal.Update(playerNode, ref gameLevel);
-            }
+            //foreach (Portal portal in portals)
+            //{
+            //    portal.Update(playerNode, ref gameLevel);
+            //}
+            forwardDoor.Update(playerNode, ref gameLevel, -20);
+            backwardDoor.Update(playerNode, ref gameLevel, 20);
 
             //update the shadowFilter's Position with respect to the playerNode
             shadowFilter.Position = new Vector2((playerNode.Position.X /*+ (playerNode.Texture.Width / 2))*/) - (shadowFilter.Texture.Width / 2),
