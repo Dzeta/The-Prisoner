@@ -42,8 +42,8 @@ namespace Cold_Ship
                                                 leftOption[5] + HelperFunction.KeyUse.ToString(),
                                                 leftOption[6] + HelperFunction.KeySpeed.ToString(),
                                                 "Go back to Menu" };
-            this.optionPosition = new Vector2[8] {  new Vector2(300, 230), new Vector2(300, 260), new Vector2(300, 290), new Vector2(300, 320), 
-                                                    new Vector2(300, 350), new Vector2(300, 380), new Vector2(300, 410), new Vector2(350, 460) };
+            this.optionPosition = new Vector2[8] {  new Vector2(300, 280), new Vector2(300, 310), new Vector2(300, 340), new Vector2(300, 370), 
+                                                    new Vector2(300, 400), new Vector2(300, 430), new Vector2(300, 460), new Vector2(350, 510) };
             this.game = game;
 
             previousKeyboardState = Keyboard.GetState();
@@ -124,7 +124,7 @@ namespace Cold_Ship
                             }
                         }
                     }
-                    base.UpdateFont(5);
+                    this.fontColor = Color.Red;
                 }
                 previousKeyboardState = keyboardState;
             }
