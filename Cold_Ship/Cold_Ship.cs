@@ -110,11 +110,9 @@ namespace Cold_Ship
             graphics.PreferredBackBufferHeight = (int)screenSize.Y;
             //graphics.IsFullScreen = true;
 
-            DialogueBubble.engine = new AudioEngine("Content\\Sounds\\SOUND_SPEECH_ENGINE.xgs");
-            DialogueBubble.soundBank = new SoundBank(DialogueBubble.engine, "Content\\Sounds\\SOUND_SPEECH_SOUNDBANK.xsb");
-            DialogueBubble.waveBank = new WaveBank(DialogueBubble.engine, "Content\\Sounds\\SOUND_SPEECH_WAVEBANK.xwb");
+            Sounds.Initialize();
 
-            mainLoopMusic = DialogueBubble.soundBank.GetCue("SOUND_MAIN_LOOP");
+            mainLoopMusic = Sounds.soundBank.GetCue("SOUND_MAIN_LOOP");
 
           MonoSmall = Content.Load<SpriteFont>("Fonts/Manaspace0");
           MonoMedium = Content.Load<SpriteFont>("Fonts/Manaspace12");
@@ -134,9 +132,9 @@ namespace Cold_Ship
 
             Texture2D cursor = Content.Load<Texture2D>("Objects\\lighter_large");
             Texture2D menuBackground = Content.Load<Texture2D>("Backgrounds\\menuscreen");
-            mainMenu = new MainMenu(this, menuBackground, cursor, menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
-            pauseMenu = new PauseMenu(this, menuBackground, cursor, menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
-            keyBindingMenu = new KeyBindingMenu(this, menuBackground, cursor, menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
+            mainMenu = new MainMenu(this, menuBackground, cursor, menuFont, Sounds.soundBank.GetCue("sound-next-char"));
+            pauseMenu = new PauseMenu(this, menuBackground, cursor, menuFont, Sounds.soundBank.GetCue("sound-next-char"));
+            keyBindingMenu = new KeyBindingMenu(this, menuBackground, cursor, menuFont, Sounds.soundBank.GetCue("sound-next-char"));
 
             prototypeLevel1 = new Level_Prison_Block(this, spriteBatch, screenSize);
             prototypeLevel2 = new Level_Generator(this, spriteBatch, screenSize);

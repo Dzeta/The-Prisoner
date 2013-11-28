@@ -20,11 +20,6 @@ namespace Cold_Ship
     // Sense of typing the character out on the screen
     private float _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Empirical number
 
-    // AUTIO ENGINES
-    public static AudioEngine engine { get; set; }
-    public static SoundBank soundBank { get; set; }
-    public static WaveBank waveBank { get; set; }
-
     private static Texture2D _bubbleTextureMono;
     private static Texture2D _bubbleTextureHasMore;
     private static SpriteFont _mono8;
@@ -126,12 +121,9 @@ namespace Cold_Ship
         _bubbleTextureHasMore = level.Content.Load<Texture2D>("speech-has-more");
       if (_mono8 == null)
         _mono8 = level.Content.Load<SpriteFont>("Fonts\\manaspace0");
-      if (engine == null)
-      {
-        engine = new AudioEngine("Content\\Sounds\\SOUND_SPEECH_ENGINE.xgs");
-        soundBank = new SoundBank(engine, "Content\\Sounds\\SOUND_SPEECH_SOUNDBANK.xsb");
-        waveBank = new WaveBank(engine, "Content\\Sounds\\SOUND_SPEECH_WAVEBANK.xwb");
-      }
+
+      if (!Sounds.IsInitialized)
+        Sounds.Initialize();
 
       // We gonna place the bubble based on the player's Position left or right of the screen middle
       XPositionRelativeToCenter xPos = speakerPosition.X - windowBound.Center.X >= 0
@@ -153,12 +145,9 @@ namespace Cold_Ship
         _bubbleTextureHasMore = level.Content.Load<Texture2D>("speech-has-more");
       if (_mono8 == null)
         _mono8 = level.Content.Load<SpriteFont>("Fonts\\manaspace0");
-      if (engine == null)
-      {
-        engine = new AudioEngine("Content\\SOUND_SPEECH_ENGINE.xgs");
-        soundBank = new SoundBank(engine, "Content\\SOUND_SPEECH_SOUNDBANK.xsb");
-        waveBank = new WaveBank(engine, "Content\\SOUND_SPEECH_WAVEBANK.xwb");
-      }
+
+      if (!Sounds.IsInitialized)
+        Sounds.Initialize();
 
       return new DialogueBubble(level, _bubbleTextureMono, speakerPosition, DialogueBubble.ComputeScroller(msg), xPos, yPos);
     }
@@ -198,7 +187,7 @@ namespace Cold_Ship
         {
           if (_currentRowCharPosition < _scroller[_currentRow].Length)
           {
-            DialogueBubble.soundBank.PlayCue("sound-next-char");
+            Sounds.soundBank.PlayCue("sound-next-char");
             _currentRowCharPosition++;
             _charDisplayTimer = 0;
           }
@@ -211,7 +200,7 @@ namespace Cold_Ship
             {
               if (_currentRow < _scroller.Count - 1)
               {
-                DialogueBubble.soundBank.PlayCue("sound-next-chat");
+                Sounds.soundBank.PlayCue("sound-next-chat");
                 _currentRow++;
                 _currentRowCharPosition = 0;
                 _lineFeedPauseTimer = 0;
