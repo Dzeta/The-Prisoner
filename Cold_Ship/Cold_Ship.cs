@@ -203,21 +203,19 @@ namespace Cold_Ship
                     this.Exit();
             }
 
-            if (this.GameStateIs(GameState.DIALOGUING))
+            else if (this.GameStateIs(GameState.PLAYING) || this.GameStateIs(GameState.DIALOGUING))
             {
+              if (this.GameStateIs(GameState.DIALOGUING))
+              {
                 foreach (DialogueBubble dialogue in DialogueQueue)
                 {
-                    if (dialogue.IsPlaying())
-                    {
-                        dialogue.Update(gameTime);
-                        break;
-                    }
+                  if (dialogue.IsPlaying())
+                  {
+                    dialogue.Update(gameTime);
+                    break;
+                  }
                 }
-
-                return;
-            }
-            else if (this.GameStateIs(GameState.PLAYING))
-            {
+              }
                 switch (gameLevel)
                 {
                     case Game_Level.LEVEL_PRISON_BLOCKS:

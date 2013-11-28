@@ -55,9 +55,10 @@ namespace Cold_Ship
         }
 
         //declare constructor for player sprite
-        public Character(Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit, int maxFramesX, int maxFramesY)
+        public Character(Cold_Ship gameInstance, Texture2D texture, Vector2 position, double bodyTemperature, double stamina, double staminaLimit, int maxFramesX, int maxFramesY)
             : base(texture, position, Rectangle.Empty)
         {
+          if (GameInstance == null) GameInstance = gameInstance;
             this.Texture = texture;
             this.Position = position;
             velocity = new Vector2(0, 0);
@@ -141,7 +142,10 @@ namespace Cold_Ship
             if (!canClimb)
                 isClimbing = false;
 
-            UpdateKeyboard(lighterAcquired, oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
+            if (!GameInstance.GameStateIs(Cold_Ship.GameState.DIALOGUING))
+              UpdateKeyboard(lighterAcquired, oldKeyboardState, newKeyboardState, ref jumpTimer, ref animationTimer);
+            else
+              currentFrame = 0;
 
             oldKeyboardState = newKeyboardState;
 

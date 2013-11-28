@@ -127,11 +127,11 @@ namespace Cold_Ship
             //initialize the playerNode
             if (prevGameLevel <= gameLevel)
             {
-                playerNode = new Character(playerTexture, new Vector2(backwardDoor.Position.X - backwardDoor.size.X - 15, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 6);
+              playerNode = new Character(GameInstance, playerTexture, new Vector2(backwardDoor.Position.X - backwardDoor.size.X - 15, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 6);
             }
             else if (prevGameLevel >= gameLevel)
             {
-                playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 6);
+              playerNode = new Character(GameInstance, playerTexture, new Vector2(forwardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 6);
             }
 
             //initiate the switchPuzzle
