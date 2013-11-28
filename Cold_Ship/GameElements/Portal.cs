@@ -15,23 +15,24 @@ namespace Cold_Ship
     public static Texture2D DOOR_LIGHT_RED;
     public static Texture2D DOOR_TEXTURE;
 
-    public enum PortalType { FORWARD, BACKWARD };
+    public static Vector2 DOOR_SIZE = new Vector2(51, 72);
 
-    private PortalType _portalType;
+    private Vector2 _offsetFromParent;
     private bool _isLocked;
 
     //constructor that initialize the Texture and Position
     public Portal(GameLevel instance, Vector2 position)
-      : base(instance, DOOR_LIGHT_RED, position)
+      : base(instance, DOOR_TEXTURE, position)
     {
-      _isLocked = _portalType == PortalType.BACKWARD;
+      _isLocked = true;
+      _offsetFromParent = new Vector2(10, 10);
     }
 
     public bool IsLock() { return this._isLocked; }
     public void Lock() { this._isLocked = true; }
     public void Unlock() { this._isLocked = false; }
 
-    public static Portal GetNewInstance(GameLevel instance, Vector2 position, PortalType type, bool isLocked)
+    public static Portal GetNewInstance(GameLevel instance, Vector2 position, bool isLocked)
     {
       if (DOOR_LIGHT_RED == null)
         Portal.DOOR_LIGHT_RED = instance.Content.Load<Texture2D>("Objects/doorlight_green");
@@ -40,26 +41,28 @@ namespace Cold_Ship
       if (DOOR_TEXTURE == null)
         Portal.DOOR_TEXTURE = instance.Content.Load<Texture2D>("Objects/door");
 
-
+      Rectangle _boundBox = new Rectangle((int)position.X
+          , (int)position.Y, (int)DOOR_SIZE.X, (int)DOOR_SIZE.Y);
       Portal _instance = new Portal(instance, position);
       _instance.Texture = Portal.DOOR_TEXTURE;
-      _instance._portalType = type;
       _instance._isLocked = isLocked;
+      _instance.BoundBox = _boundBox;
 
       return _instance;
     }
 
     //draw the portal onto screen
-    public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
+    public override void Draw(SpriteBatch spriteBatch)
     {
+      spriteBatch.Begin();
       if (_isLocked)
         spriteBatch.Draw(Portal.DOOR_LIGHT_GREEN
-            , drawPosition + new Vector2(14, -13), Color.White);
+          , _offsetFromParent + this.Position, Color.White);
       else
         spriteBatch.Draw(Portal.DOOR_LIGHT_RED
-            , drawPosition + new Vector2(14, -13), Color.White);
-
-      spriteBatch.Draw(this.Texture, drawPosition, Color.White);
+          , _offsetFromParent + this.Position, Color.White);
+      spriteBatch.End();
+      base.Draw(spriteBatch);
     }
   }
 }

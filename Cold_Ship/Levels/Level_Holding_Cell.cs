@@ -13,73 +13,62 @@ namespace Cold_Ship
 {
   public class Level_Holding_Cell : GameLevel
   {
-    float ground;
     GenericSprite2D backgroundNode;
+    public Level_Holding_Cell(Cold_Ship gameInstance, GameLevel prevLevel, GameLevel nextLevel)
+      : base(gameInstance, prevLevel, nextLevel) { }
 
-    PickUpItem lighter;
-
-    public Level_Holding_Cell(Cold_Ship gameInstance)
-      : base(gameInstance) { }
-
-    //load content
-    public void LoadContent()
+    public override void LoadContent()
     {
       LevelBackgroundTexture = Content.Load<Texture2D>("Backgrounds/holdingcell_final");
       this.WorldBoundingRectangle = new Rectangle(0, 0
           , LevelBackgroundTexture.Width, LevelBackgroundTexture.Height);
 
-      Portal _forwardPortal = new Portal(
-          this.GetAbsoluteWorldSize() - new Vector2(251, 288)
-          , new Vector2(51, 72), Portal.PortalType.FORWARD
-          , GameInstance.Content);
+      Vector2 _portalPosition = this.GetAbsoluteWorldSize() - new Vector2(251, 273);
+      this.ExitPortal = Portal.GetNewInstance(this, _portalPosition, true);
+      LevelPortals.Add(this.ExitPortal);
 
-      LeveLPortals.Add(_forwardPortal);
-      this.PlayerNode.Position = _forwardPortal.Position - new Vector2(200, 200);
+//        LevelChatTriggerBoxes.Add(
+//          InvisibleChatTriggerBox.GetNewInstance(
+//          _forwardPortal.Position + _trigger1PositionOffset
+//          , "Good, you're awake."));
+//        LevelChatTriggerBoxes.Add(
+//          InvisibleChatTriggerBox.GetNewInstance(
+//          _forwardPortal.Position + _trigger1PositionOffset
+//          , "There isn't much time."));
+//        LevelChatTriggerBoxes.Add(
+//          InvisibleChatTriggerBox.GetNewInstance(
+//          _forwardPortal.Position + _trigger1PositionOffset
+//          , "The ship is going down."));
+//        LevelChatTriggerBoxes.Add
+//          (InvisibleChatTriggerBox.GetNewInstance(
+//          _forwardPortal.Position + _trigger1PositionOffset
+//          , "You need to fix it up if you want to live."));
+//        LevelChatTriggerBoxes.Add(
+//          InvisibleChatTriggerBox.GetNewInstance(
+//          _forwardPortal.Position + _trigger1PositionOffset
+//          , "You do want to live, don't you?"));
+//        LevelChatTriggerBoxes.Add(
+//          InvisibleChatTriggerBox.GetNewInstance(
+//          _forwardPortal.Position + _trigger1PositionOffset
+//          , "I hear space death isn't very pleasant, though."));
+//      LevelChatTriggerBoxes.Add( 
+//        InvisibleChatTriggerBox.GetNewInstance(
+//        _forwardPortal.Position + _trigger1PositionOffset
+//        , "Up to you.")); 
+//      LevelChatTriggerBoxes.Add( 
+//        InvisibleChatTriggerBox.GetNewInstance(
+//        _forwardPortal.Position + _trigger2PositionOffset
+//        , "You definitely should pick that lighter up before you get out of here."
+//        , this.PlayerNode.HasLighter));
 
-      // Load the text with respect to the current player's Position
+      LevelPickUpItems.Add(PocketLightSource.GetNewInstance(this, _portalPosition + new Vector2(-288, 50)));
+    }
 
-      Vector2 _trigger1PositionOffset = new Vector2(-200, 30);
-      Vector2 _trigger2PositionOffset = new Vector2(-10, 30);
-        LevelChatTriggerBoxes.Add(
-          InvisibleChatTriggerBox.GetNewInstance(
-          _forwardPortal.Position + _trigger1PositionOffset
-          , "Good, you're awake."));
-        LevelChatTriggerBoxes.Add(
-          InvisibleChatTriggerBox.GetNewInstance(
-          _forwardPortal.Position + _trigger1PositionOffset
-          , "There isn't much time."));
-        LevelChatTriggerBoxes.Add(
-          InvisibleChatTriggerBox.GetNewInstance(
-          _forwardPortal.Position + _trigger1PositionOffset
-          , "The ship is going down."));
-        LevelChatTriggerBoxes.Add
-          (InvisibleChatTriggerBox.GetNewInstance(
-          _forwardPortal.Position + _trigger1PositionOffset
-          , "You need to fix it up if you want to live."));
-        LevelChatTriggerBoxes.Add(
-          InvisibleChatTriggerBox.GetNewInstance(
-          _forwardPortal.Position + _trigger1PositionOffset
-          , "You do want to live, don't you?"));
-        LevelChatTriggerBoxes.Add(
-          InvisibleChatTriggerBox.GetNewInstance(
-          _forwardPortal.Position + _trigger1PositionOffset
-          , "I hear space death isn't very pleasant, though."));
-      LevelChatTriggerBoxes.Add( 
-        InvisibleChatTriggerBox.GetNewInstance(
-        _forwardPortal.Position + _trigger1PositionOffset
-        , "Up to you.")); 
-      LevelChatTriggerBoxes.Add( 
-        InvisibleChatTriggerBox.GetNewInstance(
-        _forwardPortal.Position + _trigger2PositionOffset
-        , "You definitely should pick that lighter up before you get out of here."
-        , this.PlayerNode.HasLighter));
+    public override void SpawnPlayer(Character player)
+    {
+      base.SpawnPlayer(player);
 
-    Texture2D lighterTexture = this.Content.Load<Texture2D>("Objects/lighter");
-       PickUpItem lighter = new PickUpItem(this, 
-           lighterTexture, _forwardPortal.Position + new Vector2(-288, 50)
-           , new Vector2(lighterTexture.Width, lighterTexture.Height)
-           , PickUpItem.ItemType.LIGHTER, 100, PickUpItem.ItemEffectDuration.NONE, GameInstance);
-      LevelPickUpItems.Add(lighter);
+      player.Position = new Vector2(300, 337);
     }
 
     //unload contents
@@ -88,30 +77,22 @@ namespace Cold_Ship
     //update function
     public override void Update(GameTime gameTime)
     {
-      // Update Dialogues
-      foreach (InvisibleChatTriggerBox chatTrigger in LevelChatTriggerBoxes)
-      {
-        chatTrigger.Update(gameTime);
-        if (!chatTrigger.IsConsumed() 
-            && chatTrigger.GetHitBox().Intersects(this.PlayerNode.getPlayerHitBox()))
-          chatTrigger.InteractWith(new Vector2(400, 400), GameInstance);
-      }
+      base.Update(gameTime);
 
-      this.PlayerNode.Update(gameTime);
-
-      if (this.PlayerNode.Position.X < 250)
-      {
-        this.PlayerNode.Position.X = 250;
-      }
-      else if (this.PlayerNode.Position.X 
-          > this.GetAbsoluteWorldSize().X - 250 - 31)
-      {
-        this.PlayerNode.Position.X = this.GetAbsoluteWorldSize().Y - 250 - 31;
-      }
+//      if (this.PlayerNode.Position.X < 250)Vjjjj
+//      {
+//        this.PlayerNode.Position.X = 250;
+//      }
+//      else if (this.PlayerNode.Position.X 
+//          > this.GetAbsoluteWorldSize().X - 250 - 31)
+//      {
+//        this.PlayerNode.Position.X = this.GetAbsoluteWorldSize().Y - 250 - 31;
+//      }
     }
 
+
     //draw funtion
-    public void Draw(int framesPerSecond)
+    public override void Draw()
     {
       SpriteBatch.Begin();
 
@@ -120,8 +101,8 @@ namespace Cold_Ship
           SpriteBatch.Draw(this.GameInstance.DebugTexture, box.GetHitBox(), Color.Pink);
 
       //draw the desired nodes onto screen through the camera
-      foreach (GenericSprite2D element in LevelStaticWorldObjects)
-          this.Camera.DrawNode(element);
+//      foreach (GenericSprite2D element in LevelStaticWorldObjects)
+//          this.Camera.DrawNode(element);
 
       // Draw all invisible chat trigger
       if (Cold_Ship.DEBUG_MODE)
@@ -130,6 +111,8 @@ namespace Cold_Ship
             SpriteBatch.Draw(GameInstance.DebugTexture, invisibleTrigger.GetHitBox(), Color.White);
 
       SpriteBatch.End();
+
+      base.Draw();
     }
   }
 }

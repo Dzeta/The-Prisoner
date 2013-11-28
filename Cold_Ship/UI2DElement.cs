@@ -83,9 +83,10 @@ namespace Cold_Ship
 
     public override void Update(GameTime gameTime)
     {
-      Vector2 cameraToPlayer = new Vector2(this._player.Position.X - GameInstance.Camera.CameraPosition.X,
-        this._player.Position.Y - GameInstance.Camera.CameraPosition.Y);
+//      Vector2 cameraToPlayer = new Vector2(this._player.Position.X - GameInstance.Camera.CameraPosition.X,
+//        this._player.Position.Y - GameInstance.Camera.CameraPosition.Y);
 
+      Vector2 cameraToPlayer = GameInstance.Camera.CameraPosition;
       this._barSpriteDestination = 
           new Rectangle((int)(cameraToPlayer.X - this._offsetFromPlayer.X)
             , (int)(cameraToPlayer.Y - this._offsetFromPlayer.Y)
@@ -102,6 +103,7 @@ namespace Cold_Ship
 
     public override void Draw(SpriteBatch spriteBatch)
     {
+      spriteBatch.Begin();
       // Draw the background
       spriteBatch.Draw(this.Texture, this._barSpriteDestination
         , this._barSpriteSource, Color.White);
@@ -113,6 +115,7 @@ namespace Cold_Ship
         , 0, Vector2.Zero, 0.5f, SpriteEffects.None, 1);
 
       spriteBatch.Draw(this._textureBarFill, this._barFillRectangle, null, Color.White);
+      spriteBatch.End();
     }
   }
 }

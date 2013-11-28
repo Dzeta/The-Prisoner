@@ -114,18 +114,19 @@ namespace Cold_Ship
       }
     }
 
-    public void InteractWith(Character player, Cold_Ship gameLevel)
+    public void InteractWith(Character player, GameLevel gameLevel)
     {
       this.InteractWith(player.Position, gameLevel);
     }
 
-    public void InteractWith(Vector2 position, Cold_Ship gameLevel)
+    public void InteractWith(Vector2 position, GameLevel gameLevel)
     {
       DialogueBubble dialogue = DialogueBubble.GetNewInstance(gameLevel, position,
-        new Rectangle(0, 0, (int)gameLevel.screenSize.X, (int)gameLevel.screenSize.Y), this._msg);
+        new Rectangle(0, 0, (int)gameLevel.GetScreenSize().X
+            , (int)gameLevel.GetScreenSize().Y), this._msg);
       this._isConsumed = true;
       dialogue.Play();
-      gameLevel.DialogueQueue.Add(dialogue);
+      gameLevel.LevelDialogueBubbles.Add(dialogue);
     }
   }
 }

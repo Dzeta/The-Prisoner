@@ -33,12 +33,6 @@ namespace Cold_Ship.Generic
     }
 
     // CAN BE OVERWRITE IF NEEDED, SO FAR THEY DO NOTHING
-    public override void Draw(SpriteBatch spriteBatch
-      , Vector2 drawPosition)
-    {
-      base.Draw(spriteBatch, drawPosition);
-    }
-
     public override void Draw(SpriteBatch spriteBatch)
     {
       base.Draw(spriteBatch);

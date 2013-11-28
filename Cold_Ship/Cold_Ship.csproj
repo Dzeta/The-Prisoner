@@ -59,7 +59,7 @@
     <Compile Include="Menus\PauseMenu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GameElements\Character.cs" />
+    <Compile Include="Character.cs" />
     <Compile Include="UI2DElement.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +194,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\speech.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\debug_textures.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\platformTexture.png">

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Runtime.Remoting.Messaging;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Cold_Ship
 {
-  public class PocketLightSource : GenericSprite2D
+  public class PocketLightSource : PickUpItem
   {
-    public static Cold_Ship GameInstance;
-
     public const float GLOW_INTERVAL = 200;
     public const int GLOW_TICK_SCALE = 5;
     public const float MAX_SCALE_FACTOR = 0.7f; // Empirical measure
@@ -45,20 +44,14 @@ namespace Cold_Ship
 
     private Facing _facing;
 
-    private Character _owner;
-    private Texture2D _darkCurtain;
-
-    private PocketLightSource(Character owner, Texture2D tex)
-      : base(owner.CurrentGameLevel, tex)
+    private PocketLightSource(GameLevel instance, Texture2D texture, Vector2 position)
+      : base(instance, texture, position)
     {
-      this._owner = owner;
       this._facing = Facing.RIGHT;
-      this._positionOffset = new Vector2(tex.Width / 2, tex.Height / 2);
       this._scaleCount = 0;
       this._actualFacingOffset = _positionOffsetRight;
       this._scaleOffset = (new Vector2(this.Texture.Width * (1 - this._scale.X)
           , this.Texture.Height * (1 - this._scale.Y))) / 2;
-      this.Position = this._owner.Position - this._positionOffset + _actualFacingOffset + this._scaleOffset;
       this._positionBuffer = new Vector2[2];
 
       this._lightState = LightState.ON;
@@ -71,18 +64,16 @@ namespace Cold_Ship
     public void TurnOn() { this._lightState = LightState.ON; }
     public void TurnDisable() { this._lightState = LightState.NOLIGHTING; }
 
-    public static PocketLightSource GetNewInstance(Cold_Ship instance, Character character)
+    public static PocketLightSource GetNewInstance(GameLevel instance, Vector2 position)
     {
-      if (PocketLightSource.GameInstance == null) GameInstance = instance;
-      Texture2D _texture = instance.Content.Load<Texture2D>("Textures/radius_of_light");
+      Texture2D _texture = instance.Content.Load<Texture2D>("Objects/lighter");
+      Texture2D _textureLightOn = instance.Content.Load<Texture2D>("Textures/radius_of_light");
       Texture2D _textureLightOff = instance.Content.Load<Texture2D>("Textures/radius_of_light_off");
 
-      PocketLightSource _instance = new PocketLightSource(character, _texture);
-      _instance._lightOn = _texture;
+      PocketLightSource _instance = new PocketLightSource(instance, _texture, position);
+      _instance._lightOn = _textureLightOn;
       _instance._lightOff = _textureLightOff;
-      _instance._trail1 = instance.Content.Load<Texture2D>("Textures/radius_of_light_trail_01");
-      _instance._trail2 = instance.Content.Load<Texture2D>("Textures/radius_of_light_trail_02");
-
+      _instance.Size = new Vector2(5, 11);
       return _instance;
     }
 
@@ -99,6 +90,8 @@ namespace Cold_Ship
       this._tickTimer += gameTime.ElapsedGameTime.Milliseconds;
       this._lightSwitchTimer += gameTime.ElapsedGameTime.Milliseconds;
       this._positionBufferTimer += gameTime.ElapsedGameTime.Milliseconds;
+      this._positionOffset = new Vector2(_lightOff.Width / 2
+          , _lightOff.Height / 2);
 
       if (Keyboard.GetState().IsKeyDown(Keys.D))
         this._facing = Facing.RIGHT;
@@ -153,17 +146,29 @@ namespace Cold_Ship
         this._lightSwitchTimer = 0;
       }
 
-      Vector2 cameraToPlayer = new Vector2(this._owner.Position.X - GameInstance.Camera.CameraPosition.X,
-        this._owner.Position.Y - GameInstance.Camera.CameraPosition.Y);
+//      Vector2 cameraToPlayer = new Vector2(this._owner.Position.X - CurrentGameLevel.Camera.CameraPosition.X,
+//        this._owner.Position.Y - CurrentGameLevel.Camera.CameraPosition.Y);
+      Vector2 cameraToPlayer = CurrentGameLevel.Camera.CameraPosition;
 
       this.Position = cameraToPlayer - this._positionOffset + _actualFacingOffset + _scaleOffset;
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void PickUpBy(Character player)
+    {
+      player.PocketLight = this;
+      this.TurnDisable();
+      base.PickUpBy(player);
+    }
+
+    public override void Draw(SpriteBatch spriteBatch)
     {
       if (this._lightState == LightState.NOLIGHTING) return;
 
-      spriteBatch.End();
+      if (!this.IsConsumed())
+      {
+        base.Draw(spriteBatch);
+        return;
+      }
 
       spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
       if (this._facing == Facing.RIGHT)
@@ -177,17 +182,7 @@ namespace Cold_Ship
           SpriteEffects.None, 1);
       }
 
-      //if (this._positionBuffer[0] != null)
-      //  SpriteBatch.Draw(this._trail1, this._positionBuffer[0], null, Color.White, 0, Vector2.Zero, _scale,
-      //    SpriteEffects.None, 1);
-      //if (this._positionBuffer[1] != null)
-      //  SpriteBatch.Draw(this._trail2, this._positionBuffer[1], null, Color.White, 0, Vector2.Zero, _scale,
-      //    SpriteEffects.None, 1);
-
-
       spriteBatch.End();
-
-      spriteBatch.Begin();
     }
   }
 }

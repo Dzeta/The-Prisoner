@@ -64,12 +64,12 @@ namespace Cold_Ship
     private int _lineFeedPauseInterval = LINE_FEED_PAUSE;
 
     private bool _isPlaying;
-    private Cold_Ship _gameLevel;
+    private GameLevel _gameLevel;
 
     // The collision box of the dialogue
     private static Rectangle _boundBox = new Rectangle(0, 0, 186, 60);
 
-    private DialogueBubble(Cold_Ship game, Texture2D texture, Vector2 speakerPosition, List<string> scroller, XPositionRelativeToCenter xPos, YPositionRelativeToCenter yPos) : base(texture, speakerPosition, _boundBox)
+    private DialogueBubble(GameLevel game, Texture2D texture, Vector2 speakerPosition, List<string> scroller, XPositionRelativeToCenter xPos, YPositionRelativeToCenter yPos) : base(game, texture, speakerPosition, _boundBox)
     {
       if (_bubbleTextureMono == null)
         _bubbleTextureMono = texture;
@@ -79,7 +79,6 @@ namespace Cold_Ship
       this._yPosition = yPos;
       // Start Texture for bubble
       this._bubbleTexture = (scroller.Count > 1) ? _bubbleTextureHasMore : _bubbleTextureMono;
-      this._gameLevel = game;
 
       if (xPos == XPositionRelativeToCenter.Left)
       {
@@ -118,7 +117,7 @@ namespace Cold_Ship
       this._playThroughSpeed = speed;
     }
 
-    public static DialogueBubble GetNewInstance(Cold_Ship level, Vector2 speakerPosition, Rectangle windowBound, string msg)
+    public static DialogueBubble GetNewInstance(GameLevel level, Vector2 speakerPosition, Rectangle windowBound, string msg)
     {
       if (_bubbleTextureMono == null)
         _bubbleTextureMono = level.Content.Load<Texture2D>("speech");
@@ -144,7 +143,7 @@ namespace Cold_Ship
       return new DialogueBubble(level, _bubbleTextureMono, speakerPosition, DialogueBubble.ComputeScroller(msg), xPos, yPos);
     }
 
-    public static DialogueBubble GetNewInstance(Cold_Ship level, Vector2 speakerPosition, XPositionRelativeToCenter xPos,
+    public static DialogueBubble GetNewInstance(GameLevel level, Vector2 speakerPosition, XPositionRelativeToCenter xPos,
       YPositionRelativeToCenter yPos, string msg)
     {
       if (_bubbleTextureMono == null)
@@ -170,16 +169,16 @@ namespace Cold_Ship
 
     public void Play()
     {
-      this._gameLevel.DialogueQueue.Add(this);
+      this._gameLevel.LevelDialogueBubbles.Add(this);
       this._isPlaying = true;
-      this._gameLevel.ActivateState(Cold_Ship.GameState.DIALOGUING);
+      this._gameLevel.GameInstance.ActivateState(Cold_Ship.GameState.DIALOGUING);
     }
 
     public void End()
     {
-      this._gameLevel.DialogueQueue.Remove(this);
+      this._gameLevel.LevelDialogueBubbles.Remove(this);
       this._isPlaying = false;
-      this._gameLevel.RestoreLastState();
+      this._gameLevel.GameInstance.RestoreLastState();
     }
 
     public void Pause()

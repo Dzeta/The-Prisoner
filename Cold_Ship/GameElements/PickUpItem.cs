@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework;
@@ -10,73 +11,91 @@ namespace Cold_Ship
 {
     public class PickUpItem : GenericSprite2D
     {
+      public static Texture2D LIGHT_TEXTURE;
+      public static Texture2D STAMINA_TEXTURE;
+      public static Texture2D TEMPERATURE_TEXTURE;
+      public static Texture2D LIGHTER_TEXTURE;
+
+
+      protected Character _owner;
         //item type enum
-        public enum ItemType {LIGHT, STAMINA, TEMPERATURE, LIGHTER, NONE};
         public enum ItemEffectDuration { TEMPORARY, PERMANENT, NONE };
 
+      public Vector2 Size;
         //declare member data
-        public ItemType itemType;
         public ItemEffectDuration itemEffectDuration;
         public float effect;
-        public Vector2 size;
 
 
         //constructor
-        public PickUpItem(GameLevel instance, Texture2D texture
-            , Vector2 position, ItemType itemType) 
-                : base(instance, texture, position, Rectangle.Empty)
-        {
-            this.itemType = itemType;
-            this.effect = effect;
-            this.size = size;
-            this.itemEffectDuration = itemEffectDuration;
-        }
+        protected PickUpItem(GameLevel instance, Texture2D texture
+            , Vector2 position)
+                : base(instance, texture, position, Rectangle.Empty) { }
 
-      public static PickUpItem GetNewInstance(GameLevel instance, Vector2 positian)
+      protected static PickUpItem GetNewInstance(GameLevel instance, Vector2 position)
       {
+        if (LIGHT_TEXTURE == null)
+          LIGHT_TEXTURE = instance.Content.Load<Texture2D>("Objects/lighter");
+        if (STAMINA_TEXTURE == null)
+          STAMINA_TEXTURE = instance.Content.Load<Texture2D>("Objects/lighter");
+        if (TEMPERATURE_TEXTURE == null)
+          TEMPERATURE_TEXTURE = instance.Content.Load<Texture2D>("Objects/lighter");
+        if (LIGHTER_TEXTURE == null)
+          LIGHTER_TEXTURE = instance.Content.Load<Texture2D>("Objects/lighter");
 
+        Texture2D _texture = LIGHT_TEXTURE;
 
-        
+        PickUpItem _instance = new PickUpItem(instance, _texture, position);
+
+        return _instance;
       }
 
-      public void PickUpBy(Character player)
+      public bool IsPickedUp() { return this._owner != null; }
+      public bool IsConsumed() { return this.IsPickedUp(); }
+
+      public virtual void PickUpBy(Character player)
       {
-              if (itemType == ItemType.LIGHTER)
-              {
-                player._pocketLight = PocketLightSource.GetNewInstance(CurrentGameLevel.GameInstance, player);
-                player._pocketLight.TurnDisable();
-              }
-              else if (itemType == ItemType.STAMINA)
-                {
-                    if (itemEffectDuration == ItemEffectDuration.PERMANENT)
-                    {
-                        player.Energy = Character.MAXIMUM_ENERGY_LEVEL;
-                    }
-                    else if (itemEffectDuration == ItemEffectDuration.TEMPORARY)
-                    {
-                        player.Energy += effect;
-                    }
-                }
+        this._owner = player;
+//              if (itemType == ItemType.LIGHTER)
+//              {
+//                player.PocketLight = PocketLightSource.GetNewInstance(CurrentGameLevel.GameInstance, player);
+//                player.PocketLight.TurnDisable();
+//              }
+//              else if (itemType == ItemType.STAMINA)
+//                {
+//                    if (itemEffectDuration == ItemEffectDuration.PERMANENT)
+//                    {
+//                        player.Energy = Character.NORMAL_ENERGY_LEVEL;
+//                    }
+//                    else if (itemEffectDuration == ItemEffectDuration.TEMPORARY)
+//                    {
+//                        player.Energy += effect;
+//                    }
+//                }
+//
+//                else if (itemType == ItemType.TEMPERATURE)
+//                {
+//                    player.BodyTemperature += effect;
+//                }
+//
+//                //temporary fix
+//                Position = new Vector2(2048, 2048);
 
-                else if (itemType == ItemType.TEMPERATURE)
-                {
-                    player.BodyTemperature += effect;
-                }
-
-                //temporary fix
-                Position = new Vector2(2048, 2048);
-        
       }
 
         //update method
-        public void Update()
+        public void Update(GameTime gameTime)
         {
         }
 
         //draw the item onto screen
-        public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, drawPosition, new Rectangle(0, 0, (int)size.X, (int)size.Y), Color.White);
+          spriteBatch.Begin();
+            spriteBatch.Draw(Texture, this.Position, new Rectangle(0, 0, (int)Size.X, (int)Size.Y), Color.White);
+          spriteBatch.End();
+
+          base.Draw(spriteBatch);
         }
     }
 }
