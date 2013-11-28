@@ -183,10 +183,7 @@ namespace Cold_Ship
             puzzleSwitch4.timeCounter++;
             puzzleSwitch5.timeCounter++;
 
-            if (puzzleSwitch5.puzzleSwitchOn)
-                forwardDoor.canOpen = true;
-
-            playerNode.Update(!generatorOn, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
+            playerNode.Update(filterOn, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
             //Check the player's collision with the world boundaries
             if (playerNode.Position.X < 100 || playerNode.Position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
@@ -203,9 +200,15 @@ namespace Cold_Ship
             //lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
             generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
 
-            foreach (Interactable puzzleSwitch in switchPuzzle)
+            if (generatorOn)
             {
-                puzzleSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
+                foreach (Interactable puzzleSwitch in switchPuzzle)
+                {
+                    puzzleSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
+                }
+
+                if (puzzleSwitch2.puzzleSwitchOn && puzzleSwitch4.puzzleSwitchOn && puzzleSwitch5.puzzleSwitchOn)
+                    forwardDoor.canOpen = true;
             }
             // TODO: Check puzzle switch state to unlock the door
 

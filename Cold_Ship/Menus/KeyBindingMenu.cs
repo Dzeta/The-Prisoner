@@ -17,23 +17,33 @@ namespace Cold_Ship
         private Cold_Ship game;
 
         private bool changingKey = false;
-
+        private String[] leftOption;
         private float timer = 0;
         private float interval = 80;
 
         public KeyBindingMenu(Cold_Ship game, Texture2D background, Texture2D cursorTexture, SpriteFont font, Cue menuClick)
             : base(background, cursorTexture, font, 8, menuClick)
         {
-            this.optionMenu = new String[8] {   "Move Right       ............ " + HelperFunction.KeyRight.ToString(), 
-                                                "Move Left        ............ " + HelperFunction.KeyLeft.ToString(),
-                                                "Climb Up         ............ " + HelperFunction.KeyUp.ToString(),
-                                                "Climb Down/Duck  ............ " + HelperFunction.KeyDown.ToString(),
-                                                "Jump             ............ " + HelperFunction.KeyJump.ToString(),
-                                                "Use              ............ " + HelperFunction.KeyUse.ToString(),
-                                                "Run              ............ " + HelperFunction.KeySpeed.ToString(),
-                                                "Go back to Main Menu" };
+            leftOption = new String[7] {
+                "Move Right                 ............ ",
+                "Move Left                    ............ ",
+                "Climb Up                      ............ ",
+                "Climb Down/Duck     ............ ",
+                "Jump                             ............ ",
+                "Use                                ............ ",
+                "Run                                ............ " 
+            };
+
+            this.optionMenu = new String[8] {   leftOption[0] + HelperFunction.KeyRight.ToString(), 
+                                                leftOption[1] + HelperFunction.KeyLeft.ToString(),
+                                                leftOption[2] + HelperFunction.KeyUp.ToString(),
+                                                leftOption[3] + HelperFunction.KeyDown.ToString(),
+                                                leftOption[4] + HelperFunction.KeyJump.ToString(),
+                                                leftOption[5] + HelperFunction.KeyUse.ToString(),
+                                                leftOption[6] + HelperFunction.KeySpeed.ToString(),
+                                                "Go back to Menu" };
             this.optionPosition = new Vector2[8] {  new Vector2(300, 230), new Vector2(300, 260), new Vector2(300, 290), new Vector2(300, 320), 
-                                                    new Vector2(300, 350), new Vector2(300, 380), new Vector2(300, 410), new Vector2(300, 460) };
+                                                    new Vector2(300, 350), new Vector2(300, 380), new Vector2(300, 410), new Vector2(350, 460) };
             this.game = game;
 
             previousKeyboardState = Keyboard.GetState();
@@ -77,37 +87,37 @@ namespace Cold_Ship
                                 {
                                     case 0:
                                             HelperFunction.KeyRight = keyboardState.GetPressedKeys()[0];
-                                            this.optionMenu[0] = "Move Right         ............ " + HelperFunction.KeyRight.ToString();
+                                            this.optionMenu[selectedOption] = leftOption[selectedOption] + HelperFunction.KeyRight.ToString();
                                             changingKey = false;
                                         break;
                                     case 1:
                                             HelperFunction.KeyLeft = keyboardState.GetPressedKeys()[0];
-                                            this.optionMenu[1] = "Move Left          ............ " + HelperFunction.KeyLeft.ToString();
+                                            this.optionMenu[1] = leftOption[selectedOption] + HelperFunction.KeyLeft.ToString();
                                             changingKey = false;
                                         break;
                                     case 2:
                                             HelperFunction.KeyUp = keyboardState.GetPressedKeys()[0];
-                                            this.optionMenu[2] = "Climb Up           ............ " + HelperFunction.KeyUp.ToString();
+                                            this.optionMenu[2] = leftOption[selectedOption] + HelperFunction.KeyUp.ToString();
                                             changingKey = false;
                                         break;
                                     case 3:
                                             HelperFunction.KeyDown = keyboardState.GetPressedKeys()[0];
-                                            this.optionMenu[3] = "Climb Down / Duck  ............ " + HelperFunction.KeyDown.ToString();
+                                            this.optionMenu[3] = leftOption[selectedOption] + HelperFunction.KeyDown.ToString();
                                             changingKey = false;
                                         break;
                                     case 4:
                                             HelperFunction.KeyJump = keyboardState.GetPressedKeys()[0];
-                                            this.optionMenu[4] = "Jump               ............ " + HelperFunction.KeyJump.ToString();
+                                            this.optionMenu[4] = leftOption[selectedOption] + HelperFunction.KeyJump.ToString();
                                             changingKey = false;
                                         break;
                                     case 5:
                                             HelperFunction.KeyUse = keyboardState.GetPressedKeys()[0];
-                                            this.optionMenu[5] = "Use                ............ " + HelperFunction.KeyUse.ToString();
+                                            this.optionMenu[5] = leftOption[selectedOption] + HelperFunction.KeyUse.ToString();
                                             changingKey = false;
                                         break;
                                     case 6:
                                             HelperFunction.KeySpeed = keyboardState.GetPressedKeys()[0];
-                                            this.optionMenu[6] = "Run                ............ " + HelperFunction.KeySpeed.ToString();
+                                            this.optionMenu[6] = leftOption[selectedOption] + HelperFunction.KeySpeed.ToString();
                                             changingKey = false;
                                         break;
                                 }
