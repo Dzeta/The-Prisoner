@@ -16,10 +16,10 @@ namespace Cold_Ship
         private Cold_Ship game;
 
         public PauseMenu(Cold_Ship game, Texture2D background, Texture2D cursorTexture, SpriteFont font, Cue menuClick)
-            : base(background, cursorTexture, font, 2, menuClick)
+            : base(background, cursorTexture, font, 3, menuClick)
         {
-            this.optionMenu = new String[2] { "Resume", "Go back to Main Menu" };
-            this.optionPosition = new Vector2[2] { new Vector2(350, 290), new Vector2(350, 320) };
+            this.optionMenu = new String[3] { "Resume", "Key Binding", "Go back to Main Menu" };
+            this.optionPosition = new Vector2[3] { new Vector2(350, 290), new Vector2(350, 320), new Vector2(350, 350) };
             this.game = game;
         }
 
@@ -36,6 +36,10 @@ namespace Cold_Ship
                         selectedOption = 0;
                         break;
                     case 1:
+                        game.ActivateState(Cold_Ship.GameState.KEY_BINDING);
+                        selectedOption = 0;
+                        break;
+                    case 2:
                         game.ActivateState(Cold_Ship.GameState.MENU);
                         selectedOption = 0;
                         break;

@@ -350,6 +350,9 @@
     <None Include="Content\Fonts\manaspace12.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Fonts\menufont.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Fonts\Score.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
