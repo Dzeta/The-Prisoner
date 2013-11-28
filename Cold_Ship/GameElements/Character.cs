@@ -20,7 +20,7 @@ namespace Cold_Ship
         public double staminaLimit;
 
         //animation related variables
-        public enum Action_Status { FOWARD = 0, BACKWARD = 1, FORWARD_WITH_LIGHTER = 2, BACKWARD_WITH_LIGHTER = 3, CLIMB = 4 };
+        public enum Action_Status { FOWARD = 0, BACKWARD = 1, FORWARD_WITH_LIGHTER = 2, BACKWARD_WITH_LIGHTER = 3, CLIMB = 4, DYING = 5 };
         public Action_Status actionStatus;
         public int maxFramesX, maxFramesY, currentFrame;
         public float animationTimer = 150;
@@ -38,6 +38,9 @@ namespace Cold_Ship
         bool gravityIsEnabled = true;
 
         public PocketLightSource _pocketLight;
+
+        float deathAnimationTimer = 0;
+        float deathAnimationInterval = 600;
 
 
         //declare constructor for inheritance
@@ -104,6 +107,18 @@ namespace Cold_Ship
             jumpTimer += elapsedTime;
             staminaExhaustionTimer += elapsedTime;
             animationTimer += elapsedTime;
+
+            if (this.actionStatus == Action_Status.DYING)
+            {
+              deathAnimationTimer += elapsedTime;
+              if (deathAnimationTimer > deathAnimationInterval)
+              {
+                deathAnimationTimer = 0;
+                if (currentFrame < maxFramesX-1)
+                  currentFrame++;
+              }
+              return;
+            }
 
             //register keyboard inputs
             KeyboardState newKeyboardState = Keyboard.GetState();
@@ -221,6 +236,10 @@ namespace Cold_Ship
                 if (key == Keys.T)
                 {
                     stamina += 20;
+                }
+                if (key == Keys.P)
+                {
+                  deathAnimation();
                 }
                 if (key == HelperFunction.KeyLeft)
                 {
@@ -535,6 +554,12 @@ namespace Cold_Ship
             {
                 currentFrame = 0;
             }
+        }
+
+        public void deathAnimation()
+        {
+          this.actionStatus = Action_Status.DYING;
+          currentFrame = 0;
         }
 
         //update the body temperature

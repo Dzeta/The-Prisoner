@@ -86,7 +86,7 @@ namespace Cold_Ship
       portals.Add(forwardDoor);
       worldObjects.AddRange(portals);
 
-      playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 200, worldSize.Y - 200 - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
+      playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 200, worldSize.Y - 200 - 64), bodyTemperature, stamina, staminaLimit, 4, 6);
       playerNode._pocketLight = PocketLightSource.GetNewInstance(GameInstance, playerNode);
       playerNode._pocketLight.TurnOn();
 

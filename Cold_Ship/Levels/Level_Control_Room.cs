@@ -108,11 +108,11 @@ namespace Cold_Ship
             //initialize the playerNode
             if (prevGameLevel <= gameLevel)
             {
-                playerNode = new Character(playerTexture, new Vector2(backwardDoor.Position.X + backwardDoor.size.X + 10, worldSize.Y - 50 - 64), bodyTemperature, stamina, staminaLimit, 4, 5);
+                playerNode = new Character(playerTexture, new Vector2(backwardDoor.Position.X + backwardDoor.size.X + 10, worldSize.Y - 50 - 64), bodyTemperature, stamina, staminaLimit, 4, 6);
             }
             else if (prevGameLevel >= gameLevel)
             {
-                playerNode = new Character(playerTexture, new Vector2(fowardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+                playerNode = new Character(playerTexture, new Vector2(fowardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 6);
             }
 
             //Generator

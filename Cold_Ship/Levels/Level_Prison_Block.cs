@@ -121,11 +121,11 @@ namespace Cold_Ship
       //initialize the playerNode
       if (prevGameLevel <= gameLevel)
       {
-        playerNode = new Character(playerTexture, new Vector2(backwardDoor.Position.X + backwardDoor.size.X + 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+        playerNode = new Character(playerTexture, new Vector2(backwardDoor.Position.X + backwardDoor.size.X + 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 6);
       }
       else if (prevGameLevel >= gameLevel)
       {
-        playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+        playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 6);
       }
 
       staminaBooster = new PickUpItem(platformTexture, new Vector2(280, worldSize.Y - 772), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);

@@ -218,6 +218,12 @@
     <Content Include="Content\Objects\lightswitch_on.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Objects\lunchbox.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\thermos.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Objects\window\controlroom_window_01.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
