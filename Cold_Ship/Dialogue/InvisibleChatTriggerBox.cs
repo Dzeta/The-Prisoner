@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpenTK.Graphics.OpenGL;
 
 namespace Cold_Ship
 {
@@ -34,7 +35,9 @@ namespace Cold_Ship
     private static Rectangle _hitBox = new Rectangle(0, 0, 32, 32);
     private bool _isPersisted;
     private bool _isConsumed;
-    private Func<bool> _condition; 
+    private Func<bool> _condition;
+
+    private int _showCounter;
 
     private IWatchfulConditional _watchee;
 
@@ -60,8 +63,15 @@ namespace Cold_Ship
 
     public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos, string m, Func<bool> cond)
     {
+      return InvisibleChatTriggerBox.GetNewInstance(pos, m, cond, 99999);
+
+    }
+
+    public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos, string m, Func<bool> cond, int count)
+    {
       InvisibleChatTriggerBox _instance = new InvisibleChatTriggerBox(pos, m);
       _instance._condition = cond;
+      _instance._showCounter = count;
       return _instance;
     }
 
@@ -102,13 +112,13 @@ namespace Cold_Ship
       if (this.IsWatchful() && this._watchee.GetCondition())
         this._isConsumed = true;
 
-      if (this.IsConsumed() && this._Respawn())
+      if (this.IsConsumed() && this._Respawn() && _showCounter > 0)
       {
         _timeOutTimer += gameTime.ElapsedGameTime.Milliseconds;
-
         if (_timeOutTimer >= _timeOutInterval)
         {
           this._isConsumed = false;
+          _showCounter--;
           _timeOutTimer = 0;
         }
       }
