@@ -38,16 +38,23 @@ namespace Cold_Ship
 
     bool filterOn = true, generatorOn = false;
 
+    public List<InvisibleChatTriggerBox> AllChatTriggers;
+    bool visited = false;
+
+    Cold_Ship GameInstance;
+
     //declare constructor
-    public Level_Prison_Block(SpriteBatch spriteBatch, Vector2 screenSize)
+    public Level_Prison_Block(Cold_Ship gameInstance, SpriteBatch spriteBatch, Vector2 screenSize)
     {
       this.spriteBatch = spriteBatch;
+      this.GameInstance = gameInstance;
       platforms = new List<Platform>();
       this.screenSize = screenSize;
       portals = new List<Portal>();
       ladders = new List<Ladder>();
       worldObjects = new List<GenericSprite2D>();
 
+      this.AllChatTriggers = new List<InvisibleChatTriggerBox>();
     }
 
     //load content
@@ -125,13 +132,31 @@ namespace Cold_Ship
       lightSwitch = new Interactable(platformTexture, new Vector2(1643, worldSize.Y - 359), new Vector2(31, 43), Interactable.Type_Of_Interactable.LIGHT_SWITCH);
       generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(1807, worldSize.Y - 809), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
 
+      if (!visited)
+      {
+        AddChatTriggers();
+      }
+
       worldObjects.Add(staminaBooster);
       //worldObjects.Add(lightSwitch);
       worldObjects.Add(generator);
 
       worldObjects.Add(playerNode);
 
+    }
 
+    private void AddChatTriggers()
+    {
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(430, 930), StringDialogue.prisonBlockStartingSpeech1));
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(430, 930), StringDialogue.prisonBlockStartingSpeech2));
+
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1680, 245), StringDialogue.prisonBlockGeneratorSpeech1));
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1680, 245), StringDialogue.prisonBlockGeneratorSpeech2));
+
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom1, this.lightSwitch.isNotActivated));
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom2, this.lightSwitch.isNotActivated));
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom3, this.lightSwitch.isNotActivated));
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom4, this.lightSwitch.isNotActivated));
     }
 
     //unload contents
@@ -151,6 +176,24 @@ namespace Cold_Ship
     //update function
     public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
     {
+      // Update Dialogues
+      for (int i = 0; i < AllChatTriggers.Count;i++ )
+      {
+        InvisibleChatTriggerBox chatTrigger = AllChatTriggers.ElementAt(i);
+        Vector2 intercomPosition = Vector2.Zero;
+        if (i < 2)
+          intercomPosition = camera.ApplyTransformations(new Vector2(480, 900));
+        else if (i < 4)
+          intercomPosition = camera.ApplyTransformations(new Vector2(1765, 205));
+        else
+          intercomPosition = camera.ApplyTransformations(new Vector2(1885, 895));
+
+        chatTrigger.Update(gameTime);
+        if (!chatTrigger.IsConsumed()
+            && chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
+          chatTrigger.InteractWith(intercomPosition, GameInstance);
+      }
+
       //update the player Position with respect to keyboard input and platform collision
       Vector2 prevPosition = playerNode.Position;
       bool useLighter = filterOn;
@@ -199,7 +242,15 @@ namespace Cold_Ship
       spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
       spriteBatch.DrawString(manaspace12, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
       spriteBatch.DrawString(manaspace12, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
+
+      // Draw all invisible chat trigger
+      if (Cold_Ship.DEBUG_MODE)
+        foreach (InvisibleChatTriggerBox invisibleTrigger in AllChatTriggers)
+          if (!invisibleTrigger.IsConsumed())
+            spriteBatch.Draw(GameInstance.DebugTexture, invisibleTrigger.GetHitBox(), Color.White);
+
       spriteBatch.End();
+
     }
   }
 }

@@ -32,23 +32,31 @@ namespace Cold_Ship
         List<Platform> platforms;
         List<Portal> portals;
         List<Ladder> ladders;
-        Portal fowardDoor, backwardDoor;
+        Portal forwardDoor, backwardDoor;
         Interactable lightSwitch, generator, puzzleSwitch1, puzzleSwitch2, puzzleSwitch3, puzzleSwitch4, puzzleSwitch5;
         PickUpItem staminaBooster;
 
         List<Platform> walls = new List<Platform>();
+
+        GenericSprite2D intercom1, intercom2, intercom3;
 
         bool filterOn = true, generatorOn = false, doorCanOpen = false;
 
         //List of switches
         List<Interactable> switchPuzzle;
 
+        public List<InvisibleChatTriggerBox> AllChatTriggers;
+        bool visited = false;
+
+        Cold_Ship GameInstance;
+
         //Computer and screen
         Computer_And_Screen computer;
 
         //declare constructor
-        public Level_Entertainment_Room(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Entertainment_Room(Cold_Ship gameInstance, SpriteBatch spriteBatch, Vector2 screenSize)
         {
+          this.GameInstance = gameInstance;
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
             this.screenSize = screenSize;
@@ -57,6 +65,7 @@ namespace Cold_Ship
             worldObjects = new List<GenericSprite2D>();
             switchPuzzle = new List<Interactable>();
 
+            this.AllChatTriggers = new List<InvisibleChatTriggerBox>();
         }
 
         //load content
@@ -82,6 +91,15 @@ namespace Cold_Ship
 
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
+
+            Texture2D intercomTexture = Content.Load<Texture2D>("Objects\\intercom");
+            intercom1 = new GenericSprite2D(intercomTexture, new Vector2(580, worldSize.Y - 140));
+            intercom2 = new GenericSprite2D(intercomTexture, new Vector2(worldSize.X - 600, worldSize.Y - 900));
+            intercom3 = new GenericSprite2D(intercomTexture, new Vector2(worldSize.X - 770, worldSize.Y - 830));
+
+            worldObjects.Add(intercom1);
+            worldObjects.Add(intercom2);
+            worldObjects.Add(intercom3);
 
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
@@ -109,9 +127,9 @@ namespace Cold_Ship
 
             //initialize the needed portals
             backwardDoor = new Portal(new Vector2(worldSize.X - 40 - 64, worldSize.Y - 50 - 72), new Vector2(51, 72), Portal.PortalType.BACKWARD, Content);
-            fowardDoor = new Portal(new Vector2(worldSize.X - 845, worldSize.Y - 822), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
+            forwardDoor = new Portal(new Vector2(worldSize.X - 845, worldSize.Y - 822), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
             portals.Add(backwardDoor);
-            portals.Add(fowardDoor);
+            portals.Add(forwardDoor);
             worldObjects.AddRange(portals);
 
             //initialize the playerNode
@@ -121,7 +139,7 @@ namespace Cold_Ship
             }
             else if (prevGameLevel >= gameLevel)
             {
-                playerNode = new Character(playerTexture, new Vector2(fowardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
+                playerNode = new Character(playerTexture, new Vector2(forwardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
 
             //Pickup item
@@ -140,12 +158,17 @@ namespace Cold_Ship
             switchPuzzle.Add(puzzleSwitch5);
             
             //Generator
-            generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(worldSize.X - 638, worldSize.Y - 814), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
+            generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(worldSize.X - 550, worldSize.Y - 814), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
             //Door switch
             lightSwitch = new Interactable(Content.Load<Texture2D>("Objects\\lightswitch_off"), new Vector2(130, 330), new Vector2(23, 32), Interactable.Type_Of_Interactable.LIGHT_SWITCH, Content.Load<Texture2D>("Objects\\lightswitch_on"));
 
             //Initialize the computer and screen
             computer = new Computer_And_Screen(Content, new Vector2(generator.Position.X - 160, generator.Position.Y - 28));
+
+            if (!visited)
+            {
+              AddChatTriggers();
+            }
 
             worldObjects.Add(staminaBooster);
             worldObjects.Add(generator);
@@ -156,6 +179,53 @@ namespace Cold_Ship
             worldObjects.Add(computer);
 
             worldObjects.Add(playerNode);
+        }
+
+        private void AddChatTriggers()
+        {
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom1.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomSwitchPuzzleHint1));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom1.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomSwitchPuzzleHint2));
+
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary1,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary2,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary3,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary4,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary5,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary6,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary7,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary8,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary9,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary10,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary11,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary12,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary13,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary14,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary15,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary16,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomComputerDiary17,
+                                                                      this.generator.isNotActivated));
+
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.entertainmentRoomErrorCodeReaction,
+                                                                      this.generator.isNotActivated));
+
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom3.Position + new Vector2(20, 20), StringDialogue.entertainmentRoomDoorPuzzleHint,
+                                                                      this.forwardDoor.isOpen));
         }
 
         private void createPuzzlPlatforms(Texture2D platformTexture)
@@ -191,6 +261,26 @@ namespace Cold_Ship
         //update function
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
+          // Update Dialogues
+          for (int i = 0; i < AllChatTriggers.Count; i++)
+          {
+            InvisibleChatTriggerBox chatTrigger = AllChatTriggers.ElementAt(i);
+            Vector2 intercomPosition = Vector2.Zero;
+            if (i < 2)
+              intercomPosition = camera.ApplyTransformations(intercom1.Position);
+            else if (i < 19)
+              intercomPosition = camera.ApplyTransformations(computer.Position);
+            else if (i < 20)
+              intercomPosition = camera.ApplyTransformations(intercom2.Position);
+            else
+              intercomPosition = camera.ApplyTransformations(intercom3.Position);
+
+            chatTrigger.Update(gameTime);
+            if (!chatTrigger.IsConsumed()
+                && chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
+              chatTrigger.InteractWith(intercomPosition, GameInstance);
+          }
+
             //update the player Position with respect to keyboard input and platform collision
             Vector2 prevPosition = playerNode.Position;
 
@@ -213,19 +303,19 @@ namespace Cold_Ship
             //{
             //    portal.Update(playerNode, ref gameLevel);
             //}
-            fowardDoor.Update(playerNode, ref gameLevel, 20);
+            forwardDoor.Update(playerNode, ref gameLevel, 20);
             backwardDoor.Update(playerNode, ref gameLevel, -20);
 
             generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
-            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref fowardDoor.canOpen);
+            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
             if (generatorOn)
             {
                 foreach (Interactable puzzleSwitch in switchPuzzle)
                 {
-                    puzzleSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref fowardDoor.canOpen);
+                    puzzleSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
                 }
-                if (puzzleSwitch3.puzzleSwitchOn && puzzleSwitch5.puzzleSwitchOn)
-                    fowardDoor.canOpen = true;
+                if (puzzleSwitch3.isActivated() && puzzleSwitch5.isActivated())
+                    forwardDoor.canOpen = true;
             }
 
             //update the shadowFilter's Position with respect to the playerNode

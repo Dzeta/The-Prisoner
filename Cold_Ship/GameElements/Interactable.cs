@@ -13,7 +13,7 @@ namespace Cold_Ship
     {
         //declare enum for type of interactable
         public enum Type_Of_Interactable {GENERATOR, LIGHT_SWITCH, DOOR_SWITCH, PUZZLE_SWITCH};
-        public bool puzzleSwitchOn;
+        private bool activated;
         public int timeCounter;
 
         //declare member variables
@@ -28,11 +28,13 @@ namespace Cold_Ship
             this.size = size;
             this.typeOfInteractable = type;
             this.altTexture = altTexture;
-            puzzleSwitchOn = false;
+            activated = false;
             tempTexture = texture;
             timeCounter = 200;
         }
 
+        public bool isActivated() { return activated; }
+        public bool isNotActivated() { return !activated; }
 
         //Update function (detect collision, etc.)
         public void Update(Character playerNode, ref bool generatorOn, ref bool filterOn, Filter filter, ref bool doorCanOpen)
@@ -46,6 +48,7 @@ namespace Cold_Ship
                     {
                         case Type_Of_Interactable.GENERATOR:
                             generatorOn = true;
+                            activated = true;
                             if (altTexture != null)
                             {
                                 Texture = altTexture;
@@ -54,6 +57,7 @@ namespace Cold_Ship
                         case Type_Of_Interactable.LIGHT_SWITCH:
                             if (generatorOn)
                             {
+                                activated = true;
                                 filterOn = false;
                                 if (altTexture != null)
                                 {
@@ -64,6 +68,7 @@ namespace Cold_Ship
                         case Type_Of_Interactable.DOOR_SWITCH:
                             if (generatorOn)
                             {
+                                activated = true;
                                 doorCanOpen = true;
                                 if (altTexture != null)
                                 {
@@ -72,16 +77,16 @@ namespace Cold_Ship
                             }
                             break;
                         case Type_Of_Interactable.PUZZLE_SWITCH:
-                            if ((altTexture != null) && (puzzleSwitchOn == false) && timeCounter > 200)
+                            if ((altTexture != null) && (activated == false) && timeCounter > 200)
                             {
                                 Texture = altTexture;
-                                puzzleSwitchOn = true;
+                                activated = true;
                                 timeCounter = 0;
                             }
-                            else if (puzzleSwitchOn == true && timeCounter > 200)
+                            else if (activated == true && timeCounter > 200)
                             {
                                 Texture = tempTexture;
-                                puzzleSwitchOn = false;
+                                activated = false;
                                 timeCounter = 0;
                             }
                             break;

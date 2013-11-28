@@ -18,6 +18,9 @@ namespace Cold_Ship
         Texture2D doorLightGreen, doorLightRed;
         public bool canOpen;
 
+        public bool isOpen() { return canOpen; }
+        public bool isClosed() { return !canOpen; }
+
         //constructor that initialize the Texture and Position
         public Portal(Vector2 position, Vector2 size, PortalType portalType, ContentManager Content) :
             base(Content.Load<Texture2D>("Objects\\door"), position, Rectangle.Empty)

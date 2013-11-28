@@ -135,13 +135,13 @@ namespace Cold_Ship
             pauseMenu = new PauseMenu(this, menuBackground, cursor, menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
             keyBindingMenu = new KeyBindingMenu(this, menuBackground, cursor, menuFont, DialogueBubble.soundBank.GetCue("sound-next-char"));
 
-            prototypeLevel1 = new Level_Prison_Block(spriteBatch, screenSize);
-            prototypeLevel2 = new Level_Generator(spriteBatch, screenSize);
+            prototypeLevel1 = new Level_Prison_Block(this, spriteBatch, screenSize);
+            prototypeLevel2 = new Level_Generator(this, spriteBatch, screenSize);
             levelHoldingCell = new Level_Holding_Cell(this, spriteBatch, screenSize);
-            levelCommonRoom = new Level_Common_Room(spriteBatch, screenSize);
-            levelEntertainmentRoom = new Level_Entertainment_Room(spriteBatch, screenSize);
-            levelBridge = new Level_Bridge(spriteBatch, screenSize);
-            levelControlRoom = new Level_Control_Room(spriteBatch, screenSize);
+            levelCommonRoom = new Level_Common_Room(this, spriteBatch, screenSize);
+            levelEntertainmentRoom = new Level_Entertainment_Room(this, spriteBatch, screenSize);
+            levelBridge = new Level_Bridge(this, spriteBatch, screenSize);
+            levelControlRoom = new Level_Control_Room(this, spriteBatch, screenSize);
 
 
             // DIALOGUE USED COMPONENT

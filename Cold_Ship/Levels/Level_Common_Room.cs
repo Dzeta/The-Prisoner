@@ -41,14 +41,22 @@ namespace Cold_Ship
 
         bool filterOn = true, generatorOn = false, doorCanOpen = false;
 
+        GenericSprite2D intercom;
+
+        public List<InvisibleChatTriggerBox> AllChatTriggers;
+        bool visited = false;
+
+        Cold_Ship GameInstance;
+
         //timer and counter for opening window
         float openWindowTimer = 0;
         int windowAnimationCounter = 0;
         //Bool flag to check wether the player is inside the room
         bool insideRoom = false;
         //declare constructor
-        public Level_Common_Room(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Common_Room(Cold_Ship gameInstance, SpriteBatch spriteBatch, Vector2 screenSize)
         {
+          this.GameInstance = gameInstance;
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
             this.screenSize = screenSize;
@@ -56,6 +64,7 @@ namespace Cold_Ship
             ladders = new List<Ladder>();
             worldObjects = new List<GenericSprite2D>();
 
+            this.AllChatTriggers = new List<InvisibleChatTriggerBox>();
         }
 
         //load content
@@ -81,10 +90,12 @@ namespace Cold_Ship
             backgroundFront = new GenericSprite2D(backgroundFrontTexture, new Vector2(0, 0), Rectangle.Empty);
             backgroundMiddle = new GenericSprite2D(backgroundMiddleLayer, new Vector2(0, 0), Rectangle.Empty);
             backgroundBack = new GenericSprite2D(backgroundBackLayer, new Vector2(0, 0), Rectangle.Empty);
-            //worldObjects.Add(backgroundNode);
             shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
+
+            Texture2D intercomTexture = Content.Load<Texture2D>("Objects\\intercom");
+            intercom = new GenericSprite2D(intercomTexture, new Vector2(430, 120));
 
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
@@ -93,34 +104,22 @@ namespace Cold_Ship
             //Second floor (first floor ceiling)
             platforms.Add(new Platform(platformTexture, new Vector2(1339, 20), new Vector2(100, worldSize.Y - 280)));
             platforms.Add(new Platform(platformTexture, new Vector2(473, 20), new Vector2(worldSize.X - 573, worldSize.Y - 280)));
-            //platforms.Add(new Platform(platformTexture, new Vector2(619, 20), new Vector2(1345, worldSize.Y - 280)));
             //Third floor (second floor ceiling)
             platforms.Add(new Platform(platformTexture, new Vector2(1125, 20), new Vector2(100, worldSize.Y - 510)));
             platforms.Add(new Platform(platformTexture, new Vector2(683, 20), new Vector2(worldSize.X - 784, worldSize.Y - 510)));
-            //platforms.Add(new Platform(platformTexture, new Vector2(50, 20), new Vector2(1920, worldSize.Y - 510)));
-            //platforms.Add(new Platform(platformTexture, new Vector2(133, 20), new Vector2(0, worldSize.Y - 744)));
-            //platforms.Add(new Platform(platformTexture, new Vector2(727, 20), new Vector2(167, worldSize.Y - 744)));
-            //platforms.Add(new Platform(platformTexture, new Vector2(773, 20), new Vector2(933, worldSize.Y - 744)));
-            //platforms.Add(new Platform(platformTexture, new Vector2(250, 20), new Vector2(1742, worldSize.Y - 744)));
 
             //walls
             walls.Add(new Platform(platformTexture, new Vector2(41, 193), new Vector2(worldSize.X - 693, worldSize.Y - 245)));
             walls.Add(new Platform(platformTexture, new Vector2(65, 199), new Vector2(worldSize.X - 353, worldSize.Y - 477)));
             
-            
-
             //initialize ladders and add them to the list
             //Load ladder Texture
             Texture2D ladderTexture = Content.Load<Texture2D>("Objects\\ladder");
             //First floor
-            //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(890, worldSize.Y - 282)));
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 239), new Vector2(worldSize.X - 609, worldSize.Y - 286)));
             //Second floor
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 239), new Vector2(worldSize.X - 823, worldSize.Y - 516)));
-            //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1887, worldSize.Y - 512)));
-            //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(134, worldSize.Y - 747)));
-            //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(898, worldSize.Y - 749)));
-            //ladders.Add(new Ladder(ladderTexture, new Vector2(34, 235), new Vector2(1707, worldSize.Y - 749)));
+
             worldObjects.AddRange(platforms);
             platforms.AddRange(walls);
             worldObjects.AddRange(ladders);
@@ -152,14 +151,15 @@ namespace Cold_Ship
             //Door switch
             doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(worldSize.X - 199, worldSize.Y - 350), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH, Content.Load <Texture2D>("Objects\\doorswitch_on"));
 
+            if (!visited)
+            {
+              AddChatTriggers();
+            }
+
             worldObjects.Add(staminaBooster);
             //worldObjects.Add(lightSwitch);
             worldObjects.Add(generator);
             worldObjects.Add(doorSwitch);
-
-            //worldObjects.Add(playerNode);
-
-
 
             //Window opening animation
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_01"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
@@ -174,6 +174,16 @@ namespace Cold_Ship
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_10"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\window_11"), new Vector2(worldSize.X - 1513, worldSize.Y - 961), Rectangle.Empty));
             
+        }
+
+        private void AddChatTriggers()
+        {
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(30, 20), StringDialogue.commonRoomGeneratorSpeech1, 
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(30, 20), StringDialogue.commonRoomGeneratorSpeech2,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(30, 20), StringDialogue.commonRoomGeneratorSpeech3,
+                                                                      this.generator.isNotActivated));
         }
 
         //unload contents
@@ -194,6 +204,18 @@ namespace Cold_Ship
         bool wallsRetracted = false;
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
+          // Update Dialogues
+          for (int i = 0; i < AllChatTriggers.Count; i++)
+          {
+            InvisibleChatTriggerBox chatTrigger = AllChatTriggers.ElementAt(i);
+            Vector2 intercomPosition = camera.ApplyTransformations(intercom.Position);
+
+            chatTrigger.Update(gameTime);
+            if (!chatTrigger.IsConsumed()
+                && chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
+              chatTrigger.InteractWith(intercomPosition, GameInstance);
+          }
+
             //Update timer
             openWindowTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 

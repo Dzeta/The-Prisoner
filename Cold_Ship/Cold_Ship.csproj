@@ -197,6 +197,9 @@
     <Content Include="Content\Objects\generator_on.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Objects\intercom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Objects\ladder.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

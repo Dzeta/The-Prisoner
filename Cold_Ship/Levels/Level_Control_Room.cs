@@ -30,12 +30,10 @@ namespace Cold_Ship
         List<GenericSprite2D> worldObjects;
 
         List<Platform> platforms;
-        Platform retractableWall;
         List<Portal> portals;
         List<Ladder> ladders;
-        Portal fowardDoor, backwardDoor, roomDoor;
-        Interactable lightSwitch, generator, doorSwitch, puzzleSwitch1, puzzleSwitch2, puzzleSwitch3, puzzleSwitch4, puzzleSwitch5;
-        PickUpItem staminaBooster;
+        Portal fowardDoor, backwardDoor;
+        Interactable generator;
 
         List<GenericSprite2D> openingWindow = new List<GenericSprite2D>();
 
@@ -46,26 +44,27 @@ namespace Cold_Ship
         //timer and counter for opening window
         float openWindowTimer = 0;
         int windowAnimationCounter = 0;
-        //Bool flag to check wether the player is inside the room
-        bool insideRoom = false;
-
-        //List of switches
-        List<Interactable> switchPuzzle;
 
         //The computer and its screen
         Computer_And_Screen computer;
 
+        public List<InvisibleChatTriggerBox> AllChatTriggers;
+        bool visited = false;
+
+        Cold_Ship GameInstance;
+
         //declare constructor
-        public Level_Control_Room(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Control_Room(Cold_Ship gameInstance, SpriteBatch spriteBatch, Vector2 screenSize)
         {
+          this.GameInstance = gameInstance;
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
             this.screenSize = screenSize;
             portals = new List<Portal>();
             ladders = new List<Ladder>();
             worldObjects = new List<GenericSprite2D>();
-            switchPuzzle = new List<Interactable>();
 
+            this.AllChatTriggers = new List<InvisibleChatTriggerBox>();
         }
 
         //load content
@@ -77,7 +76,6 @@ namespace Cold_Ship
             Texture2D backgroundTexture_back = Content.Load<Texture2D>("Backgrounds\\controlroom_back");
             Texture2D backgroundTexture_front = Content.Load<Texture2D>("Backgrounds\\controlroom_front");
             statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
-
 
             //initialize the world size and the ground coordinate according to the world size
             worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);
@@ -91,7 +89,6 @@ namespace Cold_Ship
             backgroundbackNode = new GenericSprite2D(backgroundTexture_back, new Vector2(0, 0), Rectangle.Empty);
             backgroundFrontNode = new GenericSprite2D(backgroundTexture_front, new Vector2(0, 0), Rectangle.Empty);
             
-
             shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
 
             camera = new Camera2D(spriteBatch);
@@ -99,8 +96,6 @@ namespace Cold_Ship
 
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
-
-       
 
             //initialize the needed portals
             backwardDoor = new Portal(new Vector2(worldSize.X - 970, worldSize.Y - 123), new Vector2(51, 72), Portal.PortalType.BACKWARD, Content);
@@ -120,14 +115,22 @@ namespace Cold_Ship
                 playerNode = new Character(playerTexture, new Vector2(fowardDoor.Position.X - 32 - 5, worldSize.Y - 64 - 50), bodyTemperature, stamina, staminaLimit, 4, 5);
             }
 
-
             //Generator
             generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(worldSize.X - 210, worldSize.Y - 116), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
             
             worldObjects.Add(generator);
-            
 
+            //Initialize computer
+            computer = new Computer_And_Screen(Content, new Vector2(worldSize.X - 544, worldSize.Y - 142));
 
+            if (!visited)
+            {
+              AddChatTriggers();
+            }
+
+            worldObjects.Add(computer.computerNode);
+            worldObjects.Add(computer);
+            worldObjects.Add(playerNode);
 
             //Window opening animation
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_01"), new Vector2(127, 62), Rectangle.Empty));
@@ -140,9 +143,74 @@ namespace Cold_Ship
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_08"), new Vector2(127, 62), Rectangle.Empty));
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_09"), new Vector2(127, 62), Rectangle.Empty));
             
+        }
 
-            //Initialize computer
-            computer = new Computer_And_Screen(Content, new Vector2(worldSize.X - 544, worldSize.Y - 142));
+        private void AddChatTriggers()
+        {
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech1,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech2,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech3,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech4,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech5,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech6,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech7,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech8,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech9,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech10,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech11,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech12,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech13,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech14,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech15,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech16,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech17,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech18,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech19,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech20,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech21,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech22,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech23,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech24,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech25,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech26,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech27,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech28,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech29,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech30,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech31,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(-20, 20), StringDialogue.controlRoomFinalSpeech32,
+                                                                      this.generator.isNotActivated));
         }
 
         //unload contents
@@ -162,13 +230,23 @@ namespace Cold_Ship
         //update function
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
+          // Update Dialogues
+          for (int i = 0; i < AllChatTriggers.Count; i++)
+          {
+            InvisibleChatTriggerBox chatTrigger = AllChatTriggers.ElementAt(i);
+            Vector2 intercomPosition = camera.ApplyTransformations(computer.Position);
+
+            chatTrigger.Update(gameTime);
+            if (!chatTrigger.IsConsumed()
+                && chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
+              chatTrigger.InteractWith(intercomPosition, GameInstance);
+          }
+
             //Update timer
             openWindowTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             //update the player Position with respect to keyboard input and platform collision
             Vector2 prevPosition = playerNode.Position;
-            //bool useLighter = filterOn;
-
             
             playerNode.Update(!generatorOn, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
@@ -184,16 +262,12 @@ namespace Cold_Ship
                 portal.Update(playerNode, ref gameLevel);
             }
 
-
             generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
-
-            
 
             //update the shadowFilter's Position with respect to the playerNode
             filterOn = !generatorOn;
             shadowFilter.Position = new Vector2((playerNode.Position.X /*+ (playerNode.Texture.Width / 2))*/) - (shadowFilter.Texture.Width / 2),
                 (playerNode.Position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.Texture.Height / 2)));
-
 
             //update the camera based on the player and world size
             camera.TranslateWithSprite(playerNode, screenSize);
@@ -205,13 +279,8 @@ namespace Cold_Ship
                 computer.Update(gameTime);
             }
 
-
-
-
             //return the body temperature
             return playerNode.bodyTemperature;
-
-
         }
 
 
@@ -223,30 +292,20 @@ namespace Cold_Ship
             camera.DrawNode(backgroundbackNode);
             camera.DrawNode(backgroundNode);
             
-            
             if (openWindowTimer > 1000 && windowAnimationCounter < 8 && generatorOn)
             {
-
                 windowAnimationCounter++;
                 openWindowTimer = 0;
             }
             camera.DrawNode(openingWindow[windowAnimationCounter]);
             camera.DrawNode(backgroundFrontNode);
-
          
-
             foreach (GenericSprite2D element in worldObjects)
             {
                 camera.DrawNode(element);
             }
 
-            camera.DrawNode(computer.computerNode);
-            camera.DrawNode(computer);
-
-
-            camera.DrawNode(playerNode);
-
-            if (filterOn)
+            //if (filterOn)
                 //camera.DrawNode(shadowFilter);
 
             //draw the fps

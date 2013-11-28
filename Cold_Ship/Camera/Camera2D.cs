@@ -26,9 +26,7 @@ namespace Cold_Ship
         public Vector2 ApplyTransformations(Vector2 nodePosition)
         {
             Vector2 finalPosition = nodePosition - cameraPosition;
-            //you can apply transformation here
-            //.....................
-            //..................
+
             return finalPosition;
         }
 

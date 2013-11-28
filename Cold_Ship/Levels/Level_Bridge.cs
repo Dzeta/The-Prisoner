@@ -39,15 +39,23 @@ namespace Cold_Ship
 
         bool filterOn = true, generatorOn = false, doorCanOpen = false;
 
+        GenericSprite2D intercom;
+
         //List of switches
         List<Interactable> switchPuzzle;
+
+        public List<InvisibleChatTriggerBox> AllChatTriggers;
+        bool visited = false;
+
+        Cold_Ship GameInstance;
 
         //Computer and screen
         Computer_And_Screen computer;
 
         //declare constructor
-        public Level_Bridge(SpriteBatch spriteBatch, Vector2 screenSize)
+        public Level_Bridge(Cold_Ship gameInstance, SpriteBatch spriteBatch, Vector2 screenSize)
         {
+            this.GameInstance = gameInstance;
             this.spriteBatch = spriteBatch;
             platforms = new List<Platform>();
             this.screenSize = screenSize;
@@ -56,6 +64,7 @@ namespace Cold_Ship
             worldObjects = new List<GenericSprite2D>();
             switchPuzzle = new List<Interactable>();
 
+            this.AllChatTriggers = new List<InvisibleChatTriggerBox>();
         }
 
         //load content
@@ -81,6 +90,11 @@ namespace Cold_Ship
 
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
+
+            Texture2D intercomTexture = Content.Load<Texture2D>("Objects\\intercom");
+            intercom = new GenericSprite2D(intercomTexture, new Vector2(870, 180));
+
+            worldObjects.Add(intercom);
 
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
@@ -138,6 +152,11 @@ namespace Cold_Ship
             //Initialize the computer and screen
             computer = new Computer_And_Screen(Content, new Vector2(generator.Position.X - 160, generator.Position.Y - 28));
 
+            if (!visited)
+            {
+              AddChatTriggers();
+            }
+
             worldObjects.Add(generator);
             worldObjects.AddRange(switchPuzzle);
 
@@ -146,6 +165,36 @@ namespace Cold_Ship
 
             worldObjects.Add(playerNode);
 
+        }
+
+        private void AddChatTriggers()
+        {
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.bridgeComputerMessage1,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.bridgeComputerMessage2,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.bridgeComputerMessage3,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.bridgeComputerMessage4,
+                                                                      this.generator.isNotActivated));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.bridgeComputerMessage5,
+                                                                      this.generator.isNotActivated));
+
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeDoorHint,
+                                                                      this.forwardDoor.isOpen));
+          
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech1,
+                                                                      this.forwardDoor.isClosed));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech2,
+                                                                      this.forwardDoor.isClosed));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech3,
+                                                                      this.forwardDoor.isClosed));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech4,
+                                                                      this.forwardDoor.isClosed));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech5,
+                                                                      this.forwardDoor.isClosed));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech6,
+                                                                      this.forwardDoor.isClosed));
         }
 
         private void CreatePuzzlePlatforms(Texture2D platformTexture)
@@ -183,6 +232,21 @@ namespace Cold_Ship
         //update function
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
+          // Update Dialogues
+          for (int i = 0; i < AllChatTriggers.Count; i++)
+          {
+            InvisibleChatTriggerBox chatTrigger = AllChatTriggers.ElementAt(i);
+            Vector2 intercomPosition = Vector2.Zero;
+            if (i < 5)
+              intercomPosition = camera.ApplyTransformations(computer.Position);
+            else
+              intercomPosition = camera.ApplyTransformations(intercom.Position);
+
+            chatTrigger.Update(gameTime);
+            if (!chatTrigger.IsConsumed()
+                && chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
+              chatTrigger.InteractWith(intercomPosition, GameInstance);
+          }
             //update the player Position with respect to keyboard input and platform collision
             Vector2 prevPosition = playerNode.Position;
 
@@ -218,7 +282,7 @@ namespace Cold_Ship
                     puzzleSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref forwardDoor.canOpen);
                 }
 
-                if (puzzleSwitch2.puzzleSwitchOn && puzzleSwitch4.puzzleSwitchOn && puzzleSwitch5.puzzleSwitchOn)
+                if (puzzleSwitch2.isActivated() && puzzleSwitch4.isActivated() && puzzleSwitch5.isActivated())
                     forwardDoor.canOpen = true;
             }
             // TODO: Check puzzle switch state to unlock the door
