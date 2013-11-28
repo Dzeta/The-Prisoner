@@ -52,6 +52,9 @@ namespace Cold_Ship
         //List of switches
         List<Interactable> switchPuzzle;
 
+        //The computer and its screen
+        Computer_And_Screen computer;
+
         //declare constructor
         public Level_Control_Room(SpriteBatch spriteBatch, Vector2 screenSize)
         {
@@ -137,6 +140,9 @@ namespace Cold_Ship
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_08"), new Vector2(127, 62), Rectangle.Empty));
             openingWindow.Add(new GenericSprite2D(Content.Load<Texture2D>("Objects\\window\\controlroom_window_09"), new Vector2(127, 62), Rectangle.Empty));
             
+
+            //Initialize computer
+            computer = new Computer_And_Screen(Content, new Vector2(worldSize.X - 544, worldSize.Y - 142));
         }
 
         //unload contents
@@ -193,6 +199,9 @@ namespace Cold_Ship
             camera.TranslateWithSprite(playerNode, screenSize);
             camera.CapCameraPosition(worldSize, screenSize);
 
+            //update the screen of the computer
+            computer.Update(gameTime);
+
 
 
 
@@ -227,6 +236,11 @@ namespace Cold_Ship
             {
                 camera.DrawNode(element);
             }
+
+            camera.DrawNode(computer.computerNode);
+            camera.DrawNode(computer);
+
+
             camera.DrawNode(playerNode);
 
             if (filterOn)
