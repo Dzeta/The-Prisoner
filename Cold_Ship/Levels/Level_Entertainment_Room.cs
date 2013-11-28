@@ -30,11 +30,10 @@ namespace Cold_Ship
         List<GenericSprite2D> worldObjects;
 
         List<Platform> platforms;
-        Platform retractableWall;
         List<Portal> portals;
         List<Ladder> ladders;
         Portal fowardDoor, backwardDoor;
-        Interactable lightSwitch, generator, doorSwitch, puzzleSwitch1, puzzleSwitch2, puzzleSwitch3, puzzleSwitch4, puzzleSwitch5;
+        Interactable lightSwitch, generator, puzzleSwitch1, puzzleSwitch2, puzzleSwitch3, puzzleSwitch4, puzzleSwitch5;
         PickUpItem staminaBooster;
 
         List<Platform> walls = new List<Platform>();
@@ -94,10 +93,6 @@ namespace Cold_Ship
             platforms.Add(new Platform(platformTexture, new Vector2(680, 23), new Vector2(worldSize.X - 923, worldSize.Y - 748)));
             platforms.Add(new Platform(platformTexture, new Vector2(110, 25), new Vector2(worldSize.X - 204, worldSize.Y - 749)));
 
-            //walls
-            retractableWall = new Platform(platformTexture, new Vector2(69, 207), new Vector2(worldSize.X - 832, worldSize.Y - 256));
-
-
             //initialize ladders and add them to the list
             //Load ladder Texture
             Texture2D ladderTexture = Content.Load<Texture2D>("Objects\\ladder");
@@ -107,7 +102,6 @@ namespace Cold_Ship
             ladders.Add(new Ladder(ladderTexture, new Vector2(34, 120), new Vector2(worldSize.X - 243, worldSize.Y - 753)));
 
             worldObjects.AddRange(platforms);
-            platforms.Add(retractableWall);
             worldObjects.AddRange(ladders);
 
             //initialize the needed portals
@@ -131,11 +125,11 @@ namespace Cold_Ship
             staminaBooster = new PickUpItem(platformTexture, new Vector2(worldSize.X - 1413, worldSize.Y - 111), new Vector2(28, 28), PickUpItem.ItemType.STAMINA, 100, PickUpItem.ItemEffectDuration.TEMPORARY);
 
             //initiate the switchPuzzle
-            puzzleSwitch5 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(760, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
-            puzzleSwitch4 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(700, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
-            puzzleSwitch3 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(650, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
-            puzzleSwitch2 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(600, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
-            puzzleSwitch1 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(550, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
+            puzzleSwitch1 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(400, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
+            puzzleSwitch2 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(440, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
+            puzzleSwitch3 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(480, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
+            puzzleSwitch4 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(520, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
+            puzzleSwitch5 = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(560, worldSize.Y - 116), new Vector2(11, 19), Interactable.Type_Of_Interactable.PUZZLE_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
             switchPuzzle.Add(puzzleSwitch1);
             switchPuzzle.Add(puzzleSwitch2);
             switchPuzzle.Add(puzzleSwitch3);
@@ -145,11 +139,11 @@ namespace Cold_Ship
             //Generator
             generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(worldSize.X - 638, worldSize.Y - 814), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
             //Door switch
-            doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(150, 360), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
+            lightSwitch = new Interactable(Content.Load<Texture2D>("Objects\\lightswitch_off"), new Vector2(130, 330), new Vector2(23, 32), Interactable.Type_Of_Interactable.LIGHT_SWITCH, Content.Load<Texture2D>("Objects\\lightswitch_on"));
 
             worldObjects.Add(staminaBooster);
             worldObjects.Add(generator);
-            worldObjects.Add(doorSwitch);
+            worldObjects.Add(lightSwitch);
             worldObjects.AddRange(switchPuzzle);
 
             worldObjects.Add(playerNode);
@@ -186,7 +180,6 @@ namespace Cold_Ship
         }
 
         //update function
-        bool wallsRetracted = false, wallRemoved = false;
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
             //update the player Position with respect to keyboard input and platform collision
@@ -197,17 +190,8 @@ namespace Cold_Ship
             puzzleSwitch3.timeCounter++;
             puzzleSwitch4.timeCounter++;
             puzzleSwitch5.timeCounter++;
-            if (puzzleSwitch1.puzzleSwitchOn /*&& puzzleSwitch2.puzzleSwitchOn && puzzleSwitch3.puzzleSwitchOn && puzzleSwitch4.puzzleSwitchOn && puzzleSwitch5.puzzleSwitchOn*/)
-            {
-                wallsRetracted = true;
-            }
-
-            if (wallsRetracted && !wallRemoved)
-            {
-                platforms.RemoveRange(platforms.Count - 1, 1);
-                wallRemoved = true;
-            }
-            playerNode.Update(!generatorOn, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
+               
+            playerNode.Update(filterOn, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
             //Check the player's collision with the world boundaries
             if (playerNode.Position.X < 100 || playerNode.Position.X + playerNode.playerSpriteSize.X > worldSize.X - 100)
@@ -221,16 +205,19 @@ namespace Cold_Ship
                 portal.Update(playerNode, ref gameLevel);
             }
 
-            //lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
             generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
-            doorSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref fowardDoor.canOpen);
-            foreach (Interactable puzzleSwitch in switchPuzzle)
+            lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref fowardDoor.canOpen);
+            if (generatorOn)
             {
-                puzzleSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref fowardDoor.canOpen);
+                foreach (Interactable puzzleSwitch in switchPuzzle)
+                {
+                    puzzleSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref fowardDoor.canOpen);
+                }
+                if (puzzleSwitch3.puzzleSwitchOn && puzzleSwitch5.puzzleSwitchOn)
+                    fowardDoor.canOpen = true;
             }
 
             //update the shadowFilter's Position with respect to the playerNode
-            filterOn = !generatorOn;
             shadowFilter.Position = new Vector2((playerNode.Position.X /*+ (playerNode.Texture.Width / 2))*/) - (shadowFilter.Texture.Width / 2),
                 (playerNode.Position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.Texture.Height / 2)));
 
@@ -252,13 +239,9 @@ namespace Cold_Ship
             {
                 camera.DrawNode(element);
             }
-            if (!wallsRetracted)
-            {
-                camera.DrawNode(retractableWall);
-            }
 
-            //if (filterOn)
-                //camera.DrawNode(shadowFilter);
+            if (filterOn)
+                camera.DrawNode(shadowFilter);
 
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
