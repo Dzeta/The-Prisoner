@@ -20,7 +20,7 @@ namespace Cold_Ship
         protected int NOptions { get { return nOptions; } }
 
         protected SpriteFont font;
-        private Color fontColor = Color.White;
+        protected Color fontColor = Color.White;
 
         private bool alphaDown = true;
 
