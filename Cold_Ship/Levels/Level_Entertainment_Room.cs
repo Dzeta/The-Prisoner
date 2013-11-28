@@ -209,10 +209,12 @@ namespace Cold_Ship
             }
 
             //update portals
-            foreach (Portal portal in portals)
-            {
-                portal.Update(playerNode, ref gameLevel);
-            }
+            //foreach (Portal portal in portals)
+            //{
+            //    portal.Update(playerNode, ref gameLevel);
+            //}
+            fowardDoor.Update(playerNode, ref gameLevel, 20);
+            backwardDoor.Update(playerNode, ref gameLevel, -20);
 
             generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
             lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref fowardDoor.canOpen);
