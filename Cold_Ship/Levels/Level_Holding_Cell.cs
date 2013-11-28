@@ -81,7 +81,7 @@ namespace Cold_Ship
       Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
 
       //initialize the needed portals
-      forwardDoor = new Portal(new Vector2(worldSize.X - 251, worldSize.Y - 288), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
+      forwardDoor = new Portal(new Vector2(worldSize.X - 251, worldSize.Y /*- 288*/ - 280), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
       forwardDoor.canOpen = true;
       portals.Add(forwardDoor);
       worldObjects.AddRange(portals);

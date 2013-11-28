@@ -14,8 +14,8 @@ namespace Cold_Ship
   public class DialogueBubble : GenericSprite2D
   {
     public const int LINE_FEED_LENGTH = 20; // Empirical number
-    public const int LINE_FEED_PAUSE = 1000; // Pause between line feeds
-    public const int DEFAULT_PLAY_THROUGH_SPEED = 150;
+    public const int LINE_FEED_PAUSE = /*1000*/700; // Pause between line feeds
+    public const int DEFAULT_PLAY_THROUGH_SPEED = /*150*/25;
 
     // Sense of typing the character out on the screen
     private float _playThroughSpeed = DEFAULT_PLAY_THROUGH_SPEED; // Empirical number
