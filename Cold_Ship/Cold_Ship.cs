@@ -41,7 +41,7 @@ namespace Cold_Ship
         // A few unique state that the game can be, these states are linear
         // Which means they cannot be combined togheter with one another
         // Only frozen is implemented so far, pause still needs work
-        public enum GameState { FROZEN, DIALOGUING, PAUSED, ENDED, PLAYING, INTIALIZED, MENU, KEY_BINDING }
+        public enum GameState { DIALOGUING, PAUSED, ENDED, PLAYING, INTIALIZED, MENU, KEY_BINDING }
         private Stack<GameState> _gameState;
         // DIALOGUE USED COMPOENTS
         public List<DialogueBubble> DialogueQueue { get; set; }
@@ -75,6 +75,8 @@ namespace Cold_Ship
         double bodyTemperature = 36;
         double stamina = 100;
         double staminaLimit = 100;
+
+        public Cue mainLoopMusic;
 
         public Cold_Ship()
             : base()
@@ -112,6 +114,8 @@ namespace Cold_Ship
             DialogueBubble.engine = new AudioEngine("Content\\Sounds\\SOUND_SPEECH_ENGINE.xgs");
             DialogueBubble.soundBank = new SoundBank(DialogueBubble.engine, "Content\\Sounds\\SOUND_SPEECH_SOUNDBANK.xsb");
             DialogueBubble.waveBank = new WaveBank(DialogueBubble.engine, "Content\\Sounds\\SOUND_SPEECH_WAVEBANK.xwb");
+
+            mainLoopMusic = DialogueBubble.soundBank.GetCue("SOUND_MAIN_LOOP");
 
           MonoSmall = Content.Load<SpriteFont>("Fonts/Manaspace0");
           MonoMedium = Content.Load<SpriteFont>("Fonts/Manaspace12");
@@ -187,6 +191,11 @@ namespace Cold_Ship
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+          if (!mainLoopMusic.IsPlaying && !(gameLevel == Game_Level.LEVEL_CONTROL_ROOM && ( GetCurrentGameState() == GameState.PLAYING ||GetCurrentGameState() == GameState.DIALOGUING)))
+            mainLoopMusic.Play();
+          if (gameLevel == Game_Level.LEVEL_CONTROL_ROOM && ( GetCurrentGameState() == GameState.PLAYING ||GetCurrentGameState() == GameState.DIALOGUING))
+            mainLoopMusic.Stop(AudioStopOptions.AsAuthored);
+
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 if (this.GameStateIs(GameState.PLAYING))

@@ -263,7 +263,6 @@ namespace Cold_Ship
             shadowFilter.Position = new Vector2((playerNode.Position.X /*+ (playerNode.Texture.Width / 2))*/) - (shadowFilter.Texture.Width / 2),
                 (playerNode.Position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.Texture.Height / 2)));
 
-
             //update the camera based on the player and world size
             camera.TranslateWithSprite(playerNode, screenSize);
             camera.CapCameraPosition(worldSize, screenSize);
