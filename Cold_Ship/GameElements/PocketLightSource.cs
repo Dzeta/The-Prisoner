@@ -151,13 +151,15 @@ namespace Cold_Ship
           this._owner.Position.Y - CurrentGameLevel.Camera.CameraPosition.Y);
 //      Vector2 cameraToPlayer = CurrentGameLevel.Camera.CameraPosition;
 
-      this.Position = cameraToPlayer - this._positionOffset + _actualFacingOffset + _scaleOffset;
+      this.Position = cameraToPlayer - this._positionOffset 
+          + _actualFacingOffset + _scaleOffset;
     }
 
     public override void PickUpBy(Character player)
     {
       player.PocketLight = this;
-      this.TurnDisable();
+      this.TurnOff();
+//      this.TurnDisable();
       base.PickUpBy(player);
     }
 

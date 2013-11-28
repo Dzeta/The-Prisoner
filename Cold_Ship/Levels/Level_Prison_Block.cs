@@ -89,6 +89,13 @@ namespace Cold_Ship
 //      worldObjects = new List<GenericSprite2D>();
     }
 
+//    public override void LoadLevelContentIfHasNotForPlayer(Character player)
+//    {
+//      base.LoadLevelContentIfHasNotForPlayer(player);
+//
+//      this.PlayerNode.PocketLight.TurnOff();
+//    }
+
     public void Update(GameTime gameTime)
     {
       base.Update(gameTime);
