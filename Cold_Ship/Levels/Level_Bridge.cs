@@ -284,6 +284,8 @@ namespace Cold_Ship
 
                 if (puzzleSwitch2.isActivated() && puzzleSwitch4.isActivated() && puzzleSwitch5.isActivated())
                     forwardDoor.canOpen = true;
+                else
+                    forwardDoor.canOpen = false;
             }
             // TODO: Check puzzle switch state to unlock the door
 

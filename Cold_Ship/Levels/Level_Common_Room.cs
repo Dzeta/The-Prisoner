@@ -109,8 +109,9 @@ namespace Cold_Ship
             platforms.Add(new Platform(platformTexture, new Vector2(683, 20), new Vector2(worldSize.X - 784, worldSize.Y - 510)));
 
             //walls
-            walls.Add(new Platform(platformTexture, new Vector2(41, 193), new Vector2(worldSize.X - 693, worldSize.Y - 245)));
-            walls.Add(new Platform(platformTexture, new Vector2(65, 199), new Vector2(worldSize.X - 353, worldSize.Y - 477)));
+            Texture2D barrierTexture = Content.Load<Texture2D>("Objects\\barrier");
+            walls.Add(new Platform(barrierTexture, new Vector2(64, 196), new Vector2(worldSize.X - 693, worldSize.Y - 245)));
+            walls.Add(new Platform(barrierTexture, new Vector2(64, 196), new Vector2(worldSize.X - 353, worldSize.Y - 477)));
             
             //initialize ladders and add them to the list
             //Load ladder Texture
@@ -250,6 +251,7 @@ namespace Cold_Ship
 
             //lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
             generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
+            filterOn = !generatorOn;
             doorSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref fowardDoor.canOpen);
             doorSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref roomDoor.canOpen);
 
@@ -338,7 +340,7 @@ namespace Cold_Ship
             }
 
             if (filterOn)
-                //camera.DrawNode(shadowFilter);
+                camera.DrawNode(shadowFilter);
 
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);

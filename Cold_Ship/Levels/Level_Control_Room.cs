@@ -305,8 +305,8 @@ namespace Cold_Ship
                 camera.DrawNode(element);
             }
 
-            //if (filterOn)
-                //camera.DrawNode(shadowFilter);
+            if (filterOn)
+                camera.DrawNode(shadowFilter);
 
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
