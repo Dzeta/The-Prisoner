@@ -38,6 +38,9 @@ namespace Cold_Ship
 
         bool filterOn = true, generatorOn = false;
 
+        //Computer and screen
+        Computer_And_Screen computer;
+
         //declare constructor
         public Level_Generator(SpriteBatch spriteBatch, Vector2 screenSize)
         {
@@ -103,13 +106,19 @@ namespace Cold_Ship
             lightSwitch = new Interactable(Content.Load<Texture2D>("Objects\\lightswitch_off"), new Vector2(130, 1330), new Vector2(23, 32), Interactable.Type_Of_Interactable.LIGHT_SWITCH, Content.Load<Texture2D>("Objects\\lightswitch_on"));
             generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(worldSize.X - 246, ground - 63), new Vector2(103, 63), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
             doorSwitch = new Interactable(Content.Load<Texture2D>("Objects\\doorswitch_off"), new Vector2(1920, 910), new Vector2(11, 19), Interactable.Type_Of_Interactable.DOOR_SWITCH, Content.Load<Texture2D>("Objects\\doorswitch_on"));
-
+            
+            //Initialize computer
+            computer = new Computer_And_Screen(Content, new Vector2(worldSize.X - 406, worldSize.Y - 141));
+            
             worldObjects.Add(staminaBooster);
             worldObjects.Add(lightSwitch);
             worldObjects.Add(generator);
             worldObjects.Add(doorSwitch);
-
+            worldObjects.Add(computer.computerNode);
+            worldObjects.Add(computer);
             worldObjects.Add(playerNode);
+
+            
         }
 
         private void createPlatforms(Texture2D platformTexture)
@@ -217,6 +226,12 @@ namespace Cold_Ship
             camera.TranslateWithSprite(playerNode, screenSize);
             camera.CapCameraPosition(worldSize, screenSize);
 
+            //update the computer screen
+            if (generatorOn)
+            {
+                computer.Update(gameTime);
+            }
+
             //return the body temperature
             return playerNode.bodyTemperature;
         }
@@ -225,9 +240,11 @@ namespace Cold_Ship
         public void Draw(int framesPerSecond)
         {
             spriteBatch.Begin();
-            //draw the desired nodes onto screen through the camera
+            
+
             foreach (GenericSprite2D element in worldObjects)
                 camera.DrawNode(element);
+
 
             if (filterOn)
             {

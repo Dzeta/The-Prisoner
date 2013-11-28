@@ -200,7 +200,10 @@ namespace Cold_Ship
             camera.CapCameraPosition(worldSize, screenSize);
 
             //update the screen of the computer
-            computer.Update(gameTime);
+            if (generatorOn)
+            {
+                computer.Update(gameTime);
+            }
 
 
 

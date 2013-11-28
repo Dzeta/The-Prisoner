@@ -42,6 +42,9 @@ namespace Cold_Ship
         //List of switches
         List<Interactable> switchPuzzle;
 
+        //Computer and screen
+        Computer_And_Screen computer;
+
         //declare constructor
         public Level_Bridge(SpriteBatch spriteBatch, Vector2 screenSize)
         {
@@ -132,8 +135,14 @@ namespace Cold_Ship
             //Generator
             generator = new Interactable(Content.Load<Texture2D>("Objects\\generator_off"), new Vector2(270, 145), new Vector2(104, 65), Interactable.Type_Of_Interactable.GENERATOR, Content.Load<Texture2D>("Objects\\generator_on"));
 
+            //Initialize the computer and screen
+            computer = new Computer_And_Screen(Content, new Vector2(generator.Position.X - 160, generator.Position.Y - 28));
+
             worldObjects.Add(generator);
             worldObjects.AddRange(switchPuzzle);
+
+            worldObjects.Add(computer.computerNode);
+            worldObjects.Add(computer);
 
             worldObjects.Add(playerNode);
 
@@ -220,6 +229,12 @@ namespace Cold_Ship
             //update the camera based on the player and world size
             camera.TranslateWithSprite(playerNode, screenSize);
             camera.CapCameraPosition(worldSize, screenSize);
+
+            //Update the computer screen
+            if (generatorOn)
+            {
+                computer.Update(gameTime);
+            }
 
             //return the body temperature
             return playerNode.bodyTemperature;
