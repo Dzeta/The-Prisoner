@@ -101,7 +101,7 @@ namespace Cold_Ship
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction5));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction6));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction7)); 
-        AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 10, forwardDoor.Position.Y + 30),
+        AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 50, forwardDoor.Position.Y + 30),
             StringDialogue.holdingCellLeaveWithoutLighter, this.playerNode.HasLighter));
       }
 

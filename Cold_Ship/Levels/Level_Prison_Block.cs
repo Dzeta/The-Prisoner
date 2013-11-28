@@ -153,10 +153,10 @@ namespace Cold_Ship
       AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1680, 245), StringDialogue.prisonBlockGeneratorSpeech1));
       AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1680, 245), StringDialogue.prisonBlockGeneratorSpeech2));
 
-      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom1, this.lightSwitch.isNotActivated));
-      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom2, this.lightSwitch.isNotActivated));
-      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom3, this.lightSwitch.isNotActivated));
-      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom4, this.lightSwitch.isNotActivated));
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom1, this.lightSwitch.isNotActivated, 1));
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom2, this.lightSwitch.isNotActivated, 1));
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom3, this.lightSwitch.isNotActivated, 1));
+      AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(1820, 940), StringDialogue.prisonBlockLeavingRoom4, this.lightSwitch.isNotActivated, 1));
     }
 
     //unload contents

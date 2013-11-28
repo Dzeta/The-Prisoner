@@ -28,8 +28,8 @@ namespace Cold_Ship
 
   public class InvisibleChatTriggerBox : InvisibleBox
   {
-    private int _timeOutInterval = 1000; // Timer between reappearance of the invisible box in a persisted
-    private int _timeOutTimer = 0;
+    private float _timeOutInterval = 1000; // Timer between reappearance of the invisible box in a persisted
+    private float _timeOutTimer = 0;
     private string _msg;
     private static Rectangle _hitBox = new Rectangle(0, 0, 32, 32);
     private bool _isPersisted;
@@ -61,6 +61,14 @@ namespace Cold_Ship
     public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos, string m, Func<bool> cond)
     {
       InvisibleChatTriggerBox _instance = new InvisibleChatTriggerBox(pos, m);
+      _instance._condition = cond;
+      return _instance;
+    }
+
+    public static InvisibleChatTriggerBox GetNewInstance(Vector2 pos, string m, Func<bool> cond, float timeOutInterval)
+    {
+      InvisibleChatTriggerBox _instance = new InvisibleChatTriggerBox(pos, m);
+      _instance._timeOutInterval = timeOutInterval;
       _instance._condition = cond;
       return _instance;
     }

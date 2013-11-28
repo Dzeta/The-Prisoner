@@ -25,7 +25,7 @@ namespace Cold_Ship
         Camera2D camera;
         Character playerNode;
         Filter shadowFilter;
-        GenericSprite2D backgroundNode, backgroundFront, backgroundMiddle, backgroundBack;
+        GenericSprite2D backgroundFront, backgroundMiddle, backgroundBack;
 
         List<GenericSprite2D> worldObjects;
 
@@ -179,11 +179,11 @@ namespace Cold_Ship
         private void AddChatTriggers()
         {
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(30, 20), StringDialogue.commonRoomGeneratorSpeech1, 
-                                                                      this.generator.isNotActivated));
+                                                                      this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(30, 20), StringDialogue.commonRoomGeneratorSpeech2,
-                                                                      this.generator.isNotActivated));
+                                                                      this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(30, 20), StringDialogue.commonRoomGeneratorSpeech3,
-                                                                      this.generator.isNotActivated));
+                                                                      this.generator.isNotActivated, 1));
         }
 
         //unload contents

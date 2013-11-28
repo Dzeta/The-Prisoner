@@ -170,31 +170,31 @@ namespace Cold_Ship
         private void AddChatTriggers()
         {
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.bridgeComputerMessage1,
-                                                                      this.generator.isNotActivated));
+                                                                      this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.bridgeComputerMessage2,
-                                                                      this.generator.isNotActivated));
+                                                                      this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.bridgeComputerMessage3,
-                                                                      this.generator.isNotActivated));
+                                                                      this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.bridgeComputerMessage4,
-                                                                      this.generator.isNotActivated));
+                                                                      this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(40, 20), StringDialogue.bridgeComputerMessage5,
-                                                                      this.generator.isNotActivated));
+                                                                      this.generator.isNotActivated, 1));
 
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeDoorHint,
-                                                                      this.forwardDoor.isOpen));
+                                                                      this.forwardDoor.isOpen, 2000.0f));
           
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech1,
-                                                                      this.forwardDoor.isClosed));
+                                                                      this.forwardDoor.isClosed, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech2,
-                                                                      this.forwardDoor.isClosed));
+                                                                      this.forwardDoor.isClosed, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech3,
-                                                                      this.forwardDoor.isClosed));
+                                                                      this.forwardDoor.isClosed, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech4,
-                                                                      this.forwardDoor.isClosed));
+                                                                      this.forwardDoor.isClosed, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech5,
-                                                                      this.forwardDoor.isClosed));
+                                                                      this.forwardDoor.isClosed, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(20, 20), StringDialogue.bridgeLeavingRoomSpeech6,
-                                                                      this.forwardDoor.isClosed));
+                                                                      this.forwardDoor.isClosed, 1));
         }
 
         private void CreatePuzzlePlatforms(Texture2D platformTexture)

@@ -151,39 +151,39 @@ namespace Cold_Ship
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom1.Position - new Vector2(30, 20), StringDialogue.generatorRoomStartingSpeech3));
 
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog1,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog2,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog3,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog4,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog5,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog6,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog7,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog8,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog9,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog10,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog11,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomComputerActivityLog12,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 5000.0f));
 
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(computer.Position + new Vector2(20, 20), StringDialogue.generatorRoomErrorCodeReaction,
-                                                                    this.generator.isNotActivated));
+                                                                    this.generator.isNotActivated, 1));
 
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom3.Position - new Vector2(30, 20), StringDialogue.generatorRoomLeavingRoom1,
-                                                                    this.forwardDoor.isOpen));
+                                                                    this.forwardDoor.isOpen, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom3.Position - new Vector2(30, 20), StringDialogue.generatorRoomLeavingRoom2,
-                                                                    this.forwardDoor.isOpen));
+                                                                    this.forwardDoor.isOpen, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom3.Position - new Vector2(30, 20), StringDialogue.generatorRoomLeavingRoom3,
-                                                                    this.forwardDoor.isOpen));
+                                                                    this.forwardDoor.isOpen, 1));
         }
 
         private void createPlatforms(Texture2D platformTexture)
