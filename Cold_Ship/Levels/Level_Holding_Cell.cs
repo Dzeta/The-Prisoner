@@ -94,15 +94,15 @@ namespace Cold_Ship
 
       if (!visited)
       {
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "Good, you're awake."));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "There isn't much time."));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "The ship is going down."));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "You need to fix it up if you want to live."));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "You do want to live, don't you?"));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "I hear space death isn't very pleasant, though."));
-        AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance( new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), "Up to you.")); 
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction1));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction2));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction3));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction4));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction5));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction6));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction7)); 
         AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 10, forwardDoor.Position.Y + 30),
-            "You definitely should pick that lighter up before you get out of here.", this.playerNode.HasLighter));
+            StringDialogue.holdingCellLeaveWithoutLighter, this.playerNode.HasLighter));
       }
 
       this._healthBar = HealthBar.GetNewInstance(GameInstance, this.playerNode, playerNode.GetHealthAsRatio); 
