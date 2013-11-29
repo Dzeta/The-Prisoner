@@ -17,6 +17,7 @@ namespace Cold_Ship
         PortalType portalType;
         Texture2D doorLightGreen, doorLightRed;
         public bool canOpen;
+        public float doorOpenTimer;
 
         public bool isOpen() { return canOpen; }
         public bool isClosed() { return !canOpen; }
@@ -32,16 +33,34 @@ namespace Cold_Ship
             canOpen = (portalType == PortalType.BACKWARD)
                                 ? true
                                 : false;
+            doorOpenTimer = 0;
         }
 
         //check is the player has interacted with the portal
-        public void Update(Character playerNode, ref Game_Level gameLevel, int offset = 0)
+        public void Update(Character playerNode, ref Game_Level gameLevel, int offset = 0, int delay = 0)
         {
-            if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y) .Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
+            doorOpenTimer++;
+            if (doorOpenTimer > delay)
             {
-                if (portalType == PortalType.FOWARD)
+                if (new Rectangle((int)playerNode.Position.X, (int)playerNode.Position.Y, (int)playerNode.playerSpriteSize.X, (int)playerNode.playerSpriteSize.Y).Intersects(new Rectangle((int)Position.X, (int)Position.Y, (int)size.X, (int)size.Y)))
                 {
-                    if (canOpen)
+                    if (portalType == PortalType.FOWARD)
+                    {
+                        if (canOpen)
+                        {
+                            if (offset < 0)
+                            {
+                                playerNode.Position.X = Position.X - 32 + offset;
+                            }
+                            else if (offset > 0)
+                            {
+                                playerNode.Position.X = Position.X + size.X + offset;
+                            }
+                            gameLevel += 1;
+                        }
+                    }
+
+                    else if (portalType == PortalType.BACKWARD)
                     {
                         if (offset < 0)
                         {
@@ -51,26 +70,14 @@ namespace Cold_Ship
                         {
                             playerNode.Position.X = Position.X + size.X + offset;
                         }
-                        gameLevel += 1;
+                        gameLevel -= 1;
                     }
-                }
-                
-                else if (portalType == PortalType.BACKWARD)
-                {
-                    if (offset < 0)
-                    {
-                        playerNode.Position.X = Position.X - 32 + offset;
-                    }
-                    else if (offset > 0)
-                    {
-                        playerNode.Position.X = Position.X + size.X + offset;
-                    }
-                    gameLevel -= 1;
-                }
 
-                if (gameLevel < 0)
-                {
-                    gameLevel = 0;
+                    if (gameLevel < 0)
+                    {
+                        gameLevel = 0;
+                    }
+                    doorOpenTimer = 0;
                 }
             }
         }

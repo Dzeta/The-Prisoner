@@ -145,7 +145,7 @@ namespace Cold_Ship
       worldObjects.Add(playerNode);
 
       //Initiate the shadow filter
-      shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
+      shadowFilter = new Filter(Content.Load<Texture2D>(/*"shadowFilterLarge"*/"shadowFilter2"), new Vector2(0, 0));
 
     }
 
