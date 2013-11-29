@@ -40,9 +40,7 @@ namespace Cold_Ship
         public float filterScale = 1;
 
         public Filter(Texture2D texture, Vector2 position)
-            : base(texture, position, Rectangle.Empty)
-        {
-        }
+            : base(texture, position, Rectangle.Empty) { }
 
       public void Update(GameTime gameTime)
       {

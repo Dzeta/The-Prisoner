@@ -35,6 +35,7 @@ namespace Cold_Ship
     Portal forwardDoor, backwardDoor;
     Interactable lightSwitch, generator;
     PickUpItem staminaBooster;
+    HealthBar healthBar;
 
     bool filterOn = true, generatorOn = false;
 
@@ -146,7 +147,8 @@ namespace Cold_Ship
 
       //Initiate the shadow filter
       shadowFilter = new Filter(Content.Load<Texture2D>("Textures/radius_of_light"), new Vector2(0, 0));
-
+      healthBar = HealthBar.GetNewInstance(GameInstance, this.playerNode, this.playerNode.GetHealthAsRatio);
+      worldObjects.Add(healthBar);
     }
 
     private void AddChatTriggers()
@@ -203,6 +205,7 @@ namespace Cold_Ship
       //update the player Position with respect to keyboard input and platform collision
       Vector2 prevPosition = playerNode.Position;
       bool useLighter = filterOn;
+      healthBar.Update(gameTime);
       playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, ladders, worldSize, ref staminaExhaustionTimer);
 
       //Check the player's collision with the world boundaries
@@ -252,11 +255,11 @@ namespace Cold_Ship
       }
 
       //draw the fps
-      spriteBatch.DrawString(manaspace12, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
+      spriteBatch.DrawString(GameInstance.MonoMedium, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
       //draw the status display and the body temperature
-      spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
-      spriteBatch.DrawString(manaspace12, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
-      spriteBatch.DrawString(manaspace12, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
+//      spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
+      spriteBatch.DrawString(GameInstance.MonoMedium, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Green, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
+      spriteBatch.DrawString(GameInstance.MonoMedium, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Yellow, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
 
       // Draw all invisible chat trigger
       if (Cold_Ship.DEBUG_MODE)
