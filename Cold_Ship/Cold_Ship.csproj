@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Camera\Camera2D.cs" />
+    <Compile Include="Constants\SoundEffects.cs" />
     <Compile Include="Constants\StringDialogue.cs" />
     <Compile Include="GameElements\Computer_And_Screen.cs" />
     <Compile Include="GameElements\PocketLightSource.cs" />
@@ -63,7 +64,6 @@
     <Compile Include="GameElements\PickUpItem.cs" />
     <Compile Include="GameElements\Platform.cs" />
     <Compile Include="GameElements\Portal.cs" />
-    <Compile Include="Menus\HighscoreMenu.cs" />
     <Compile Include="Menus\KeyBindingMenu.cs" />
     <Compile Include="Menus\MainMenu.cs" />
     <Compile Include="Menus\Menu.cs" />

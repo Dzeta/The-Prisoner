@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,17 +15,20 @@ namespace Cold_Ship
     private Rectangle _hitBox;
     private Vector2 _position;
 
+
     public InvisibleBox(Rectangle hitBox, Vector2 position)
     {
       this._hitBox = hitBox;
       this._position = position;
     }
 
+
     public virtual Rectangle GetHitBox()
     {
       return new Rectangle((int)this._position.X + this._hitBox.X, (int)this._position.Y + this._hitBox.Y, this._hitBox.Width, this._hitBox.Height);
     }
   }
+
 
   public class InvisibleChatTriggerBox : InvisibleBox
   {
@@ -163,6 +166,11 @@ namespace Cold_Ship
       this._isConsumed = true;
       dialogue.Play();
       gameLevel.DialogueQueue.Add(dialogue);
+    }
+
+    internal static InvisibleChatTriggerBox GetNewInstance(Vector2 vector2, string p1, int p2)
+    {
+      throw new NotImplementedException();
     }
   }
 }

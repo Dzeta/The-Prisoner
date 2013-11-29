@@ -19,7 +19,7 @@ namespace Cold_Ship
             : base(background, cursorTexture, font, 3, menuClick)
         {
             this.optionMenu = new String[3] { "Resume", "Key Binding", "Go back to Main Menu" };
-            this.optionPosition = new Vector2[3] { new Vector2(350, 290), new Vector2(350, 320), new Vector2(350, 350) };
+            this.optionPosition = new Vector2[3] { new Vector2(350, 310), new Vector2(350, 350), new Vector2(350, 390) };
             this.game = game;
         }
 

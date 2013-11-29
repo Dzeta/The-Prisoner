@@ -72,6 +72,7 @@ namespace Cold_Ship
               changingKey = true;
             }
           }
+          previousKeyboardState = keyboardState;
           base.Update(gameTime);
         }
         else
