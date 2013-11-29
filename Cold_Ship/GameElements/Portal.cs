@@ -48,6 +48,7 @@ namespace Cold_Ship
                     {
                         if (canOpen)
                         {
+                          Sounds.soundBank.PlayCue("sound_door");
                             if (offset < 0)
                             {
                                 playerNode.Position.X = Position.X - 32 + offset;
@@ -62,6 +63,7 @@ namespace Cold_Ship
 
                     else if (portalType == PortalType.BACKWARD)
                     {
+                      Sounds.soundBank.PlayCue("sound_door");
                         if (offset < 0)
                         {
                             playerNode.Position.X = Position.X - 32 + offset;

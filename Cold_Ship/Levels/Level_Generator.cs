@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Cold_Ship
 {
@@ -44,6 +45,7 @@ namespace Cold_Ship
         bool visited = false;
 
         Cold_Ship GameInstance;
+        Cue reactorSound;
 
         //Computer and screen
         Computer_And_Screen computer;
@@ -81,7 +83,7 @@ namespace Cold_Ship
             //playerNode = new Scene2DNode(playerTexture, new Vector2(35, worldSize.Y - 64));
             backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
             worldObjects.Add(backgroundNode);
-            shadowFilter = new Filter(Content.Load<Texture2D>(/*"shadowFilterLarge"*/"shadowFilter2"), new Vector2(0, 0));
+            shadowFilter = new Filter(Content.Load<Texture2D>("Textures/radius_of_light"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
@@ -141,6 +143,8 @@ namespace Cold_Ship
             worldObjects.Add(computer.computerNode);
             worldObjects.Add(computer);
             worldObjects.Add(playerNode);
+
+            reactorSound = Sounds.soundBank.GetCue("sound_reactor");
    
         }
 
@@ -179,11 +183,11 @@ namespace Cold_Ship
                                                                     this.generator.isNotActivated, 1));
 
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom3.Position - new Vector2(30, 20), StringDialogue.generatorRoomLeavingRoom1,
-                                                                    this.forwardDoor.isOpen, 1));
+                                                                    this.forwardDoor.isClosed, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom3.Position - new Vector2(30, 20), StringDialogue.generatorRoomLeavingRoom2,
-                                                                    this.forwardDoor.isOpen, 1));
+                                                                    this.forwardDoor.isClosed, 1));
           AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom3.Position - new Vector2(30, 20), StringDialogue.generatorRoomLeavingRoom3,
-                                                                    this.forwardDoor.isOpen, 1));
+                                                                    this.forwardDoor.isClosed, 1));
         }
 
         private void createPlatforms(Texture2D platformTexture)
@@ -259,6 +263,8 @@ namespace Cold_Ship
                              ref Game_Level gameLevel, ref float staminaExhaustionTimer,
                              ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
+          if (!reactorSound.IsPlaying)
+            reactorSound.Play();
 
             playerNode.bodyTemperature = bodyTemperature;
 
@@ -309,6 +315,7 @@ namespace Cold_Ship
             backwardDoor.Update(playerNode, ref gameLevel, 20);
 
             //update the shadowFilter's Position with respect to the playerNode
+          shadowFilter.Update(gameTime);
             shadowFilter.Position = new Vector2((playerNode.Position.X /*+ (playerNode.Texture.Width / 2))*/) - (shadowFilter.Texture.Width / 2),
                 (playerNode.Position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.Texture.Height / 2)));
 

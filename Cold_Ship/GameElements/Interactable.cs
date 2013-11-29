@@ -47,44 +47,58 @@ namespace Cold_Ship
                     switch (typeOfInteractable)
                     {
                         case Type_Of_Interactable.GENERATOR:
-                            generatorOn = true;
-                            activated = true;
-                            if (altTexture != null)
+                            if (!activated)
                             {
+                              Sounds.soundBank.PlayCue("sound_generator");
+                              generatorOn = true;
+                              activated = true;
+                              if (altTexture != null)
+                              {
                                 Texture = altTexture;
+                              }
                             }
                             break;
                         case Type_Of_Interactable.LIGHT_SWITCH:
                             if (generatorOn)
                             {
+                              if (!activated)
+                              {
+                                Sounds.soundBank.PlayCue("sound_switch");
                                 activated = true;
                                 filterOn = false;
                                 if (altTexture != null)
                                 {
-                                    Texture = altTexture;
+                                  Texture = altTexture;
                                 }
+                              }
                             }
                             break;
                         case Type_Of_Interactable.DOOR_SWITCH:
                             if (generatorOn)
                             {
+                              if (!activated)
+                              {
+                                Sounds.soundBank.PlayCue("sound_switch");
                                 activated = true;
                                 doorCanOpen = true;
                                 if (altTexture != null)
                                 {
-                                    Texture = altTexture;
+                                  Texture = altTexture;
                                 }
+                              }
                             }
                             break;
                         case Type_Of_Interactable.PUZZLE_SWITCH:
                             if ((altTexture != null) && (activated == false) && timeCounter > 25)
                             {
+                                Sounds.soundBank.PlayCue("sound_switch");
                                 Texture = altTexture;
                                 activated = true;
                                 timeCounter = 0;
                             }
                             else if (activated == true && timeCounter > 25)
                             {
+                                Sounds.soundBank.PlayCue("sound_switch");
                                 Texture = tempTexture;
                                 activated = false;
                                 timeCounter = 0;

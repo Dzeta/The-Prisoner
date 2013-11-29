@@ -89,7 +89,7 @@ namespace Cold_Ship
             backgroundbackNode = new GenericSprite2D(backgroundTexture_back, new Vector2(0, 0), Rectangle.Empty);
             backgroundFrontNode = new GenericSprite2D(backgroundTexture_front, new Vector2(0, 0), Rectangle.Empty);
 
-            shadowFilter = new Filter(Content.Load<Texture2D>(/*"shadowFilterLarge"*/"shadowFilter2"), new Vector2(0, 0));
+            shadowFilter = new Filter(Content.Load<Texture2D>("Textures/radius_of_light"), new Vector2(0, 0));
 
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
@@ -227,10 +227,15 @@ namespace Cold_Ship
             worldObjects = new List<GenericSprite2D>();
         }
 
+        bool dialogueStarted = false, dialogueEnded = false, gameEnded = false;
         //update function
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
+
             playerNode.bodyTemperature = bodyTemperature;
+
+
+          dialogueEnded = true;
 
           // Update Dialogues
           for (int i = 0; i < AllChatTriggers.Count; i++)
@@ -242,8 +247,16 @@ namespace Cold_Ship
             if (!chatTrigger.IsConsumed()
                 && chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
               chatTrigger.InteractWith(intercomPosition, GameInstance);
+            if (chatTrigger.HasBeenDisplayed())
+              dialogueStarted = true;
+            else
+              dialogueEnded = false;
           }
-
+          if (dialogueEnded && dialogueStarted && !gameEnded)
+          {
+            playerNode.deathAnimation();
+            gameEnded = true;
+          }
             //Update timer
             openWindowTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -268,6 +281,7 @@ namespace Cold_Ship
 
             //update the shadowFilter's Position with respect to the playerNode
             filterOn = !generatorOn;
+          shadowFilter.Update(gameTime);
             shadowFilter.Position = new Vector2((playerNode.Position.X /*+ (playerNode.Texture.Width / 2))*/) - (shadowFilter.Texture.Width / 2),
                 (playerNode.Position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.Texture.Height / 2)));
 

@@ -157,6 +157,14 @@ namespace Cold_Ship
       }
     }
 
+    public bool HasBeenDisplayed()
+    {
+      if (_dialogue != null)
+        return _dialogue.HasBeenDisplayed();
+      else
+        return false;
+    }
+
     public void InteractWith(Character player, Cold_Ship gameLevel)
     {
       this.InteractWith(player.Position, gameLevel);
