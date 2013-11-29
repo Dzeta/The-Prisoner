@@ -176,7 +176,7 @@ namespace Cold_Ship
             {
                 if (stamina < staminaLimit)
                 {
-                    stamina += 0.03001;
+                    stamina += 0.02001;
                 }
             }
             if (stamina < 0)

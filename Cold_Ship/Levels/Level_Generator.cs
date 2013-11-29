@@ -77,7 +77,7 @@ namespace Cold_Ship
             ground = worldSize.Y - 50;
 
             //load font
-            font = Content.Load<SpriteFont>("Fonts\\Score");
+            font = Content.Load<SpriteFont>("Fonts\\manaspace12");
 
             //initialize the needed nodes and camera
             //playerNode = new Scene2DNode(playerTexture, new Vector2(35, worldSize.Y - 64));
@@ -349,9 +349,9 @@ namespace Cold_Ship
             //draw the fps
             spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
             //draw the status display and the body temperature
-            spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
-            spriteBatch.DrawString(font, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Black, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
+            //spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
+            spriteBatch.DrawString(font, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Red, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Yellow, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
 
             // Draw all invisible chat trigger
             if (Cold_Ship.DEBUG_MODE)
