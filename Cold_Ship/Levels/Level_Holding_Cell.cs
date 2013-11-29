@@ -94,14 +94,15 @@ namespace Cold_Ship
 
       if (!visited)
       {
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction1));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction2));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction3));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction4));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction5));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction6));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction7)); 
-        AllChatTriggers.Add( InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 50, forwardDoor.Position.Y + 30),
+//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction1));
+//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction2));
+//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction3));
+//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction4));
+//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction5));
+//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction6));
+//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction7));
+        AllChatTriggers.Add(
+          InvisibleChatTriggerBox.GetNewInstance(new Vector2(486, 336),
             StringDialogue.holdingCellLeaveWithoutLighter, this.playerNode.HasLighter));
       }
 
