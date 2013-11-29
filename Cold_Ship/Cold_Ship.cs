@@ -47,7 +47,6 @@ namespace Cold_Ship
         public List<DialogueBubble> DialogueQueue { get; set; }
 
         //SpriteFont font;
-        //Texture2D statusDisplayTexture;
         float bodyTempTimer;
         float exhaustionTimer, staminaExhaustionTimer;
         float jumpTimer;

@@ -20,8 +20,6 @@ namespace Cold_Ship
         Vector2 worldSize, screenSize;
         float ground;
 
-        Texture2D statusDisplayTexture;
-
         Camera2D camera;
         Character playerNode;
         Filter shadowFilter;
@@ -75,7 +73,6 @@ namespace Cold_Ship
             Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\controlroom_middle");
             Texture2D backgroundTexture_back = Content.Load<Texture2D>("Backgrounds\\controlroom_back");
             Texture2D backgroundTexture_front = Content.Load<Texture2D>("Backgrounds\\controlroom_front");
-            statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
 
             //initialize the world size and the ground coordinate according to the world size
             worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);

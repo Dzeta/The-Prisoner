@@ -20,8 +20,6 @@ namespace Cold_Ship
     Vector2 worldSize, screenSize;
     float ground;
 
-    Texture2D statusDisplayTexture;
-
     Camera2D camera;
     Character playerNode;
     Filter shadowFilter;
@@ -64,8 +62,6 @@ namespace Cold_Ship
       //load the needed textures
       Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
       Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\prisonblock_bg_02");
-      statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
-
 
       //initialize the world size and the ground coordinate according to the world size
       worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);
@@ -254,12 +250,6 @@ namespace Cold_Ship
           camera.DrawNode(shadowFilter);
       }
 
-      //draw the fps
-      spriteBatch.DrawString(GameInstance.MonoMedium, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
-      //draw the status display and the body temperature
-      //spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
-//      spriteBatch.DrawString(manaspace12, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Red, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
-//      spriteBatch.DrawString(manaspace12, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Yellow, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
 
       spriteBatch.DrawString(GameInstance.MonoMedium, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Red, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
       spriteBatch.DrawString(GameInstance.MonoMedium, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Yellow, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);

@@ -27,7 +27,6 @@ namespace Cold_Ship
     Vector2 worldSize, screenSize;
     List<Platform> platforms;
     float ground;
-    Texture2D statusDisplayTexture;
     SpriteFont font;
     Character playerNode;
     GenericSprite2D backgroundNode;
@@ -61,8 +60,6 @@ namespace Cold_Ship
       //load the needed textures
       Texture2D playerTexture = Content.Load<Texture2D>("Character\\PlayerSpriteSheet");
       Texture2D backgroundTexture = Content.Load<Texture2D>("Backgrounds\\holdingcell_final");
-      statusDisplayTexture = Content.Load<Texture2D>("statusDisplay");
-
 
       //initialize the world size and the ground coordinate according to the world size
       worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);
