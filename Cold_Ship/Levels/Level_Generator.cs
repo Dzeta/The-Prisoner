@@ -260,6 +260,9 @@ namespace Cold_Ship
                              ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
 
+            playerNode.bodyTemperature = bodyTemperature;
+
+
           // Update Dialogues
           for (int i = 0; i < AllChatTriggers.Count; i++)
           {

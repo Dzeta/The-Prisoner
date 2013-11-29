@@ -27,7 +27,7 @@ namespace Cold_Ship
         public Vector2 playerSpriteSize; //for collision once the animation is set up
 
         //internal member variables
-        float normalTempDecreaseRate = -0.01f;
+        float normalTempDecreaseRate = -0.02f;
         float exertForceIncreaseRate = 0.002f;
         float exertForceDecreaseRate = -0.05f;
         bool isExertingForce = false;
@@ -166,13 +166,17 @@ namespace Cold_Ship
 
             //update body temperature
             updateBodyTemperature(ref bodyTempTimer, ref exhaustionTimer);
+            if (bodyTemperature < 0)
+            {
+                deathAnimation();
+            }
 
             //recover stamina
             if (staminaExhaustionTimer > 1500)
             {
                 if (stamina < staminaLimit)
                 {
-                    stamina += 0.0005;
+                    stamina += 0.03001;
                 }
             }
             if (stamina < 0)

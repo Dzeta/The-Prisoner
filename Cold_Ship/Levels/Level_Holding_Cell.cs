@@ -129,6 +129,8 @@ namespace Cold_Ship
     //update function
     public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
     {
+        playerNode.bodyTemperature = bodyTemperature;
+
       // Update Dialogues
       foreach (InvisibleChatTriggerBox chatTrigger in AllChatTriggers)
       {
