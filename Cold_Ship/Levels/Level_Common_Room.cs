@@ -95,7 +95,8 @@ namespace Cold_Ship
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
             Texture2D intercomTexture = Content.Load<Texture2D>("Objects\\intercom");
-            intercom = new GenericSprite2D(intercomTexture, new Vector2(430, 120));
+            intercom = new GenericSprite2D(intercomTexture, new Vector2(480, 430));
+            worldObjects.Add(intercom);
 
             //initialize the needed platforms
             Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
@@ -179,11 +180,11 @@ namespace Cold_Ship
 
         private void AddChatTriggers()
         {
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(30, 20), StringDialogue.commonRoomGeneratorSpeech1, 
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position + new Vector2(-30, 20), StringDialogue.commonRoomGeneratorSpeech1, 
                                                                       this.generator.isNotActivated, 1));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(30, 20), StringDialogue.commonRoomGeneratorSpeech2,
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position + new Vector2(-30, 20), StringDialogue.commonRoomGeneratorSpeech2,
                                                                       this.generator.isNotActivated, 1));
-          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position - new Vector2(30, 20), StringDialogue.commonRoomGeneratorSpeech3,
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(intercom.Position + new Vector2(-30, 20), StringDialogue.commonRoomGeneratorSpeech3,
                                                                       this.generator.isNotActivated, 1));
         }
 
