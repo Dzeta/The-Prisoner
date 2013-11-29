@@ -87,7 +87,7 @@ namespace Cold_Ship
             backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
             worldObjects.Add(backgroundNode);
 
-            shadowFilter = new Filter(Content.Load<Texture2D>(/*"shadowFilterLarge"*/"shadowFilter2"), new Vector2(0, 0));
+            shadowFilter = new Filter(Content.Load<Texture2D>("Textures/radius_of_light"), new Vector2(0, 0));
 
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
@@ -261,6 +261,7 @@ namespace Cold_Ship
         //update function
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
+          shadowFilter.Update(gameTime);
           // Update Dialogues
           for (int i = 0; i < AllChatTriggers.Count; i++)
           {
