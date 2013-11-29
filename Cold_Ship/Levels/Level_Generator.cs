@@ -83,7 +83,7 @@ namespace Cold_Ship
             //playerNode = new Scene2DNode(playerTexture, new Vector2(35, worldSize.Y - 64));
             backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
             worldObjects.Add(backgroundNode);
-            shadowFilter = new Filter(Content.Load<Texture2D>(/*"shadowFilterLarge"*/"shadowFilter2"), new Vector2(0, 0));
+            shadowFilter = new Filter(Content.Load<Texture2D>("Textures/radius_of_light"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
@@ -312,6 +312,7 @@ namespace Cold_Ship
             backwardDoor.Update(playerNode, ref gameLevel, 20);
 
             //update the shadowFilter's Position with respect to the playerNode
+          shadowFilter.Update(gameTime);
             shadowFilter.Position = new Vector2((playerNode.Position.X /*+ (playerNode.Texture.Width / 2))*/) - (shadowFilter.Texture.Width / 2),
                 (playerNode.Position.Y + (playerNode.playerSpriteSize.Y / 2) - (shadowFilter.Texture.Height / 2)));
 
