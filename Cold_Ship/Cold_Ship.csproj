@@ -39,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Camera\Camera2D.cs" />
-    <Compile Include="Constants\SoundEffects.cs" />
+    <Compile Include="Constants\Sounds.cs" />
     <Compile Include="Constants\StringDialogue.cs" />
     <Compile Include="GameElements\Computer_And_Screen.cs" />
     <Compile Include="GameElements\PocketLightSource.cs" />

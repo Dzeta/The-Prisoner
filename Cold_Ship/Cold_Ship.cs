@@ -65,7 +65,7 @@ namespace Cold_Ship
         Level_Bridge levelBridge;
         Level_Control_Room levelControlRoom;
 
-        Game_Level gameLevel = Game_Level.LEVEL_GENERATOR;
+        Game_Level gameLevel = Game_Level.LEVEL_HOLDING_CELL;
         Game_Level prevGameLevel = Game_Level.LEVEL_HOLDING_CELL;
 
       public SpriteFont MonoSmall;
