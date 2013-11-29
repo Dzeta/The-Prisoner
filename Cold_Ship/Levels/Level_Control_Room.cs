@@ -227,9 +227,11 @@ namespace Cold_Ship
             worldObjects = new List<GenericSprite2D>();
         }
 
+        bool dialogueStarted = false, dialogueEnded = false, gameEnded = false;
         //update function
         public double Update(GameTime gameTime, ref float bodyTempTimer, ref float exhaustionTimer, ref KeyboardState oldKeyboardState, ref float jumpTimer, ref Game_Level gameLevel, ref float staminaExhaustionTimer, ref double bodyTemperature, ref double stamina, ref double staminaLimit)
         {
+          dialogueEnded = true;
           // Update Dialogues
           for (int i = 0; i < AllChatTriggers.Count; i++)
           {
@@ -240,8 +242,16 @@ namespace Cold_Ship
             if (!chatTrigger.IsConsumed()
                 && chatTrigger.GetHitBox().Intersects(playerNode.getPlayerHitBox()))
               chatTrigger.InteractWith(intercomPosition, GameInstance);
+            if (chatTrigger.HasBeenDisplayed())
+              dialogueStarted = true;
+            else
+              dialogueEnded = false;
           }
-
+          if (dialogueEnded && dialogueStarted && !gameEnded)
+          {
+            playerNode.deathAnimation();
+            gameEnded = true;
+          }
             //Update timer
             openWindowTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
