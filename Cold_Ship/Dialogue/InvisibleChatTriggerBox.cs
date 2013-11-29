@@ -46,6 +46,8 @@ namespace Cold_Ship
 
     private IWatchfulConditional _watchee;
 
+    private DialogueBubble _dialogue;
+
     private InvisibleChatTriggerBox(Vector2 position, string msg)
       : base(_hitBox, position)
     {
@@ -138,7 +140,8 @@ namespace Cold_Ship
               _timeOutTimer = 0;
             }
           }
-          else if (_timeOutTimer >= _customTimeOutInterval)
+          else if (_timeOutTimer >= _customTimeOutInterval && _dialogue != null && _dialogue.HasBeenDisplayed() && 
+                    !HelperFunction.GameInstance.GameStateIs(Cold_Ship.GameState.DIALOGUING))
           {
             this._isConsumed = false;
             _showCounter++;
@@ -161,11 +164,11 @@ namespace Cold_Ship
 
     public void InteractWith(Vector2 position, Cold_Ship gameLevel)
     {
-      DialogueBubble dialogue = DialogueBubble.GetNewInstance(gameLevel, position,
+      this._dialogue = DialogueBubble.GetNewInstance(gameLevel, position,
         new Rectangle(0, 0, (int)gameLevel.screenSize.X, (int)gameLevel.screenSize.Y), this._msg);
       this._isConsumed = true;
-      dialogue.Play();
-      gameLevel.DialogueQueue.Add(dialogue);
+      _dialogue.Play();
+      gameLevel.DialogueQueue.Add(_dialogue);
     }
 
     internal static InvisibleChatTriggerBox GetNewInstance(Vector2 vector2, string p1, int p2)

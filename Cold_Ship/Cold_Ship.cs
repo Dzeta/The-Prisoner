@@ -148,6 +148,9 @@ namespace Cold_Ship
             // DIALOGUE USED COMPONENT
             this.DialogueQueue = new List<DialogueBubble>();
             DebugTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
+
+            HelperFunction.setGameInstance(this);
+
             base.Initialize();
         }
 
@@ -193,7 +196,8 @@ namespace Cold_Ship
           if (gameLevel == Game_Level.LEVEL_CONTROL_ROOM && ( GetCurrentGameState() == GameState.PLAYING ||GetCurrentGameState() == GameState.DIALOGUING))
             mainLoopMusic.Stop(AudioStopOptions.AsAuthored);
 
-            else if (this.GameStateIs(GameState.PLAYING) || this.GameStateIs(GameState.DIALOGUING))
+            
+          if (this.GameStateIs(GameState.PLAYING) || this.GameStateIs(GameState.DIALOGUING))
             {
               if (this.GameStateIs(GameState.DIALOGUING))
               {

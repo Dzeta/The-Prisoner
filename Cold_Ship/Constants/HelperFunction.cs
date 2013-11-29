@@ -17,7 +17,15 @@ namespace Cold_Ship
       public static Keys KeyUse = Keys.E;
       public static Keys KeySpeed = Keys.LeftShift;
 
+      public static Cold_Ship GameInstance;
+
       private static List<Keys> usedKeys;
+
+      public static void setGameInstance(Cold_Ship gameInstance)
+      {
+        if (GameInstance == null)
+          GameInstance = gameInstance;
+      }
 
       public static List<Keys> UsedKeys()
       {

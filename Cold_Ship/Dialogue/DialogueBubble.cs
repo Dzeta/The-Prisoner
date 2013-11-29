@@ -59,6 +59,7 @@ namespace Cold_Ship
     private int _lineFeedPauseInterval = LINE_FEED_PAUSE;
 
     private bool _isPlaying;
+    private bool _wasDisplayed = false;
     private Cold_Ship _gameLevel;
 
     // The collision box of the dialogue
@@ -157,6 +158,11 @@ namespace Cold_Ship
       return this._isPlaying;
     }
 
+    public bool HasBeenDisplayed()
+    {
+      return this._wasDisplayed;
+    }
+
     public void Play()
     {
       this._gameLevel.DialogueQueue.Add(this);
@@ -168,6 +174,7 @@ namespace Cold_Ship
     {
       this._gameLevel.DialogueQueue.Remove(this);
       this._isPlaying = false;
+      this._wasDisplayed = true;
       this._gameLevel.RestoreLastState();
     }
 
@@ -226,7 +233,6 @@ namespace Cold_Ship
       spriteBatch.Draw(_bubbleTexture, this.Position, this._sourceRectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
       spriteBatch.DrawString(_mono8, this._scroller[this._currentRow].Substring(0, _currentRowCharPosition),
         Vector2.Add(this.Position, _textStartPosition), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
-
     }
 
     private static List<string> ComputeScroller(string message)
