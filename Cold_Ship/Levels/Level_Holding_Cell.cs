@@ -68,17 +68,11 @@ namespace Cold_Ship
       worldSize = new Vector2(backgroundTexture.Width, backgroundTexture.Height);
       ground = worldSize.Y - 200;
 
-      //load font
-      font = Content.Load<SpriteFont>("Fonts\\manaspace12");
-
       //initialize the needed nodes and camera
       backgroundNode = new GenericSprite2D(backgroundTexture, new Vector2(0, 0), Rectangle.Empty);
       worldObjects.Add(backgroundNode);
       camera = new Camera2D(spriteBatch);
       camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
-
-      //initialize the needed platforms
-      Texture2D platformTexture = Content.Load<Texture2D>("Textures\\platformTexture");
 
       //initialize the needed portals
       forwardDoor = new Portal(new Vector2(worldSize.X - 251, worldSize.Y /*- 288*/ - 280), new Vector2(51, 72), Portal.PortalType.FOWARD, Content);
@@ -87,26 +81,22 @@ namespace Cold_Ship
       worldObjects.AddRange(portals);
 
       playerNode = new Character(GameInstance, playerTexture, new Vector2(forwardDoor.Position.X - 32 - 200, worldSize.Y - 200 - 64), bodyTemperature, stamina, staminaLimit, 4, 6);
-      playerNode._pocketLight = PocketLightSource.GetNewInstance(GameInstance, playerNode);
-      playerNode._pocketLight.TurnOn();
 
       // Load the text with respect to the current player's Position
 
       if (!visited)
       {
-//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction1));
-//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction2));
-//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction3));
-//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction4));
-//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction5));
-//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction6));
-//          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction7));
-        AllChatTriggers.Add(
-          InvisibleChatTriggerBox.GetNewInstance(new Vector2(486, 336),
-            StringDialogue.holdingCellLeaveWithoutLighter, this.playerNode.HasLighter));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction1));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction2));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction3));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction4));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction5));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction6));
+          AllChatTriggers.Add(InvisibleChatTriggerBox.GetNewInstance(new Vector2(forwardDoor.Position.X - 200, forwardDoor.Position.Y + 30), StringDialogue.holdingCellIntroduction7));
+//        AllChatTriggers.Add(
+//          InvisibleChatTriggerBox.GetNewInstance(new Vector2(486, 336),
+//            StringDialogue.holdingCellLeaveWithoutLighter, this.playerNode.HasLighter));
       }
-
-      this._healthBar = HealthBar.GetNewInstance(GameInstance, this.playerNode, playerNode.GetHealthAsRatio); 
 
       Texture2D lighterTexture = Content.Load<Texture2D>("Objects\\lighter");
       if (!visited)
@@ -142,8 +132,6 @@ namespace Cold_Ship
 
       //update the player Position with respect to keyboard input and platform collision
       bool useLighter = false;
-
-      this._healthBar.Update(gameTime);
 
       playerNode.Update(useLighter, gameTime, ref bodyTempTimer, ref exhaustionTimer, ref oldKeyboardState, ref jumpTimer, ground, platforms, null, worldSize, ref staminaExhaustionTimer);
 
@@ -188,13 +176,10 @@ namespace Cold_Ship
       foreach (GenericSprite2D element in worldObjects)
           camera.DrawNode(element);
 
-      this._healthBar.Draw(spriteBatch);
-      //draw the fps
-      spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
-      //draw the status display and the body temperature
-      //spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
-      spriteBatch.DrawString(font, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Red, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
-      spriteBatch.DrawString(font, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Yellow, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
+//      this._healthBar.Draw(spriteBatch);
+
+      spriteBatch.DrawString(GameInstance.MonoMedium, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Red, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
+      spriteBatch.DrawString(GameInstance.MonoMedium, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Yellow, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
 
       // Draw all invisible chat trigger
       if (Cold_Ship.DEBUG_MODE)

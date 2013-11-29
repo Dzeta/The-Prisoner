@@ -16,8 +16,11 @@ namespace Cold_Ship
     protected UI2DElement(Texture2D texture, Vector2 position) 
       : base(texture, position) {}
 
-    public abstract void Update(GameTime gameTime);
-    public abstract void Draw(SpriteBatch spriteBatch);
+
+    public override void Draw(SpriteBatch spriteBatch, Vector2 drawPosition)
+    {
+      base.Draw(spriteBatch, drawPosition);
+    }
   }
 
   public class HealthBar : UI2DElement
@@ -43,9 +46,9 @@ namespace Cold_Ship
       , Character player, Func<float> state)
     {
       Texture2D _highlight = gameInstance
-        .Content.Load<Texture2D>("Textures/prisoner-health-bar-highlight");
+        .Content.Load<Texture2D>("Textures/prisoner-energy-bar-highlight");
       Texture2D _bar = gameInstance
-        .Content.Load<Texture2D>("Textures/prisoner-health-bar");
+        .Content.Load<Texture2D>("Textures/prisoner-energy-bar");
       HealthBar _instance = new HealthBar(_bar, player.Position - (new Vector2(0, 40)));
       _instance._player = player;
       _instance._textureBar = _bar;
@@ -67,7 +70,7 @@ namespace Cold_Ship
       return _instance;
     }
 
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
       this._barSpriteDestination = 
           new Rectangle((int)(this._player.Position.X - this._offsetFromPlayer.X), (int)(this._player.Position.Y - this._offsetFromPlayer.Y)
@@ -81,7 +84,7 @@ namespace Cold_Ship
         , (int) (this._textureBar.Height/2/SCALE_FACTOR));
     }
 
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 position)
     {
       // Draw the background
       spriteBatch.Draw(this.Texture, this._barSpriteDestination

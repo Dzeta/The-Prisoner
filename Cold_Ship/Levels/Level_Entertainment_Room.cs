@@ -359,12 +359,9 @@ namespace Cold_Ship
             if (filterOn)
                 camera.DrawNode(shadowFilter);
 
-            //draw the fps
-            spriteBatch.DrawString(font, framesPerSecond.ToString(), new Vector2(screenSize.X - 50, 25), Color.White);
-            //draw the status display and the body temperature
-            //spriteBatch.Draw(statusDisplayTexture, new Vector2(50, 50), Color.White);
-            spriteBatch.DrawString(font, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Red, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Yellow, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
+      spriteBatch.DrawString(GameInstance.MonoMedium, Math.Round(playerNode.bodyTemperature, 2).ToString(), new Vector2(52, 52), Color.Red, 0, new Vector2(0, 0), new Vector2(0.8f, 2), SpriteEffects.None, 0);
+      spriteBatch.DrawString(GameInstance.MonoMedium, Math.Round(playerNode.stamina, 2).ToString(), new Vector2(120, 52), Color.Yellow, 0, new Vector2(0, 0), new Vector2(1f, 1), SpriteEffects.None, 0);
+
             spriteBatch.End();
         }
     }
