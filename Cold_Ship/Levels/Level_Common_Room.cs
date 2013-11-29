@@ -90,7 +90,7 @@ namespace Cold_Ship
             backgroundFront = new GenericSprite2D(backgroundFrontTexture, new Vector2(0, 0), Rectangle.Empty);
             backgroundMiddle = new GenericSprite2D(backgroundMiddleLayer, new Vector2(0, 0), Rectangle.Empty);
             backgroundBack = new GenericSprite2D(backgroundBackLayer, new Vector2(0, 0), Rectangle.Empty);
-            shadowFilter = new Filter(Content.Load<Texture2D>("shadowFilterLarge"), new Vector2(0, 0));
+            shadowFilter = new Filter(Content.Load<Texture2D>(/*"shadowFilterLarge"*/"shadowFilter2"), new Vector2(0, 0));
             camera = new Camera2D(spriteBatch);
             camera.cameraPosition = new Vector2(0, worldSize.Y - screenSize.Y);
 
@@ -247,7 +247,7 @@ namespace Cold_Ship
             //    portal.Update(playerNode, ref gameLevel);
             //}
             fowardDoor.Update(playerNode, ref gameLevel, 20);
-            backwardDoor.Update(playerNode, ref gameLevel, -20);
+            backwardDoor.Update(playerNode, ref gameLevel, -20, 70);
 
             //lightSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
             generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
