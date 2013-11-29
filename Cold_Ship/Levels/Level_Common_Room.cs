@@ -256,7 +256,7 @@ namespace Cold_Ship
             generator.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref doorCanOpen);
             filterOn = !generatorOn;
             doorSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref fowardDoor.canOpen);
-            doorSwitch.Update(playerNode, ref generatorOn, ref filterOn, shadowFilter, ref roomDoor.canOpen);
+            roomDoor.canOpen = doorSwitch.isActivated();
 
             if (insideRoom)
             {
