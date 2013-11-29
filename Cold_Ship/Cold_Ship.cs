@@ -193,14 +193,6 @@ namespace Cold_Ship
           if (gameLevel == Game_Level.LEVEL_CONTROL_ROOM && ( GetCurrentGameState() == GameState.PLAYING ||GetCurrentGameState() == GameState.DIALOGUING))
             mainLoopMusic.Stop(AudioStopOptions.AsAuthored);
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                if (this.GameStateIs(GameState.PLAYING))
-                    ActivateState(GameState.PAUSED);
-                if (DEBUG_MODE)
-                    this.Exit();
-            }
-
             else if (this.GameStateIs(GameState.PLAYING) || this.GameStateIs(GameState.DIALOGUING))
             {
               if (this.GameStateIs(GameState.DIALOGUING))
@@ -256,6 +248,14 @@ namespace Cold_Ship
             {
                 keyBindingMenu.Update(gameTime);
             }
+
+          if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+          {
+            if (this.GameStateIs(GameState.PLAYING))
+              ActivateState(GameState.PAUSED);
+            if (DEBUG_MODE)
+              this.Exit();
+          }
 
             base.Update(gameTime);
         }
